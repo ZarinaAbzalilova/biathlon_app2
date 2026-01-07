@@ -1,0 +1,16 @@
+#!/bin/sh
+
+export JAVA_HOME=${JAVA_HOME:-""}
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+GRADLE_WRAPPER_JAR="$DIR/gradle/wrapper/gradle-wrapper.jar"
+
+if [ ! -f "$GRADLE_WRAPPER_JAR" ]; then
+  echo "Gradle wrapper jar not found. Please ensure gradle wrapper is set up."
+  exit 1
+fi
+
+JAVA_CMD="${JAVA_HOME:+$JAVA_HOME/bin/}java"
+
+exec "$JAVA_CMD" -jar "$GRADLE_WRAPPER_JAR" "$@"
+

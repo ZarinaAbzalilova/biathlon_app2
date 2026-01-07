@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!-- Main Activity -->
+    <string name="search_hint">Поиск спортсменов...</string>
+    <string name="loading">Загрузка...</string>
+    <string name="error_loading">Ошибка загрузки данных</string>
+    <string name="retry">Повторить</string>
+    <string name="no_internet">Нет подключения к интернету</string>
+    <string name="no_data">Нет данных</string>
+
+    <!-- Athlete Detail -->
+    <string name="athlete_info">Информация о спортсмене</string>
+    <string name="full_name">ФИО</string>
+    <string name="last_name_label">Фамилия</string>
+    <string name="first_name_label">Имя</string>
+    <string name="birth_date">Дата рождения</string>
+    <string name="gender">Пол</string>
+    <string name="sports_rank">Спортивный разряд</string>
+    <string name="license">Лицензия</string>
+    <string name="club">Клуб</string>
+    <string name="region">Регион</string>
+    <string name="region_code">Код региона</string>
+    <string name="stats_button">Статистика</string>
+
+    <!-- Athlete Stats -->
+    <string name="athlete_stats">Статистика спортсмена</string>
+    <string name="race_id">ID гонки</string>
+    <string name="discipline">Дисциплина</string>
+    <string name="date">Дата</string>
+    <string name="place">Место</string>
+    <string name="misses">Промахи</string>
+    <string name="start_number">Стартовый номер</string>
+    <string name="no_stats">Нет статистики</string>
+
+    <!-- Gender -->
+    <string name="male">Мужской</string>
+    <string name="female">Женский</string>
+
+    <string name="app_name">SBR</string>
+    <string name="no_athletes">Спортсмены не найдены</string>
+
+
+</resources>
