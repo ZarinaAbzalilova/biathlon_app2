@@ -2,21 +2,16 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector
 import json
+import os
+from config import Config  # Добавляем импорт
 
 app = Flask(__name__)
 CORS(app)
 app.config['JSON_AS_ASCII'] = False
 
-# Настройки базы данных
-db_config = {
-    'host': 'localhost',
-    'user': 'root', 
-    'password': 'admin',  # ЗАМЕНИТЕ НА ВАШ ПАРОЛЬ
-    'database': 'biathlon'
-}
-
+# Используем конфигурацию из config.py
 def get_db_connection():
-    return mysql.connector.connect(**db_config)
+    return mysql.connector.connect(**Config.get_db_config())
 
 # ========== ОСНОВНЫЕ ENDPOINTS ==========
 
@@ -485,8 +480,12 @@ def get_stats():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 if __name__ == '__main__':
+    # Для продакшена используем порт из переменной окружения
+    port = int(os.environ.get('PORT', 5000))
+    
     print("🚀 Biathlon API запущен!")
-    print("📊 База данных: biathlon")
-    print("🌐 API доступен на: http://localhost:5000")
+    print("📊 База данных:", Config.MYSQL_DATABASE)
+    print("🌐 API доступен на: http://0.0.0.0:" + str(port))
     print("⏹️  Остановка: Ctrl+C")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    
+    app.run(host='0.0.0.0', port=port, debug=False)  # debug=False для продакшена!
