@@ -2,16 +2,46 @@ services:
   - type: web
     name: biathlon-backend
     runtime: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+    repo: https://github.com/ZarinaAbzalilova/biathlon_app2
+    region: frankfurt  # Ближе к Reg.ru (Россия)
+    plan: free  # Бесплатный план для начала
+    
+    # Build Settings
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      
+    # Start Command
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --timeout 120
+    
+    # Auto-Deploy
+    autoDeploy: true
+    branch: main
+    
+    # Health Check
+    healthCheckPath: /test_db
+    initialDelaySec: 15
+    
+    # Environment Variables
     envVars:
+      - key: PORT
+        value: 10000
+        
+      - key: MYSQL_HOST
+        value: 79.174.89.233
+        
+      - key: MYSQL_PORT
+        value: 19426
+        
+      - key: MYSQL_DATABASE
+        value: biathlon_db
+        
+      - key: MYSQL_USER
+        value: adminZarina
+        
+      # Эти переменные НУЖНО установить вручную в панели Render:
+      - key: MYSQL_PASSWORD
+        sync: false  # ← Установите пароль вручную!
+        
       - key: PYTHON_VERSION
         value: 3.11.0
-      - key: MYSQL_HOST
-        sync: false
-      - key: MYSQL_USER
-        sync: false  
-      - key: MYSQL_PASSWORD
-        sync: false
-      - key: MYSQL_DATABASE
-        sync: false

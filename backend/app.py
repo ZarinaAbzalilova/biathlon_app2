@@ -3,18 +3,36 @@ from flask_cors import CORS
 import mysql.connector
 import json
 import os
-from config import Config  # Добавляем импорт
+import pymysql
+from database import get_db_connection  # ← Это импорт из отдельного файла!
+# УДАЛИТЕ: from config import Config  # Больше не нужно здесь
 
+pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 CORS(app)
-app.config['JSON_AS_ASCII'] = False
 
-# Используем конфигурацию из config.py
-def get_db_connection():
-    return mysql.connector.connect(**Config.get_db_config())
+# УДАЛИТЕ все строки с load_dotenv() и app.config
 
 # ========== ОСНОВНЫЕ ENDPOINTS ==========
-
+@app.route('/test_db')
+def test_db():
+    try:
+        conn = get_db_connection()  # ← Используем новую функцию
+        cursor = conn.cursor()
+        cursor.execute('SELECT 1')
+        result = cursor.fetchone()
+        conn.close()
+        return '''
+        <h1>✅ Database connection successful!</h1>
+        <p>Подключение к Reg.ru Cloud MySQL работает.</p>
+        <p><a href="/">Вернуться на главную</a></p>
+        '''
+    except Exception as e:
+        return f'''
+        <h1>❌ Database connection failed!</h1>
+        <p>Error: {str(e)}</p>
+        <p><a href="/">Вернуться на главную</a></p>
+        '''
 @app.route('/')
 def home():
     return """
@@ -484,7 +502,7 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     
     print("🚀 Biathlon API запущен!")
-    print("📊 База данных:", Config.MYSQL_DATABASE)
+    #print("📊 База данных:", Config.MYSQL_DATABASE)
     print("🌐 API доступен на: http://0.0.0.0:" + str(port))
     print("⏹️  Остановка: Ctrl+C")
     
