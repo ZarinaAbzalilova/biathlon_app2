@@ -32,8 +32,7 @@ interface BiathlonApiService {
     ): Response<PdfUrlResponse>
 
     companion object {
-        //const val BASE_URL = "http://10.90.223.101:5000/" // Для эмулятора Android Studio
-        const val BASE_URL = "http://192.168.114.23:5000/" // Для реального устройства (замените на IP вашего компьютера)
+        const val BASE_URL = "https://biathlon-app2.onrender.com" 
     }
 }
 

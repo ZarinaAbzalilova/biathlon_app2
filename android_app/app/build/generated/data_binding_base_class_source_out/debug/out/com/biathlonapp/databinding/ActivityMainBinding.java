@@ -4,17 +4,14 @@ package com.biathlonapp.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
+import androidx.viewpager2.widget.ViewPager2;
 import com.biathlonapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -24,38 +21,16 @@ public final class ActivityMainBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
-  public final Button buttonRetry;
+  public final BottomNavigationView bottomNavigation;
 
   @NonNull
-  public final LinearLayout layoutError;
+  public final ViewPager2 viewPager;
 
-  @NonNull
-  public final ProgressBar progressLoading;
-
-  @NonNull
-  public final RecyclerView recyclerAthletes;
-
-  @NonNull
-  public final EditText searchEditText;
-
-  @NonNull
-  public final TextView textEmpty;
-
-  @NonNull
-  public final TextView textError;
-
-  private ActivityMainBinding(@NonNull LinearLayout rootView, @NonNull Button buttonRetry,
-      @NonNull LinearLayout layoutError, @NonNull ProgressBar progressLoading,
-      @NonNull RecyclerView recyclerAthletes, @NonNull EditText searchEditText,
-      @NonNull TextView textEmpty, @NonNull TextView textError) {
+  private ActivityMainBinding(@NonNull LinearLayout rootView,
+      @NonNull BottomNavigationView bottomNavigation, @NonNull ViewPager2 viewPager) {
     this.rootView = rootView;
-    this.buttonRetry = buttonRetry;
-    this.layoutError = layoutError;
-    this.progressLoading = progressLoading;
-    this.recyclerAthletes = recyclerAthletes;
-    this.searchEditText = searchEditText;
-    this.textEmpty = textEmpty;
-    this.textError = textError;
+    this.bottomNavigation = bottomNavigation;
+    this.viewPager = viewPager;
   }
 
   @Override
@@ -85,50 +60,19 @@ public final class ActivityMainBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.buttonRetry;
-      Button buttonRetry = ViewBindings.findChildViewById(rootView, id);
-      if (buttonRetry == null) {
+      id = R.id.bottomNavigation;
+      BottomNavigationView bottomNavigation = ViewBindings.findChildViewById(rootView, id);
+      if (bottomNavigation == null) {
         break missingId;
       }
 
-      id = R.id.layoutError;
-      LinearLayout layoutError = ViewBindings.findChildViewById(rootView, id);
-      if (layoutError == null) {
+      id = R.id.viewPager;
+      ViewPager2 viewPager = ViewBindings.findChildViewById(rootView, id);
+      if (viewPager == null) {
         break missingId;
       }
 
-      id = R.id.progressLoading;
-      ProgressBar progressLoading = ViewBindings.findChildViewById(rootView, id);
-      if (progressLoading == null) {
-        break missingId;
-      }
-
-      id = R.id.recyclerAthletes;
-      RecyclerView recyclerAthletes = ViewBindings.findChildViewById(rootView, id);
-      if (recyclerAthletes == null) {
-        break missingId;
-      }
-
-      id = R.id.searchEditText;
-      EditText searchEditText = ViewBindings.findChildViewById(rootView, id);
-      if (searchEditText == null) {
-        break missingId;
-      }
-
-      id = R.id.textEmpty;
-      TextView textEmpty = ViewBindings.findChildViewById(rootView, id);
-      if (textEmpty == null) {
-        break missingId;
-      }
-
-      id = R.id.textError;
-      TextView textError = ViewBindings.findChildViewById(rootView, id);
-      if (textError == null) {
-        break missingId;
-      }
-
-      return new ActivityMainBinding((LinearLayout) rootView, buttonRetry, layoutError,
-          progressLoading, recyclerAthletes, searchEditText, textEmpty, textError);
+      return new ActivityMainBinding((LinearLayout) rootView, bottomNavigation, viewPager);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

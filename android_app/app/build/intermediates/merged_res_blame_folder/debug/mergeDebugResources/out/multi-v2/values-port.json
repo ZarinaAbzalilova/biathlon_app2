@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.biathlonapp-mergeDebugResources-38:/values-port/values-port.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\abzal\\.gradle\\caches\\8.11.1\\transforms\\e3aae4c89e3afa85d1413bc5f1b81557\\transformed\\appcompat-1.7.1\\res\\values-port\\values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}

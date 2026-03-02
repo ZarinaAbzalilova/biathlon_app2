@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.biathlonapp-mergeDebugResources-38:/values-w320dp-land-v13/values-w320dp-land-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\abzal\\.gradle\\caches\\8.11.1\\transforms\\b4f6a3a2d2b0f4a8346638fccb3358fb\\transformed\\material-1.12.0\\res\\values-w320dp-land-v13\\values-w320dp-land-v13.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,110",
+                        "endColumns": "54,61",
+                        "endOffsets": "105,167"
+                    }
+                }
+            ]
+        }
+    ]
+}
