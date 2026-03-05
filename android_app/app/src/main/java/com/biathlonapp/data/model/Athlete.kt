@@ -27,12 +27,6 @@ data class Athlete(
     @SerializedName("sports_rank")
     val sportsRank: String? = null,
 
-    @SerializedName("license")
-    val license: String? = null,
-
-    @SerializedName("club")
-    val club: String? = null,
-
     @SerializedName("region")
     val region: String? = null,
 

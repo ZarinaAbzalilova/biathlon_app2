@@ -38,11 +38,23 @@ class MainActivity : AppCompatActivity() {
                     binding.viewPager.currentItem = 0
                     true
                 }
-                R.id.navigation_athletes -> {
+                R.id.navigation_team -> {
                     binding.viewPager.currentItem = 1
                     true
                 }
-                else -> false
+                R.id.navigation_calendar -> {
+                    binding.viewPager.currentItem = 2
+                    true
+                }
+                R.id.navigation_favorites -> {
+                    binding.viewPager.currentItem = 3
+                    true
+                }
+                R.id.navigation_search -> {
+                    binding.viewPager.currentItem = 4
+                    true
+                }
+                    else -> false
             }
         }
     }

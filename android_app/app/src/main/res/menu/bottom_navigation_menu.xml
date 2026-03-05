@@ -5,7 +5,19 @@
         android:icon="@drawable/ic_news"
         android:title="Новости" />
     <item
-        android:id="@+id/navigation_athletes"
+        android:id="@+id/navigation_team"
         android:icon="@drawable/ic_athletes"
-        android:title="Спортсмены" />
+        android:title="Сборная" />
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/ic_search"
+        android:title="Поиск" />
+    <item
+        android:id="@+id/navigation_calendar"
+        android:icon="@drawable/ic_calendar"
+        android:title="Календарь" />
+    <item
+        android:id="@+id/navigation_favorites"
+        android:icon="@drawable/ic_star"
+        android:title="Избранное" />
 </menu>

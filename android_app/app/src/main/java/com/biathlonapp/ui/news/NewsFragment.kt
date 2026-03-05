@@ -5,12 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.biathlonapp.data.model.News
 import com.biathlonapp.databinding.FragmentNewsBinding
 
 class NewsFragment : Fragment() {
 
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: NewsViewModel by viewModels()
+    private lateinit var adapter: NewsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,14 +29,99 @@ class NewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Здесь будешь загружать новости
-        setupNewsList()
+        setupRecyclerView()
+        setupSwipeRefresh()
+        observeViewModel()
+
+        viewModel.loadNews()
     }
 
-    private fun setupNewsList() {
-        // TODO: Добавить RecyclerView для новостей
-        // Пока просто покажи заглушку
-        binding.textNewsPlaceholder.visibility = View.VISIBLE
+    private fun setupRecyclerView() {
+        adapter = NewsAdapter { news ->
+            // Открываем детальную страницу новости
+            openNewsDetail(news)
+        }
+
+        binding.recyclerNews.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@NewsFragment.adapter
+        }
+    }
+
+    private fun setupSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.news.observe(viewLifecycleOwner) { newsList ->
+            adapter.submitList(newsList)
+
+            if (newsList.isEmpty()) {
+                showEmptyState()
+            } else {
+                showNewsList()
+            }
+            binding.swipeRefresh.isRefreshing = false
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading && adapter.itemCount == 0) {
+                binding.progressLoading.visibility = View.VISIBLE
+                binding.recyclerNews.visibility = View.GONE
+                binding.layoutError.visibility = View.GONE
+                binding.textEmpty.visibility = View.GONE
+            } else {
+                binding.progressLoading.visibility = View.GONE
+            }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            if (error != null) {
+                showError(error)
+            } else {
+                hideError()
+            }
+            binding.swipeRefresh.isRefreshing = false
+        }
+    }
+
+    private fun openNewsDetail(news: News) {
+        // TODO: Создать и открыть NewsDetailFragment
+        android.widget.Toast.makeText(
+            requireContext(),
+            "Открыть новость: ${news.title}",
+            android.widget.Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun showEmptyState() {
+        binding.recyclerNews.visibility = View.GONE
+        binding.textEmpty.visibility = View.VISIBLE
+        binding.layoutError.visibility = View.GONE
+        binding.textEmpty.text = "Новости пока не загрузились"
+    }
+
+    private fun showNewsList() {
+        binding.recyclerNews.visibility = View.VISIBLE
+        binding.textEmpty.visibility = View.GONE
+        binding.layoutError.visibility = View.GONE
+    }
+
+    private fun showError(message: String) {
+        binding.layoutError.visibility = View.VISIBLE
+        binding.textError.text = message
+        binding.buttonRetry.setOnClickListener {
+            viewModel.loadNews()
+        }
+        binding.recyclerNews.visibility = View.GONE
+        binding.textEmpty.visibility = View.GONE
+    }
+
+    private fun hideError() {
+        binding.layoutError.visibility = View.GONE
+        binding.recyclerNews.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {

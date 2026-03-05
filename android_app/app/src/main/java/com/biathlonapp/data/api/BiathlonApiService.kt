@@ -7,6 +7,8 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import com.biathlonapp.data.model.PdfUrlResponse
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 interface BiathlonApiService {
 
@@ -32,14 +34,21 @@ interface BiathlonApiService {
     ): Response<PdfUrlResponse>
 
     companion object {
-        const val BASE_URL = "https://biathlon-app2.onrender.com" 
+        const val BASE_URL = "https://biathlon-app2.onrender.com"
+        fun create(): BiathlonApiService {
+            return Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(BiathlonApiService::class.java)
+        }
     }
-}
 
-data class PaginatedResponse<T>(
-    val page: Int,
-    val per_page: Int,
-    val total: Int,
-    val total_pages: Int,
-    val data: List<T>
-)
+    data class PaginatedResponse<T>(
+        val page: Int,
+        val per_page: Int,
+        val total: Int,
+        val total_pages: Int,
+        val data: List<T>
+    )
+}

@@ -25,7 +25,53 @@ class AthletesViewModel : ViewModel() {
     init {
         loadAthletes()
     }
+    // Для фильтрации по разряду (используем getAthletes())
+    fun loadAthletesByRank(sportsRank: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _error.value = null
 
+            repository.getAthletes().fold(
+                onSuccess = { allAthletes ->
+                    // Фильтруем по sportsRank
+                    val filtered = allAthletes.filter { athlete ->
+                        athlete.sportsRank == sportsRank
+                    }
+                    _athletes.value = filtered
+                    _isLoading.value = false
+                },
+                onFailure = { exception ->
+                    _error.value = "Ошибка загрузки: ${exception.message}"
+                    _athletes.value = emptyList()
+                    _isLoading.value = false
+                }
+            )
+        }
+    }
+
+    // Для фильтрации по полу и разряду (используем getAthletes())
+    fun loadAthletesByGenderAndRank(gender: String, sportsRank: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _error.value = null
+
+            repository.getAthletes().fold(
+                onSuccess = { allAthletes ->
+                    val filtered = allAthletes.filter { athlete ->
+                        athlete.gender.equals(gender, ignoreCase = true) &&
+                                athlete.sportsRank == sportsRank
+                    }
+                    _athletes.value = filtered
+                    _isLoading.value = false
+                },
+                onFailure = { exception ->
+                    _error.value = "Ошибка загрузки: ${exception.message}"
+                    _athletes.value = emptyList()
+                    _isLoading.value = false
+                }
+            )
+        }
+    }
     fun loadAthletes() {
         viewModelScope.launch {
             _isLoading.value = true

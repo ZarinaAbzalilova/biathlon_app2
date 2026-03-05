@@ -41,5 +41,46 @@
     <string name="app_name">SBR</string>
     <string name="no_athletes">Спортсмены не найдены</string>
 
+    <!-- Заголовки -->
+    <string name="team_title">Сборная команда</string>
+    <string name="team_subtitle">Выберите категорию спортсменов</string>
 
+    <!-- Категории -->
+    <string name="female_main">Женская основная</string>
+    <string name="female_reserve">Женская резервная</string>
+    <string name="male_main">Мужская основная</string>
+    <string name="male_reserve">Мужская резервная</string>
+    <string name="main_team">Основной состав</string>
+    <string name="reserve_team">Резервный состав</string>
+
+    <!-- Placeholders -->
+    <string name="category_title_placeholder">Заголовок</string>
+    <string name="category_subtitle_placeholder">Подзаголовок</string>
+
+    <!-- Content descriptions -->
+    <string name="icon_category">Иконка категории</string>
+    <string name="icon_arrow">Стрелка перехода</string>
+
+
+    <string name="icon_calendar">Иконка календаря</string>
+    <string name="no_events_today">В этот день нет гонок</string>
+    <string name="close">Закрыть</string>
+
+
+    <string-array name="month_names">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
+
+    <string name="news_image">Изображение новости</string>
 </resources>
