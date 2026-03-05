@@ -9,14 +9,27 @@ interface VkApiService {
     suspend fun getWallPosts(
         @Query("owner_id") ownerId: String,
         @Query("count") count: Int = 20
-    ): VkWallResponse
+    ): VkResponse<VkWallResponseData>
 }
 
-// Ответы от VK API
-data class VkWallResponse(
-    val response: VkWallResponseData
+// Общая обертка для ответов VK API
+data class VkResponse<T>(
+    val response: T?,
+    val error: VkError?
 )
 
+data class VkError(
+    val error_code: Int,
+    val error_msg: String,
+    val request_params: List<VkRequestParam>?
+)
+
+data class VkRequestParam(
+    val key: String,
+    val value: String
+)
+
+// Остальные модели без изменений
 data class VkWallResponseData(
     val count: Int,
     val items: List<VkPost>

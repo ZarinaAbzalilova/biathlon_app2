@@ -14,13 +14,7 @@ class NewsRepository {
 
     // Твои данные из кабинета VK
     private val clientId = "54470422"
-    private val clientSecret = "gOOa0qgwaAgBEsP5pQLB" // Вставь сюда свой ключ
-
-    // ID сообществ (с отрицательным знаком для групп)
-    private val communities = mapOf(
-        NewsSource.VK_SBR to "-30593517"  // Союз биатлонистов России
-        // Добавь другие сообщества по мере необходимости
-    )
+    private val clientSecret = "gOOa0qgwaAgBEsP5pQLB"
 
     private val api: VkApiService by lazy {
         val client = OkHttpClient.Builder()
@@ -37,6 +31,7 @@ class NewsRepository {
                 chain.proceed(request)
             }
             .build()
+        // ...
 
         Retrofit.Builder()
             .baseUrl("https://api.vk.com/")
@@ -45,6 +40,12 @@ class NewsRepository {
             .build()
             .create(VkApiService::class.java)
     }
+    private val communities = mapOf(
+        NewsSource.VK_SBR to "-636950"  // Союз биатлонистов России
+        // Добавь другие сообщества по мере необходимости
+    )
+
+
 
     suspend fun getNewsFromVk(
         source: NewsSource,
@@ -64,9 +65,29 @@ class NewsRepository {
                 count = count
             )
 
-            Log.d("NewsRepository", "VK API response received. Items count: ${response.response.items.size}")
+            // Проверяем, есть ли ошибка от API
+            if (response.error != null) {
+                val error = response.error
+                Log.e("NewsRepository", "VK API error: ${error.error_code} - ${error.error_msg}")
 
-            val news = response.response.items.map { post ->
+                // Логируем параметры запроса для отладки
+                error.request_params?.forEach { param ->
+                    Log.d("NewsRepository", "Request param: ${param.key}=${param.value}")
+                }
+
+                return Result.failure(Exception("VK API error ${error.error_code}: ${error.error_msg}"))
+            }
+
+            // Проверяем, что response не null
+            val responseData = response.response
+            if (responseData == null) {
+                Log.e("NewsRepository", "VK API response is null")
+                return Result.failure(Exception("Empty response from VK API"))
+            }
+
+            Log.d("NewsRepository", "VK API response received. Items count: ${responseData.items.size}")
+
+            val news = responseData.items.map { post ->
                 convertVkPostToNews(post, source)
             }
 
@@ -74,6 +95,23 @@ class NewsRepository {
         } catch (e: Exception) {
             Log.e("NewsRepository", "Error loading news from $source", e)
             Result.failure(e)
+        }
+    }
+    // Временный метод для проверки ID
+    suspend fun checkCommunityId() {
+        try {
+            val ownerId = communities[NewsSource.VK_SBR] ?: return
+            Log.d("NewsRepository", "Checking community with ownerId: $ownerId")
+
+            val response = api.getWallPosts(ownerId = ownerId, count = 1)
+
+            if (response.error != null) {
+                Log.e("NewsRepository", "Error: ${response.error.error_code} - ${response.error.error_msg}")
+            } else {
+                Log.d("NewsRepository", "Success! Community exists")
+            }
+        } catch (e: Exception) {
+            Log.e("NewsRepository", "Check failed", e)
         }
     }
     suspend fun getAllNews(): Result<List<News>> {
@@ -87,7 +125,7 @@ class NewsRepository {
         communities.forEach { (source, ownerId) ->
             Log.d("NewsRepository", "Loading from $source with ownerId=$ownerId")
             try {
-                val result = getNewsFromVk(source, 5)
+                val result = getNewsFromVk(source, 10)
                 if (result.isSuccess) {
                     val newsList = result.getOrNull()
                     Log.d("NewsRepository", "✅ Loaded ${newsList?.size} news from $source")

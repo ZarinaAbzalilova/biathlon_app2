@@ -27,6 +27,9 @@
         <activity
             android:name=".ui.stats.AthleteStatsActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.news.NewsDetailActivity"
+            android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".MainActivity"

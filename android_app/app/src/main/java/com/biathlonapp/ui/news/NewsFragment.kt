@@ -88,12 +88,10 @@ class NewsFragment : Fragment() {
     }
 
     private fun openNewsDetail(news: News) {
-        // TODO: Создать и открыть NewsDetailFragment
-        android.widget.Toast.makeText(
-            requireContext(),
-            "Открыть новость: ${news.title}",
-            android.widget.Toast.LENGTH_SHORT
-        ).show()
+        val intent = android.content.Intent(requireContext(), NewsDetailActivity::class.java).apply {
+            putExtra("news", news)
+        }
+        startActivity(intent)
     }
 
     private fun showEmptyState() {
