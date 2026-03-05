@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.biathlonapp.R;
+import com.google.android.material.card.MaterialCardView;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -26,6 +27,9 @@ public final class FragmentCalendarBinding implements ViewBinding {
 
   @NonNull
   public final ImageButton buttonPrevMonth;
+
+  @NonNull
+  public final MaterialCardView cardGoogleCalendar;
 
   @NonNull
   public final RecyclerView recyclerCalendar;
@@ -56,12 +60,14 @@ public final class FragmentCalendarBinding implements ViewBinding {
 
   private FragmentCalendarBinding(@NonNull LinearLayout rootView,
       @NonNull ImageButton buttonNextMonth, @NonNull ImageButton buttonPrevMonth,
-      @NonNull RecyclerView recyclerCalendar, @NonNull TextView textFri, @NonNull TextView textMon,
-      @NonNull TextView textMonthYear, @NonNull TextView textSat, @NonNull TextView textSun,
-      @NonNull TextView textThu, @NonNull TextView textTue, @NonNull TextView textWed) {
+      @NonNull MaterialCardView cardGoogleCalendar, @NonNull RecyclerView recyclerCalendar,
+      @NonNull TextView textFri, @NonNull TextView textMon, @NonNull TextView textMonthYear,
+      @NonNull TextView textSat, @NonNull TextView textSun, @NonNull TextView textThu,
+      @NonNull TextView textTue, @NonNull TextView textWed) {
     this.rootView = rootView;
     this.buttonNextMonth = buttonNextMonth;
     this.buttonPrevMonth = buttonPrevMonth;
+    this.cardGoogleCalendar = cardGoogleCalendar;
     this.recyclerCalendar = recyclerCalendar;
     this.textFri = textFri;
     this.textMon = textMon;
@@ -109,6 +115,12 @@ public final class FragmentCalendarBinding implements ViewBinding {
       id = R.id.buttonPrevMonth;
       ImageButton buttonPrevMonth = ViewBindings.findChildViewById(rootView, id);
       if (buttonPrevMonth == null) {
+        break missingId;
+      }
+
+      id = R.id.cardGoogleCalendar;
+      MaterialCardView cardGoogleCalendar = ViewBindings.findChildViewById(rootView, id);
+      if (cardGoogleCalendar == null) {
         break missingId;
       }
 
@@ -167,8 +179,8 @@ public final class FragmentCalendarBinding implements ViewBinding {
       }
 
       return new FragmentCalendarBinding((LinearLayout) rootView, buttonNextMonth, buttonPrevMonth,
-          recyclerCalendar, textFri, textMon, textMonthYear, textSat, textSun, textThu, textTue,
-          textWed);
+          cardGoogleCalendar, recyclerCalendar, textFri, textMon, textMonthYear, textSat, textSun,
+          textThu, textTue, textWed);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

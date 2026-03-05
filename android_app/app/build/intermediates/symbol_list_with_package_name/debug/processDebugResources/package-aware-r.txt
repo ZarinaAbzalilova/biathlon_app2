@@ -3043,6 +3043,7 @@ drawable ic_clear_black_24
 drawable ic_clock_black_24dp
 drawable ic_comment
 drawable ic_female
+drawable ic_google_calendar
 drawable ic_keyboard_black_24dp
 drawable ic_launcher_background
 drawable ic_launcher_foreground
@@ -3252,6 +3253,7 @@ id cache_measures
 id callMeasure
 id cancel_button
 id cardDay
+id cardGoogleCalendar
 id cardNews
 id cardRoot
 id carryVelocity

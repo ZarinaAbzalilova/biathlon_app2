@@ -23,6 +23,7 @@ drawable ic_athletes
 drawable ic_calendar
 drawable ic_comment
 drawable ic_female
+drawable ic_google_calendar
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_like
@@ -42,6 +43,7 @@ id buttonRetry
 id button_retry
 id button_stats
 id cardDay
+id cardGoogleCalendar
 id cardNews
 id cardRoot
 id edit_birth_date

@@ -2,9 +2,7 @@ package com.biathlonapp.ui.calendar
 
 import android.os.Bundle
 import android.view.LayoutInflater
-
 import android.view.View
-import com.biathlonapp.R
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,6 +19,9 @@ class CalendarFragment : Fragment() {
     private val calendar = Calendar.getInstance()
     private val dateFormat = SimpleDateFormat("MMMM yyyy", Locale("ru"))
 
+    // Ссылка на Google Calendar
+    private val googleCalendarUrl = "https://calendar.google.com/calendar/embed?src=4b3001e8fde006b0a3ae97e9af0fdeca615609b638ef58f5a0ba8760541c41ba%40group.calendar.google.com&ctz=Asia%2FYekaterinburg"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,26 +30,21 @@ class CalendarFragment : Fragment() {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         return binding.root
     }
-    private lateinit var monthNames: Array<String>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Загружаем названия месяцев из ресурсов
-        monthNames = resources.getStringArray(R.array.month_names)
-
         setupRecyclerView()
         setupNavigation()
+        setupGoogleCalendarButton()
         updateCalendar()
     }
 
     private fun setupRecyclerView() {
         calendarAdapter = CalendarAdapter { day ->
             if (day.hasEvent) {
-                // Открываем страницу с соревнованиями этого дня
                 openRaceEventsDialog(day)
             } else {
-                // Показываем сообщение, что гонок нет
                 showNoEventsMessage()
             }
         }
@@ -81,13 +77,41 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    private fun updateCalendar() {
-        // Получаем месяц и год из календаря
-        val month = calendar.get(Calendar.MONTH)
-        val year = calendar.get(Calendar.YEAR)
+    private fun setupGoogleCalendarButton() {
+        binding.cardGoogleCalendar.setOnClickListener {
+            openGoogleCalendar()
+        }
+    }
 
-        // Устанавливаем заголовок в именительном падеже
-        binding.textMonthYear.text = "${monthNames[month]} $year"
+    private fun openGoogleCalendar() {
+        try {
+            // Пытаемся открыть в приложении Google Calendar
+            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW)
+            intent.data = android.net.Uri.parse(googleCalendarUrl)
+            startActivity(intent)
+        } catch (e: Exception) {
+            // Если приложение не установлено, открываем в браузере
+            try {
+                val browserIntent = android.content.Intent(
+                    android.content.Intent.ACTION_VIEW,
+                    android.net.Uri.parse(googleCalendarUrl)
+                )
+                startActivity(browserIntent)
+            } catch (e: Exception) {
+                android.widget.Toast.makeText(
+                    requireContext(),
+                    "Не удалось открыть календарь",
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun updateCalendar() {
+        // Обновляем заголовок с месяцем и годом
+        binding.textMonthYear.text = dateFormat.format(calendar.time).replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+        }
 
         // Получаем дни для отображения
         val days = getDaysInMonth(calendar)
