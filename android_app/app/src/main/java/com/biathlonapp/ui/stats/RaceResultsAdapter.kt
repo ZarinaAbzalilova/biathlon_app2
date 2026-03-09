@@ -26,11 +26,32 @@ class RaceResultsAdapter(
 
     inner class ViewHolder(private val binding: ItemRaceResultBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(result: RaceResult) {
-            binding.textRaceId.text = result.raceId
-            binding.textFinishPlace.text = "Место: ${result.finishPlace ?: "N/A"}"
-            binding.textMissCount.text = "Промахи: ${result.missCount ?: "N/A"}"
+            // Вместо race_id показываем название гонки
+            binding.textRaceName.text = result.raceInfo?.nameRace ?: "Неизвестная гонка"
 
-            // Используем pdf_url из данных (в JSON он приходит как pdf_url, но в Kotlin мы используем pdfUrl)
+            // Место проведения (если есть)
+            result.raceInfo?.placeRace?.let { place ->
+                binding.textRacePlace.text = place
+                binding.textRacePlace.visibility = View.VISIBLE
+            } ?: run {
+                binding.textRacePlace.visibility = View.GONE
+            }
+
+            // Дата и дисциплина
+            binding.textDateDiscipline.text = buildString {
+                result.raceInfo?.date?.let { append(it) }
+                result.raceInfo?.discipline?.let {
+                    if (isNotEmpty()) append(" • ")
+                    append(formatDiscipline(it))
+                }
+            }
+
+            // Результаты из athlete_performance
+            binding.textFinishPlace.text = "Место: ${result.athletePerformance?.finishPlace ?: "N/A"}"
+            binding.textMissCount.text = "Промахи: ${result.athletePerformance?.missCount ?: "N/A"}"
+            binding.textStartNumber.text = "Стартовый номер: ${result.athletePerformance?.startNumber ?: "N/A"}"
+
+            // Используем pdf_url из данных
             if (!result.pdfUrl.isNullOrEmpty()) {
                 binding.buttonDownloadPdf.visibility = View.VISIBLE
                 binding.buttonDownloadPdf.setOnClickListener {
@@ -38,6 +59,17 @@ class RaceResultsAdapter(
                 }
             } else {
                 binding.buttonDownloadPdf.visibility = View.GONE
+            }
+        }
+
+        private fun formatDiscipline(discipline: String?): String {
+            return when (discipline) {
+                "BT_Sprint" -> "Спринт"
+                "BT_Pursuit" -> "Гонка преследования"
+                "BT_Individual" -> "Индивидуальная"
+                "BT_MassStart" -> "Масс-старт"
+                "BT_Relay" -> "Эстафета"
+                else -> discipline ?: ""
             }
         }
     }
@@ -48,7 +80,10 @@ class RaceResultsAdapter(
         }
 
         override fun areContentsTheSame(oldItem: RaceResult, newItem: RaceResult): Boolean {
-            return oldItem == newItem
+            return oldItem.raceInfo?.nameRace == newItem.raceInfo?.nameRace &&
+                    oldItem.athletePerformance?.finishPlace == newItem.athletePerformance?.finishPlace &&
+                    oldItem.athletePerformance?.missCount == newItem.athletePerformance?.missCount &&
+                    oldItem.pdfUrl == newItem.pdfUrl
         }
     }
 }

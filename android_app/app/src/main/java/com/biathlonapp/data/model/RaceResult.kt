@@ -6,12 +6,34 @@ data class RaceResult(
     @SerializedName("race_id")
     val raceId: String?,
 
+    @SerializedName("race_info")
+    val raceInfo: RaceInfo? = null,
+
+    @SerializedName("athlete_performance")
+    val athletePerformance: AthletePerformance? = null,
+
+    @SerializedName("pdf_url")
+    val pdfUrl: String? = null
+)
+
+data class RaceInfo(
     @SerializedName("discipline")
     val discipline: String? = null,
 
     @SerializedName("date")
     val date: String? = null,
 
+    @SerializedName("name_race")
+    val nameRace: String? = null,
+
+    @SerializedName("place_race")
+    val placeRace: String? = null,
+
+    @SerializedName("status")
+    val status: String? = null
+)
+
+data class AthletePerformance(
     @SerializedName("start_number")
     val startNumber: Int? = null,
 
@@ -19,11 +41,5 @@ data class RaceResult(
     val finishPlace: Int? = null,
 
     @SerializedName("miss_count")
-    val missCount: Int? = null,
-
-    @SerializedName("race_status")
-    val raceStatus: String? = null,
-
-    @SerializedName("pdf_url")  // ← ВАЖНО: должно совпадать с JSON
-    val pdfUrl: String?
+    val missCount: Int? = null
 )

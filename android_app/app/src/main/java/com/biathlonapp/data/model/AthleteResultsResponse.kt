@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class AthleteResultsResponse(
     @SerializedName("athlete")
-    val athlete: Athlete,
+    val athlete: Athlete,  // ← теперь Athlete содержит все поля
 
     @SerializedName("results")
     val results: List<RaceResult>,

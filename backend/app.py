@@ -79,14 +79,18 @@ def get_athlete_results(athlete_id):
         if not athlete:
             return jsonify({"error": "Спортсмен не найден"}), 404
         
+        # Преобразуем birth_date в строку, если оно есть
+        if athlete['birth_date']:
+            athlete['birth_date'] = athlete['birth_date'].strftime('%Y-%m-%d')
+        
         # ОБНОВЛЕННЫЙ ЗАПРОС с name_race и place_race
         query = """
         SELECT 
             r.race_id, 
             rc.discipline, 
             rc.date,
-            rc.name_race,          -- ← НОВОЕ ПОЛЕ
-            rc.place_race,          -- ← НОВОЕ ПОЛЕ
+            rc.name_race,
+            rc.place_race,
             r.start_number, 
             r.finish_place, 
             r.miss_count,
@@ -118,8 +122,8 @@ def get_athlete_results(athlete_id):
                 "race_info": {
                     "discipline": r['discipline'],
                     "date": r['date'],
-                    "name_race": r['name_race'],      # ← НОВОЕ ПОЛЕ
-                    "place_race": r['place_race'],     # ← НОВОЕ ПОЛЕ
+                    "name_race": r['name_race'],
+                    "place_race": r['place_race'],
                     "status": r['race_status']
                 },
                 "athlete_performance": {
@@ -137,7 +141,10 @@ def get_athlete_results(athlete_id):
                 "last_name": athlete['last_name'],
                 "first_name": athlete['first_name'],
                 "gender": athlete['gender'],
-                "region": athlete['region']
+                "region": athlete['region'],
+                "region_code": athlete['region_code'],
+                "sports_rank": athlete['sports_rank'],
+                "birth_date": athlete['birth_date']
             },
             "results": formatted_results,
             "results_count": len(results),

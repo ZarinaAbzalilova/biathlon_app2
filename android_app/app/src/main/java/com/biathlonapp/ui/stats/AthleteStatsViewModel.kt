@@ -50,7 +50,7 @@ class AthleteStatsViewModel : ViewModel() {
 
                     // Extract unique disciplines
                     val disciplines = results.results
-                        .mapNotNull { it.discipline }
+                        .mapNotNull { it.raceInfo?.discipline }
                         .distinct()
                         .sorted()
 
@@ -70,7 +70,9 @@ class AthleteStatsViewModel : ViewModel() {
         val filtered = if (disciplineFilter.isNullOrBlank()) {
             allResults
         } else {
-            allResults.filter { it.discipline.equals(disciplineFilter, ignoreCase = true) }
+            allResults.filter {
+                it.raceInfo?.discipline.equals(disciplineFilter, ignoreCase = true)
+            }
         }
         _filteredResults.value = filtered
     }

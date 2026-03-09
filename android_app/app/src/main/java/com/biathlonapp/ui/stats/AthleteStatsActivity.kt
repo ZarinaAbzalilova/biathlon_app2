@@ -107,7 +107,7 @@ class AthleteStatsActivity : AppCompatActivity() {
     }
 
     private fun generateFileName(raceResult: RaceResult): String {
-        val datePart = raceResult.date?.let { date ->
+        val datePart = raceResult.raceInfo?.date?.let { date ->
             try {
                 val inputFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US)
                 val outputFormat = SimpleDateFormat("yyyyMMdd", Locale.US)
@@ -118,14 +118,14 @@ class AthleteStatsActivity : AppCompatActivity() {
             }
         } ?: ""
 
-        val disciplinePart = when (raceResult.discipline) {
+        val disciplinePart = when (raceResult.raceInfo?.discipline) {
             "BT_Sprint" -> "Sprint"
             "BT_Pursuit" -> "Pursuit"
             "BT_Mass" -> "Mass"
             "BT_Individual" -> "Individual"
             "BT_SuperSprint" -> "SuperSprint"
             "BT_Relay" -> "Relay"
-            else -> raceResult.discipline?.replace("BT_", "") ?: "Race"
+            else -> raceResult.raceInfo?.discipline?.replace("BT_", "") ?: "Race"
         }
 
         return "Biathlon_${datePart}_${disciplinePart}.pdf"

@@ -79,6 +79,7 @@ id swipeRefresh
 id textComments
 id textContent
 id textDate
+id textDateDiscipline
 id textDay
 id textEmpty
 id textError
@@ -90,10 +91,12 @@ id textMissCount
 id textMon
 id textMonthYear
 id textPreview
-id textRaceId
+id textRaceName
+id textRacePlace
 id textReposts
 id textSat
 id textSource
+id textStartNumber
 id textSun
 id textThu
 id textTitle

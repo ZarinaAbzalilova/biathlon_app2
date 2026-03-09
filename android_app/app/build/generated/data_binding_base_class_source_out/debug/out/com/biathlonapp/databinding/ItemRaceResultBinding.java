@@ -24,22 +24,35 @@ public final class ItemRaceResultBinding implements ViewBinding {
   public final Button buttonDownloadPdf;
 
   @NonNull
+  public final TextView textDateDiscipline;
+
+  @NonNull
   public final TextView textFinishPlace;
 
   @NonNull
   public final TextView textMissCount;
 
   @NonNull
-  public final TextView textRaceId;
+  public final TextView textRaceName;
+
+  @NonNull
+  public final TextView textRacePlace;
+
+  @NonNull
+  public final TextView textStartNumber;
 
   private ItemRaceResultBinding(@NonNull CardView rootView, @NonNull Button buttonDownloadPdf,
-      @NonNull TextView textFinishPlace, @NonNull TextView textMissCount,
-      @NonNull TextView textRaceId) {
+      @NonNull TextView textDateDiscipline, @NonNull TextView textFinishPlace,
+      @NonNull TextView textMissCount, @NonNull TextView textRaceName,
+      @NonNull TextView textRacePlace, @NonNull TextView textStartNumber) {
     this.rootView = rootView;
     this.buttonDownloadPdf = buttonDownloadPdf;
+    this.textDateDiscipline = textDateDiscipline;
     this.textFinishPlace = textFinishPlace;
     this.textMissCount = textMissCount;
-    this.textRaceId = textRaceId;
+    this.textRaceName = textRaceName;
+    this.textRacePlace = textRacePlace;
+    this.textStartNumber = textStartNumber;
   }
 
   @Override
@@ -75,6 +88,12 @@ public final class ItemRaceResultBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.textDateDiscipline;
+      TextView textDateDiscipline = ViewBindings.findChildViewById(rootView, id);
+      if (textDateDiscipline == null) {
+        break missingId;
+      }
+
       id = R.id.textFinishPlace;
       TextView textFinishPlace = ViewBindings.findChildViewById(rootView, id);
       if (textFinishPlace == null) {
@@ -87,14 +106,26 @@ public final class ItemRaceResultBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.textRaceId;
-      TextView textRaceId = ViewBindings.findChildViewById(rootView, id);
-      if (textRaceId == null) {
+      id = R.id.textRaceName;
+      TextView textRaceName = ViewBindings.findChildViewById(rootView, id);
+      if (textRaceName == null) {
         break missingId;
       }
 
-      return new ItemRaceResultBinding((CardView) rootView, buttonDownloadPdf, textFinishPlace,
-          textMissCount, textRaceId);
+      id = R.id.textRacePlace;
+      TextView textRacePlace = ViewBindings.findChildViewById(rootView, id);
+      if (textRacePlace == null) {
+        break missingId;
+      }
+
+      id = R.id.textStartNumber;
+      TextView textStartNumber = ViewBindings.findChildViewById(rootView, id);
+      if (textStartNumber == null) {
+        break missingId;
+      }
+
+      return new ItemRaceResultBinding((CardView) rootView, buttonDownloadPdf, textDateDiscipline,
+          textFinishPlace, textMissCount, textRaceName, textRacePlace, textStartNumber);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
