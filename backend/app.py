@@ -79,12 +79,14 @@ def get_athlete_results(athlete_id):
         if not athlete:
             return jsonify({"error": "Спортсмен не найден"}), 404
         
-        # ВАРИАНТ С JOIN athlete
+        # ОБНОВЛЕННЫЙ ЗАПРОС с name_race и place_race
         query = """
         SELECT 
             r.race_id, 
             rc.discipline, 
-            rc.date, 
+            rc.date,
+            rc.name_race,          -- ← НОВОЕ ПОЛЕ
+            rc.place_race,          -- ← НОВОЕ ПОЛЕ
             r.start_number, 
             r.finish_place, 
             r.miss_count,
@@ -92,19 +94,52 @@ def get_athlete_results(athlete_id):
             CASE WHEN rc.race_id IS NULL THEN 'race_not_found' ELSE 'ok' END as race_status
         FROM results r
         LEFT JOIN races rc ON r.race_id = rc.race_id
-        LEFT JOIN athlete a ON r.athlete_id = a.athlete_id  -- ← JOIN athlete
-        LEFT JOIN race_pdf_urls rpu ON r.race_id = rpu.race_id AND a.gender = rpu.gender  -- ← gender из JOIN
+        LEFT JOIN athlete a ON r.athlete_id = a.athlete_id
+        LEFT JOIN race_pdf_urls rpu ON r.race_id = rpu.race_id AND a.gender = rpu.gender
         WHERE r.athlete_id = %s
         ORDER BY COALESCE(rc.date, '1900-01-01') DESC
         """
         
         cursor.execute(query, (athlete_id,))
         results = cursor.fetchall()
+        
+        # Преобразуем даты в читаемый формат
+        for result in results:
+            if result['date']:
+                result['date'] = result['date'].strftime('%Y-%m-%d')
+        
         conn.close()
         
+        # Формируем ответ с группировкой по гонкам
+        formatted_results = []
+        for r in results:
+            result_item = {
+                "race_id": r['race_id'],
+                "race_info": {
+                    "discipline": r['discipline'],
+                    "date": r['date'],
+                    "name_race": r['name_race'],      # ← НОВОЕ ПОЛЕ
+                    "place_race": r['place_race'],     # ← НОВОЕ ПОЛЕ
+                    "status": r['race_status']
+                },
+                "athlete_performance": {
+                    "start_number": r['start_number'],
+                    "finish_place": r['finish_place'],
+                    "miss_count": r['miss_count']
+                },
+                "pdf_url": r['pdf_url']
+            }
+            formatted_results.append(result_item)
+        
         return jsonify({
-            "athlete": athlete,
-            "results": results,
+            "athlete": {
+                "athlete_id": athlete['athlete_id'],
+                "last_name": athlete['last_name'],
+                "first_name": athlete['first_name'],
+                "gender": athlete['gender'],
+                "region": athlete['region']
+            },
+            "results": formatted_results,
             "results_count": len(results),
             "message": f"Найдено {len(results)} результатов для спортсмена"
         })
