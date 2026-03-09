@@ -85,13 +85,17 @@ class AthleteDetailActivity : AppCompatActivity() {
             editLastName.setText(athlete.lastName ?: "Не указана")
             editFirstName.setText(athlete.firstName ?: "Не указано")
             editBirthDate.setText(formatBirthDate(athlete.birthDate))
-            editGender.setText(athlete.displayGender)
+
+            // ИСПРАВЛЕНИЕ: displayGender → gender
+            editGender.setText(athlete.gender ?: "Не указан")
+
             editRegion.setText(athlete.region ?: "Не указан")
             editRegionCode.setText(athlete.regionCode ?: "Не указан")
             editSportsRank.setText(athlete.sportsRank ?: "Не указан")
 
-            // Update toolbar title
-            supportActionBar?.title = athlete.fullName
+            // ИСПРАВЛЕНИЕ: fullName формируем из lastName и firstName
+            val fullName = "${athlete.lastName ?: ""} ${athlete.firstName ?: ""}".trim()
+            supportActionBar?.title = fullName
         }
     }
 

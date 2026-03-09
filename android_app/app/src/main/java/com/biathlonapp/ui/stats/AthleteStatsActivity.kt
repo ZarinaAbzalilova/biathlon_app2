@@ -164,7 +164,9 @@ class AthleteStatsActivity : AppCompatActivity() {
         }
 
         viewModel.athleteResults.observe(this) { response ->
-            supportActionBar?.title = "${response.athlete.fullName} - Статистика"
+            // ИСПРАВЛЕНИЕ: формируем fullName из lastName и firstName
+            val fullName = "${response.athlete.lastName ?: ""} ${response.athlete.firstName ?: ""}".trim()
+            supportActionBar?.title = "$fullName - Статистика"
         }
 
         viewModel.availableDisciplines.observe(this) { disciplines ->
