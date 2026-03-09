@@ -42,9 +42,21 @@ class CalendarViewModel(
             when (result) {
                 is Result.Success -> {
                     currentMonthEvents = result.data
+                    // ⬇️ ДОБАВЬ ЛОГИРОВАНИЕ
+                    android.util.Log.d(
+                        "CalendarDebug",
+                        "Loaded ${result.data.size} events for $year-$month"
+                    )
+                    result.data.forEach { event ->
+                        android.util.Log.d("CalendarDebug", "Event: ${event.date} - ${event.title}")
+                    }
                     _isLoading.value = false
+                    // Важно! После загрузки событий обновить отображение дней
+                    updateCalendarDays(calendar)
                 }
+
                 is Result.Error -> {
+                    android.util.Log.e("CalendarDebug", "Error loading events", result.exception)
                     _error.value = result.exception.message ?: "Ошибка загрузки календаря"
                     _isLoading.value = false
                 }
@@ -78,27 +90,28 @@ class CalendarViewModel(
         val days = mutableListOf<CalendarDay>()
         val cal = calendar.clone() as Calendar
 
+        // ⬇️ РАСКОММЕНТИРУЙ И ИСПРАВЬ ЭТОТ КОД
         // Устанавливаем на первый день месяца
         cal.set(Calendar.DAY_OF_MONTH, 1)
 
-        // Получаем день недели первого дня
-        var firstDayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
+        // Получаем день недели первого дня (1 = воскресенье, 2 = понедельник...)
+        val firstDayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
 
-        // Корректировка для понедельника как первого дня
+        // Смещаем календарь назад, чтобы первый день недели был понедельником
         val daysToSubtract = when (firstDayOfWeek) {
-            Calendar.SUNDAY -> 6
-            Calendar.MONDAY -> 0
-            Calendar.TUESDAY -> 1
-            Calendar.WEDNESDAY -> 2
-            Calendar.THURSDAY -> 3
-            Calendar.FRIDAY -> 4
-            Calendar.SATURDAY -> 5
+            Calendar.SUNDAY -> 6      // Воскресенье -> смещаем на 6 дней назад
+            Calendar.MONDAY -> 0       // Понедельник -> без смещения
+            Calendar.TUESDAY -> 1      // Вторник -> на 1 день назад
+            Calendar.WEDNESDAY -> 2    // Среда -> на 2 дня назад
+            Calendar.THURSDAY -> 3     // Четверг -> на 3 дня назад
+            Calendar.FRIDAY -> 4       // Пятница -> на 4 дня назад
+            Calendar.SATURDAY -> 5     // Суббота -> на 5 дней назад
             else -> 0
         }
 
         cal.add(Calendar.DAY_OF_MONTH, -daysToSubtract)
 
-        // Группируем события по датам для быстрого доступа
+        // Группируем события по датам
         val eventsByDate = events.groupBy { event ->
             val eventCal = Calendar.getInstance()
             eventCal.time = event.date
@@ -109,7 +122,12 @@ class CalendarViewModel(
             )
         }
 
-        // Генерируем 42 дня (6 недель)
+        // ⬇️ ДОБАВЬ ЛОГИРОВАНИЕ
+        android.util.Log.d("CalendarDebug", "Events grouped: ${eventsByDate.size} unique dates")
+        eventsByDate.forEach { (dateKey, eventList) ->
+            android.util.Log.d("CalendarDebug", "Date $dateKey has ${eventList.size} events")
+        }
+
         for (i in 0 until 42) {
             val dayCal = cal.clone() as Calendar
             val isCurrentMonth = cal.get(Calendar.MONTH) == calendar.get(Calendar.MONTH)
@@ -121,6 +139,14 @@ class CalendarViewModel(
             )
 
             val dayEvents = eventsByDate[dateKey] ?: emptyList()
+
+            // ⬇️ ЛОГИРУЙ КАЖДЫЙ ДЕНЬ (можно закомментировать после отладки)
+            if (dayEvents.isNotEmpty()) {
+                android.util.Log.d(
+                    "CalendarDebug",
+                    "Day ${dayCal.get(Calendar.DAY_OF_MONTH)} has ${dayEvents.size} events"
+                )
+            }
 
             days.add(
                 CalendarDay(

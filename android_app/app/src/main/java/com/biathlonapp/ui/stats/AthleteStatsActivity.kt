@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.biathlonapp.databinding.ActivityAthleteStatsBinding
 import com.biathlonapp.data.model.RaceResult
+import com.biathlonapp.utils.DisciplineFormatter
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -118,15 +119,7 @@ class AthleteStatsActivity : AppCompatActivity() {
             }
         } ?: ""
 
-        val disciplinePart = when (raceResult.raceInfo?.discipline) {
-            "BT_Sprint" -> "Sprint"
-            "BT_Pursuit" -> "Pursuit"
-            "BT_Mass" -> "Mass"
-            "BT_Individual" -> "Individual"
-            "BT_SuperSprint" -> "SuperSprint"
-            "BT_Relay" -> "Relay"
-            else -> raceResult.raceInfo?.discipline?.replace("BT_", "") ?: "Race"
-        }
+        val disciplinePart = DisciplineFormatter.format(raceResult.raceInfo?.discipline)
 
         return "Biathlon_${datePart}_${disciplinePart}.pdf"
     }

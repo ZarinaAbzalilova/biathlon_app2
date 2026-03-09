@@ -1,6 +1,8 @@
 package com.biathlonapp.ui.calendar
 
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.biathlonapp.data.model.CalendarDay
@@ -52,13 +54,13 @@ class CalendarAdapter(
                 binding.textDay.alpha = 1.0f
             }
 
-            // Выделяем дни с гонками
+            // ⬇️ ПРОВЕРЬ ЭТОТ КОД
             if (day.hasEvent) {
-                binding.viewEventDot.visibility = android.view.View.VISIBLE
-                binding.textDay.setTextColor(android.graphics.Color.parseColor("#2196F3"))
+                binding.viewEventDot.visibility = View.VISIBLE
+                binding.textDay.setTextColor(Color.parseColor("#2196F3"))
             } else {
-                binding.viewEventDot.visibility = android.view.View.GONE
-                binding.textDay.setTextColor(android.graphics.Color.BLACK)
+                binding.viewEventDot.visibility = View.GONE
+                binding.textDay.setTextColor(Color.BLACK)
             }
 
             // Проверяем, является ли день сегодняшним
