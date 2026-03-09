@@ -3637,6 +3637,7 @@ id textContent
 id textDate
 id textDateDiscipline
 id textDay
+id textDiscipline
 id textEmpty
 id textEnd
 id textError
@@ -3644,6 +3645,7 @@ id textFinishPlace
 id textFri
 id textHeader
 id textLikes
+id textLocation
 id textMissCount
 id textMon
 id textMonthYear
@@ -3659,6 +3661,7 @@ id textStart
 id textStartNumber
 id textSun
 id textThu
+id textTime
 id textTitle
 id textTop
 id textTue
@@ -3871,6 +3874,7 @@ layout ime_secondary_split_test_activity
 layout item_athlete
 layout item_calendar_day
 layout item_news
+layout item_race_event
 layout item_race_result
 layout item_team_category
 layout item_team_header

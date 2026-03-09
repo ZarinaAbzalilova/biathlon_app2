@@ -3636,6 +3636,7 @@ int id textContent 0x7f0901ef
 int id textDate 0x7f0901f0
 int id textDateDiscipline 0x7f0901f1
 int id textDay 0x7f0901f2
+int id textDiscipline 0x7f09024a
 int id textEmpty 0x7f0901f3
 int id textEnd 0x7f0901f4
 int id textError 0x7f0901f5
@@ -3643,6 +3644,7 @@ int id textFinishPlace 0x7f0901f6
 int id textFri 0x7f0901f7
 int id textHeader 0x7f0901f8
 int id textLikes 0x7f0901f9
+int id textLocation 0x7f09024b
 int id textMissCount 0x7f0901fa
 int id textMon 0x7f0901fb
 int id textMonthYear 0x7f0901fc
@@ -3658,6 +3660,7 @@ int id textStart 0x7f090205
 int id textStartNumber 0x7f090206
 int id textSun 0x7f090207
 int id textThu 0x7f090208
+int id textTime 0x7f09024c
 int id textTitle 0x7f090209
 int id textTop 0x7f09020a
 int id textTue 0x7f09020b
@@ -3870,6 +3873,7 @@ int layout ime_secondary_split_test_activity 0x7f0c0039
 int layout item_athlete 0x7f0c003a
 int layout item_calendar_day 0x7f0c003b
 int layout item_news 0x7f0c003c
+int layout item_race_event 0x7f0c007d
 int layout item_race_result 0x7f0c003d
 int layout item_team_category 0x7f0c003e
 int layout item_team_header 0x7f0c003f

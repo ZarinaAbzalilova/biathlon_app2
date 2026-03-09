@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.biathlonapp.data.model.CalendarDay
+import com.biathlonapp.data.model.RaceEvent
 import com.biathlonapp.databinding.DialogRaceEventsBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -16,6 +18,7 @@ class RaceEventsDialogFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private lateinit var day: CalendarDay
     private val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("ru"))
+    private lateinit var eventsAdapter: RaceEventsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,27 +37,42 @@ class RaceEventsDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
         binding.textDate.text = dateFormat.format(day.date)
 
-        // TODO: Загрузить события для этого дня с сервера
-        loadEventsForDay()
+        displayEvents(day.events)
 
         binding.buttonClose.setOnClickListener {
             dismiss()
         }
     }
 
-    private fun loadEventsForDay() {
-        // TODO: Загрузить события с сервера
-        // Пока показываем заглушку
-        if (day.hasEvent) {
-            binding.layoutNoEvents.visibility = View.GONE
-            binding.recyclerEvents.visibility = View.VISIBLE
-            // TODO: Создать адаптер для списка событий
-        } else {
+    private fun setupRecyclerView() {
+        eventsAdapter = RaceEventsAdapter { event ->
+            // Открыть детали гонки или протокол
+            openRaceDetails(event)
+        }
+
+        binding.recyclerEvents.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = eventsAdapter
+        }
+    }
+
+    private fun displayEvents(events: List<RaceEvent>) {
+        if (events.isEmpty()) {
             binding.layoutNoEvents.visibility = View.VISIBLE
             binding.recyclerEvents.visibility = View.GONE
+        } else {
+            binding.layoutNoEvents.visibility = View.GONE
+            binding.recyclerEvents.visibility = View.VISIBLE
+            eventsAdapter.submitList(events)
         }
+    }
+
+    private fun openRaceDetails(event: RaceEvent) {
+        // Открыть детали гонки или PDF протокол
+        // Можно добавить навигацию к результатам гонки
     }
 
     companion object {

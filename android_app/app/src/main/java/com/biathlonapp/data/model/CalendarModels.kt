@@ -12,18 +12,19 @@ data class CalendarMonth(
 data class CalendarDay(
     val date: Date,
     val dayOfMonth: Int,
-    val isCurrentMonth: Boolean, // для дней из предыдущего/следующего месяца
-    val hasEvent: Boolean = false, // есть ли гонка в этот день
+    val isCurrentMonth: Boolean,
+    val hasEvent: Boolean = false,
     val events: List<RaceEvent> = emptyList()
 ): Serializable
 
+// ИСПРАВЛЕНО: под данные из таблицы races
 data class RaceEvent(
-    val id: String,
-    val title: String,
+    val id: String, // race_id
+    val title: String, // name_race
     val date: Date,
-    val location: String,
-    val discipline: String, // "Спринт", "Индивидуальная", "Эстафета" и т.д.
-    val gender: String, // "male", "female", "mixed"
-    val category: String, // "Кубок мира", "Чемпионат мира", "Кубок IBU" и т.д.
+    val location: String, // place_race
+    val discipline: String, // discipline
+    val gender: String? = null, // можно добавить позже из race_pdf_urls
+    val category: String = "", // можно извлечь из name_race
     val description: String? = null
 ) : Serializable

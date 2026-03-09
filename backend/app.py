@@ -152,7 +152,91 @@ def get_athlete_results(athlete_id):
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/calendar/races', methods=['GET'])
+def get_races_by_month():
+    """Получить гонки за определенный месяц"""
+    try:
+        year = request.args.get('year', type=int)
+        month = request.args.get('month', type=int)  # 1-12
+        
+        if not year or not month:
+            return jsonify({"error": "Укажите year и month"}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Получаем первый и последний день месяца
+        start_date = f"{year:04d}-{month:02d}-01"
+        if month == 12:
+            end_date = f"{year+1:04d}-01-01"
+        else:
+            end_date = f"{year:04d}-{month+1:02d}-01"
+        
+        query = """
+        SELECT 
+            race_id as id,
+            name_race as title,
+            date,
+            place_race as location,
+            discipline
+        FROM races
+        WHERE date >= %s AND date < %s
+        ORDER BY date
+        """
+        
+        cursor.execute(query, (start_date, end_date))
+        races = cursor.fetchall()
+        
+        # Преобразуем даты в строки
+        for race in races:
+            if race['date']:
+                race['date'] = race['date'].strftime('%Y-%m-%d')
+        
+        conn.close()
+        
+        return jsonify(races)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
+@app.route('/api/calendar/races/by-date', methods=['GET'])
+def get_races_by_date():
+    """Получить гонки за конкретную дату"""
+    try:
+        date_str = request.args.get('date')
+        
+        if not date_str:
+            return jsonify({"error": "Укажите date"}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        query = """
+        SELECT 
+            race_id as id,
+            name_race as title,
+            date,
+            place_race as location,
+            discipline
+        FROM races
+        WHERE date = %s
+        ORDER BY date
+        """
+        
+        cursor.execute(query, (date_str,))
+        races = cursor.fetchall()
+        
+        # Преобразуем даты в строки
+        for race in races:
+            if race['date']:
+                race['date'] = race['date'].strftime('%Y-%m-%d')
+        
+        conn.close()
+        
+        return jsonify(races)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 @app.route('/api/races', methods=['GET'])
 def get_races():
     try:

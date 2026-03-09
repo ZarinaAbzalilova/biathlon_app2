@@ -5,7 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.biathlonapp.data.api.ApiClient
+import com.biathlonapp.data.repository.CalendarRepository
 import com.biathlonapp.databinding.FragmentCalendarBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -16,10 +20,10 @@ class CalendarFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var calendarAdapter: CalendarAdapter
+    private lateinit var viewModel: CalendarViewModel
     private val calendar = Calendar.getInstance()
-    private val dateFormat = SimpleDateFormat("MMMM yyyy", Locale("ru"))
+    private val monthYearFormat = SimpleDateFormat("MMMM yyyy", Locale("ru"))
 
-    // Ссылка на Google Calendar
     private val googleCalendarUrl = "https://calendar.google.com/calendar/embed?src=4b3001e8fde006b0a3ae97e9af0fdeca615609b638ef58f5a0ba8760541c41ba%40group.calendar.google.com&ctz=Asia%2FYekaterinburg"
 
     override fun onCreateView(
@@ -34,15 +38,26 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupViewModel()
         setupRecyclerView()
         setupNavigation()
         setupGoogleCalendarButton()
+        setupObservers()
+
         updateCalendar()
+    }
+
+    private fun setupViewModel() {
+        // Используем существующий ApiClient
+        val apiService = ApiClient.apiService  // ← Вот так правильно!
+        val repository = CalendarRepository(apiService)
+        viewModel = CalendarViewModel(repository)
     }
 
     private fun setupRecyclerView() {
         calendarAdapter = CalendarAdapter { day ->
             if (day.hasEvent) {
+                viewModel.loadEventsForDay(day)
                 openRaceEventsDialog(day)
             } else {
                 showNoEventsMessage()
@@ -55,7 +70,7 @@ class CalendarFragment : Fragment() {
         }
 
         // Устанавливаем заголовки дней недели
-        val daysOfWeek = calendarAdapter.getDayOfWeekHeader()
+        val daysOfWeek = listOf("ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС")
         binding.textMon.text = daysOfWeek[0]
         binding.textTue.text = daysOfWeek[1]
         binding.textWed.text = daysOfWeek[2]
@@ -83,14 +98,32 @@ class CalendarFragment : Fragment() {
         }
     }
 
+    private fun setupObservers() {
+        viewModel.calendarDays.observe(viewLifecycleOwner) { days ->
+            calendarAdapter.submitList(days)
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            // Показать/скрыть прогресс
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                android.widget.Toast.makeText(requireContext(), it, android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.eventsForSelectedDay.observe(viewLifecycleOwner) { events ->
+            // Обновить диалог с событиями
+        }
+    }
+
     private fun openGoogleCalendar() {
         try {
-            // Пытаемся открыть в приложении Google Calendar
             val intent = android.content.Intent(android.content.Intent.ACTION_VIEW)
             intent.data = android.net.Uri.parse(googleCalendarUrl)
             startActivity(intent)
         } catch (e: Exception) {
-            // Если приложение не установлено, открываем в браузере
             try {
                 val browserIntent = android.content.Intent(
                     android.content.Intent.ACTION_VIEW,
@@ -108,78 +141,13 @@ class CalendarFragment : Fragment() {
     }
 
     private fun updateCalendar() {
-        // Обновляем заголовок с месяцем и годом
-        binding.textMonthYear.text = dateFormat.format(calendar.time).replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-        }
+        binding.textMonthYear.text = monthYearFormat.format(calendar.time)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
-        // Получаем дни для отображения
-        val days = getDaysInMonth(calendar)
-        calendarAdapter.submitList(days)
-
-        // TODO: Загрузить события для этого месяца с сервера
-        loadEventsForMonth(calendar)
-    }
-
-    private fun getDaysInMonth(calendar: Calendar): List<com.biathlonapp.data.model.CalendarDay> {
-        val days = mutableListOf<com.biathlonapp.data.model.CalendarDay>()
-
-        // Клонируем календарь для расчетов
-        val cal = calendar.clone() as Calendar
-
-        // Устанавливаем на первый день месяца
-        cal.set(Calendar.DAY_OF_MONTH, 1)
-
-        // Получаем день недели первого дня (1 = воскресенье, 2 = понедельник...)
-        var firstDayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
-
-        // Корректировка для понедельника как первого дня
-        val daysToSubtract = when (firstDayOfWeek) {
-            Calendar.SUNDAY -> 6
-            Calendar.MONDAY -> 0
-            Calendar.TUESDAY -> 1
-            Calendar.WEDNESDAY -> 2
-            Calendar.THURSDAY -> 3
-            Calendar.FRIDAY -> 4
-            Calendar.SATURDAY -> 5
-            else -> 0
-        }
-
-        cal.add(Calendar.DAY_OF_MONTH, -daysToSubtract)
-
-        // Получаем количество дней для отображения (42 дня = 6 недель)
-        for (i in 0 until 42) {
-            val dayCal = cal.clone() as Calendar
-            val isCurrentMonth = cal.get(Calendar.MONTH) == calendar.get(Calendar.MONTH)
-
-            // TODO: Проверить, есть ли события в этот день
-            val hasEvent = checkIfDayHasEvent(dayCal)
-
-            days.add(
-                com.biathlonapp.data.model.CalendarDay(
-                    date = dayCal.time,
-                    dayOfMonth = dayCal.get(Calendar.DAY_OF_MONTH),
-                    isCurrentMonth = isCurrentMonth,
-                    hasEvent = hasEvent
-                )
-            )
-
-            cal.add(Calendar.DAY_OF_MONTH, 1)
-        }
-
-        return days
-    }
-
-    private fun checkIfDayHasEvent(calendar: Calendar): Boolean {
-        // TODO: Реализовать проверку наличия событий в этот день
-        // Пока возвращаем true для некоторых дней для демонстрации
-        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
-        return dayOfMonth % 3 == 0 // Для примера: каждый 3-й день
-    }
-
-    private fun loadEventsForMonth(calendar: Calendar) {
-        // TODO: Загрузить события для этого месяца с сервера
-        // После загрузки обновить адаптер
+        // Загружаем события для этого месяца
+        viewModel.loadMonthEvents(calendar)
+        // Обновляем отображение календаря
+        viewModel.updateCalendarDays(calendar)
     }
 
     private fun openRaceEventsDialog(day: com.biathlonapp.data.model.CalendarDay) {
@@ -198,5 +166,18 @@ class CalendarFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+}
+
+// Фабрика для ViewModel
+class CalendarViewModelFactory(
+    private val repository: CalendarRepository
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CalendarViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return CalendarViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
