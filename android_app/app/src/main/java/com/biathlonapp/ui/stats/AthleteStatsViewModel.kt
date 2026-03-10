@@ -1,101 +1,65 @@
 package com.biathlonapp.ui.stats
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.biathlonapp.data.model.AthleteResultsResponse
-import com.biathlonapp.data.model.RaceResult
 import com.biathlonapp.data.repository.BiathlonRepository
+import com.biathlonapp.data.repository.FavoritesRepository
 import kotlinx.coroutines.launch
 
-class AthleteStatsViewModel : ViewModel() {
+class AthleteStatsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = BiathlonRepository()
+    private val favoritesRepository = FavoritesRepository(application.applicationContext)
 
     private val _athleteResults = MutableLiveData<AthleteResultsResponse>()
     val athleteResults: LiveData<AthleteResultsResponse> = _athleteResults
 
-    private val _filteredResults = MutableLiveData<List<RaceResult>>()
-    val filteredResults: LiveData<List<RaceResult>> = _filteredResults
-
-    private val _availableDisciplines = MutableLiveData<List<String>>()
-    val availableDisciplines: LiveData<List<String>> = _availableDisciplines
-
-    private val _isLoading = MutableLiveData<Boolean>()
+    private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
-    private var disciplineFilter: String? = null
-    private var allResults: List<RaceResult> = emptyList()
-
-    fun setDisciplineFilter(filter: String?) {
-        disciplineFilter = filter?.takeIf { it.isNotBlank() && it != "Все дисциплины" }
-        applyFilter()
-    }
-
-    fun getDisciplineFilter(): String? = disciplineFilter
+    private val _isFromCache = MutableLiveData(false)
+    val isFromCache: LiveData<Boolean> = _isFromCache
 
     fun loadAthleteResults(athleteId: String) {
         viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
+            _isFromCache.value = false
 
+            // Проверяем кэш
+            try {
+                val cachedResults = favoritesRepository.getCachedResults(athleteId)
+                if (cachedResults.isNotEmpty()) {
+                    // TODO: Конвертировать cachedResults в AthleteResultsResponse если нужно
+                    _isFromCache.value = true
+                }
+            } catch (e: Exception) {
+                // Игнорируем ошибки кэша
+            }
+
+            // Загружаем с сервера
             repository.getAthleteResults(athleteId).fold(
-                onSuccess = { results ->
-                    _athleteResults.value = results
-                    allResults = results.results
-
-                    // Extract unique disciplines
-                    val disciplines = results.results
-                        .mapNotNull { it.raceInfo?.discipline }
-                        .distinct()
-                        .sorted()
-
-                    _availableDisciplines.value = listOf("Все дисциплины") + disciplines
-                    applyFilter()
+                onSuccess = { response ->
+                    _athleteResults.value = response
                     _isLoading.value = false
+
+                    // Сохраняем в кэш
+                    viewModelScope.launch {
+                        favoritesRepository.saveAthleteResults(athleteId, response.races)
+                    }
                 },
                 onFailure = { exception ->
-                    _error.value = exception.message ?: "Ошибка загрузки статистики"
+                    _error.value = exception.message ?: "Ошибка загрузки"
                     _isLoading.value = false
                 }
             )
         }
     }
-
-    private fun applyFilter() {
-        val filtered = if (disciplineFilter.isNullOrBlank()) {
-            allResults
-        } else {
-            allResults.filter {
-                it.raceInfo?.discipline.equals(disciplineFilter, ignoreCase = true)
-            }
-        }
-        _filteredResults.value = filtered
-    }
-
-    fun clearError() {
-        _error.value = null
-    }
-
-    // В AthleteStatsViewModel
-    fun getPdfUrl(raceId: String?, athleteId: String, callback: (String?) -> Unit) {
-        if (raceId == null) {
-            callback(null)
-            return
-        }
-
-        viewModelScope.launch {
-            try {
-                val pdfUrl = repository.getRacePdfUrl(raceId, athleteId)
-                callback(pdfUrl)
-            } catch (e: Exception) {
-                callback(null)
-            }
-        }
-    }
-
 }

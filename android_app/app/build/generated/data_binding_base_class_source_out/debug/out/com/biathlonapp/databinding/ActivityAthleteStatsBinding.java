@@ -44,6 +44,9 @@ public final class ActivityAthleteStatsBinding implements ViewBinding {
   public final Spinner spinnerDiscipline;
 
   @NonNull
+  public final TextView textCacheHint;
+
+  @NonNull
   public final TextView textEmpty;
 
   @NonNull
@@ -56,7 +59,8 @@ public final class ActivityAthleteStatsBinding implements ViewBinding {
       @NonNull Button buttonRetry, @NonNull LinearLayout layoutError,
       @NonNull LinearLayout layoutFilter, @NonNull ProgressBar progressLoading,
       @NonNull RecyclerView recyclerResults, @NonNull Spinner spinnerDiscipline,
-      @NonNull TextView textEmpty, @NonNull TextView textError, @NonNull Toolbar toolbar) {
+      @NonNull TextView textCacheHint, @NonNull TextView textEmpty, @NonNull TextView textError,
+      @NonNull Toolbar toolbar) {
     this.rootView = rootView;
     this.buttonRetry = buttonRetry;
     this.layoutError = layoutError;
@@ -64,6 +68,7 @@ public final class ActivityAthleteStatsBinding implements ViewBinding {
     this.progressLoading = progressLoading;
     this.recyclerResults = recyclerResults;
     this.spinnerDiscipline = spinnerDiscipline;
+    this.textCacheHint = textCacheHint;
     this.textEmpty = textEmpty;
     this.textError = textError;
     this.toolbar = toolbar;
@@ -132,6 +137,12 @@ public final class ActivityAthleteStatsBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.text_cache_hint;
+      TextView textCacheHint = ViewBindings.findChildViewById(rootView, id);
+      if (textCacheHint == null) {
+        break missingId;
+      }
+
       id = R.id.text_empty;
       TextView textEmpty = ViewBindings.findChildViewById(rootView, id);
       if (textEmpty == null) {
@@ -151,8 +162,8 @@ public final class ActivityAthleteStatsBinding implements ViewBinding {
       }
 
       return new ActivityAthleteStatsBinding((ConstraintLayout) rootView, buttonRetry, layoutError,
-          layoutFilter, progressLoading, recyclerResults, spinnerDiscipline, textEmpty, textError,
-          toolbar);
+          layoutFilter, progressLoading, recyclerResults, spinnerDiscipline, textCacheHint,
+          textEmpty, textError, toolbar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

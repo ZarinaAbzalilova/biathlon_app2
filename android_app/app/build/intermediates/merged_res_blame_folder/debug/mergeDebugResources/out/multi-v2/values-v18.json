@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.biathlonapp-mergeDebugResources-39:/values-v18/values-v18.xml",
+            "outputFile": "com.biathlonapp-mergeDebugResources-43:/values-v18/values-v18.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\abzal\\.gradle\\caches\\8.11.1\\transforms\\e3aae4c89e3afa85d1413bc5f1b81557\\transformed\\appcompat-1.7.1\\res\\values-v18\\values-v18.xml",
+                    "source": "C:\\Users\\201\\.gradle\\caches\\8.11.1\\transforms\\e3aae4c89e3afa85d1413bc5f1b81557\\transformed\\appcompat-1.7.1\\res\\values-v18\\values-v18.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

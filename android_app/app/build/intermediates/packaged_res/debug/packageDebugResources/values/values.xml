@@ -19,6 +19,7 @@
     <color name="card_background">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
     <color name="error">#D32F2F</color>
+    <color name="favorite_button">#FFC107</color>
     <color name="ic_launcher_background">#1976D2</color>
     <color name="primary">#1976D2</color>
     <color name="primary_dark">#1565C0</color>
@@ -26,8 +27,10 @@
     <color name="secondary_text">#757575</color>
     <color name="stats_button">#669DF7</color>
     <color name="success">#388E3C</color>
+    <string name="add_to_favorites">Добавить в избранное</string>
     <string name="app_name">SBR</string>
     <string name="athlete_info">Информация о спортсмене</string>
+    <string name="athlete_photo">Фото спортсмена</string>
     <string name="athlete_stats">Статистика спортсмена</string>
     <string name="birth_date">Дата рождения</string>
     <string name="category_subtitle_placeholder">Подзаголовок</string>
@@ -64,6 +67,7 @@
     <string name="race_id">ID гонки</string>
     <string name="region">Регион</string>
     <string name="region_code">Код региона</string>
+    <string name="remove_from_favorites">Удалить из избранного</string>
     <string name="reserve_team">Резервный состав</string>
     <string name="retry">Повторить</string>
     <string name="search_hint">Поиск спортсменов...</string>

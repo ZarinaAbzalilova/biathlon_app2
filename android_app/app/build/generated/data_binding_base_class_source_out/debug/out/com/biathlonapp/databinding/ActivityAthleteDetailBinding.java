@@ -22,6 +22,9 @@ public final class ActivityAthleteDetailBinding implements ViewBinding {
   private final ConstraintLayout rootView;
 
   @NonNull
+  public final Button buttonFavorite;
+
+  @NonNull
   public final Button buttonStats;
 
   @NonNull
@@ -49,12 +52,13 @@ public final class ActivityAthleteDetailBinding implements ViewBinding {
   public final Toolbar toolbar;
 
   private ActivityAthleteDetailBinding(@NonNull ConstraintLayout rootView,
-      @NonNull Button buttonStats, @NonNull TextInputEditText editBirthDate,
-      @NonNull TextInputEditText editFirstName, @NonNull TextInputEditText editGender,
-      @NonNull TextInputEditText editLastName, @NonNull TextInputEditText editRegion,
-      @NonNull TextInputEditText editRegionCode, @NonNull TextInputEditText editSportsRank,
-      @NonNull Toolbar toolbar) {
+      @NonNull Button buttonFavorite, @NonNull Button buttonStats,
+      @NonNull TextInputEditText editBirthDate, @NonNull TextInputEditText editFirstName,
+      @NonNull TextInputEditText editGender, @NonNull TextInputEditText editLastName,
+      @NonNull TextInputEditText editRegion, @NonNull TextInputEditText editRegionCode,
+      @NonNull TextInputEditText editSportsRank, @NonNull Toolbar toolbar) {
     this.rootView = rootView;
+    this.buttonFavorite = buttonFavorite;
     this.buttonStats = buttonStats;
     this.editBirthDate = editBirthDate;
     this.editFirstName = editFirstName;
@@ -93,6 +97,12 @@ public final class ActivityAthleteDetailBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.button_favorite;
+      Button buttonFavorite = ViewBindings.findChildViewById(rootView, id);
+      if (buttonFavorite == null) {
+        break missingId;
+      }
+
       id = R.id.button_stats;
       Button buttonStats = ViewBindings.findChildViewById(rootView, id);
       if (buttonStats == null) {
@@ -147,9 +157,9 @@ public final class ActivityAthleteDetailBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityAthleteDetailBinding((ConstraintLayout) rootView, buttonStats,
-          editBirthDate, editFirstName, editGender, editLastName, editRegion, editRegionCode,
-          editSportsRank, toolbar);
+      return new ActivityAthleteDetailBinding((ConstraintLayout) rootView, buttonFavorite,
+          buttonStats, editBirthDate, editFirstName, editGender, editLastName, editRegion,
+          editRegionCode, editSportsRank, toolbar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

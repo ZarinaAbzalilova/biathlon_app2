@@ -61,6 +61,9 @@
     <string name="icon_category">Иконка категории</string>
     <string name="icon_arrow">Стрелка перехода</string>
 
+    <string name="athlete_photo">Фото спортсмена</string>
+    <string name="remove_from_favorites">Удалить из избранного</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
 
     <string name="icon_calendar">Иконка календаря</string>
     <string name="no_events_today">В этот день нет гонок</string>

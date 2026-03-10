@@ -3,12 +3,18 @@ package com.biathlonapp.ui.athlete
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import com.biathlonapp.R
 import com.biathlonapp.data.model.Athlete
+import com.biathlonapp.data.repository.FavoritesRepository
 import com.biathlonapp.databinding.ActivityAthleteDetailBinding
 import com.biathlonapp.ui.stats.AthleteStatsActivity
 import com.biathlonapp.ui.stats.AthleteStatsViewModel
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -21,28 +27,85 @@ class AthleteDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAthleteDetailBinding
     private val viewModel: AthleteStatsViewModel by viewModels()
+    private lateinit var favoritesRepository: FavoritesRepository
     private var selectedAthlete: Athlete? = null
+    private var athleteId: String? = null
+    private var isFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAthleteDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        favoritesRepository = FavoritesRepository(this)
+
+        setupToolbar()
 
         selectedAthlete = getAthleteFromIntent()
-        selectedAthlete?.let { displayAthleteInfo(it) }
+        athleteId = intent.getStringExtra(EXTRA_ATHLETE_ID) ?: selectedAthlete?.athleteId
 
-        val athleteId = intent.getStringExtra(EXTRA_ATHLETE_ID) ?: selectedAthlete?.athleteId
-        if (athleteId == null) {
+        val currentId = athleteId
+
+        if (currentId == null) {
+            Toast.makeText(this, "Ошибка: спортсмен не найден", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
 
-        loadAthleteData(athleteId)
-        setupStatsButton(athleteId)
+        // Сначала загружаем из кэша
+        loadFromCache(currentId)
+
+        // Отображаем информацию, если спортсмен передан через EXTRA_ATHLETE
+        selectedAthlete?.let { displayAthleteInfo(it) }
+
+        // Загружаем полные данные с сервера
+        loadAthleteData(currentId)
+
+        // Настраиваем кнопку статистики
+        setupStatsButton(currentId)
+
+        // Настраиваем кнопку избранного
+        setupFavoriteButton()
+
+        // Проверяем, в избранном ли спортсмен
+        checkIfFavorite(currentId)
+
+        // Наблюдаем за изменениями в ViewModel
         observeViewModel()
+    }
+
+    private fun loadFromCache(athleteId: String) {
+        lifecycleScope.launch {
+            val cachedAthlete = favoritesRepository.getFavoriteById(athleteId)
+            if (cachedAthlete != null) {
+                // Создаем Athlete из FavoriteAthlete
+                val athlete = Athlete(
+                    athleteId = cachedAthlete.athleteId,
+                    lastName = cachedAthlete.lastName ?: cachedAthlete.surname,
+                    firstName = cachedAthlete.firstName ?: cachedAthlete.name,
+                    gender = cachedAthlete.gender,
+                    region = cachedAthlete.region,
+                    regionCode = cachedAthlete.regionCode,
+                    sportsRank = cachedAthlete.sportsRank,
+                    birthDate = cachedAthlete.birthDate
+                )
+                displayAthleteInfo(athlete)
+                supportActionBar?.title = "${cachedAthlete.surname} ${cachedAthlete.name}".trim()
+            }
+        }
+    }
+
+    private fun setupFavoriteButton() {
+        binding.buttonFavorite.setOnClickListener {
+            toggleFavorite()
+        }
+        updateFavoriteButton()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Загрузка..."
     }
 
     private fun getAthleteFromIntent(): Athlete? {
@@ -67,16 +130,89 @@ class AthleteDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkIfFavorite(athleteId: String) {
+        lifecycleScope.launch {
+            isFavorite = favoritesRepository.isFavorite(athleteId)
+            updateFavoriteButton()
+        }
+    }
+
+    private fun toggleFavorite() {
+        lifecycleScope.launch {
+            val currentId = athleteId ?: return@launch
+            if (isFavorite) {
+                val success = favoritesRepository.removeFromFavorites(currentId)
+                if (success) {
+                    showMessage("Удалено из избранного")
+                    isFavorite = false
+                } else {
+                    showMessage("Не удалось удалить из избранного")
+                }
+            } else {
+                val athlete = selectedAthlete ?: createMinimalAthlete(currentId)
+                val success = favoritesRepository.addToFavorites(athlete)
+                if (success) {
+                    showMessage("Добавлено в избранное")
+                    isFavorite = true
+                } else {
+                    showMessage("Не удалось добавить в избранное")
+                }
+            }
+            updateFavoriteButton()
+        }
+    }
+
+    private fun createMinimalAthlete(id: String): Athlete {
+        return Athlete(
+            athleteId = id,
+            lastName = binding.editLastName.text.toString().takeIf { it.isNotBlank() } ?: selectedAthlete?.lastName ?: "",
+            firstName = binding.editFirstName.text.toString().takeIf { it.isNotBlank() } ?: selectedAthlete?.firstName ?: "",
+            gender = binding.editGender.text.toString().takeIf { it.isNotBlank() } ?: selectedAthlete?.gender ?: "",
+            region = binding.editRegion.text.toString().takeIf { it.isNotBlank() } ?: selectedAthlete?.region,
+            regionCode = binding.editRegionCode.text.toString().takeIf { it.isNotBlank() } ?: selectedAthlete?.regionCode,
+            sportsRank = binding.editSportsRank.text.toString().takeIf { it.isNotBlank() } ?: selectedAthlete?.sportsRank ?: "",
+            birthDate = binding.editBirthDate.text.toString().takeIf { it.isNotBlank() } ?: selectedAthlete?.birthDate
+        )
+    }
+
+    private fun updateFavoriteButton() {
+        if (isFavorite) {
+            binding.buttonFavorite.text = "В избранном"
+            val drawable = ContextCompat.getDrawable(this, R.drawable.ic_star_filled)
+            binding.buttonFavorite.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+            binding.buttonFavorite.backgroundTintList = android.content.res.ColorStateList.valueOf(
+                android.graphics.Color.parseColor("#4CAF50")
+            )
+        } else {
+            binding.buttonFavorite.text = "В избранное"
+            val drawable = ContextCompat.getDrawable(this, R.drawable.ic_star_border)
+            binding.buttonFavorite.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+            binding.buttonFavorite.backgroundTintList = android.content.res.ColorStateList.valueOf(
+                android.graphics.Color.parseColor("#FFC107")
+            )
+        }
+    }
+
     private fun observeViewModel() {
         viewModel.athleteResults.observe(this) { response ->
+            selectedAthlete = response.athlete
             displayAthleteInfo(response.athlete)
+
+            if (isFavorite) {
+                updateFavoriteAthleteData(response.athlete)
+            }
         }
 
         viewModel.error.observe(this) { error ->
             error?.let {
-                // Handle error - could show error message
-                finish()
+                Toast.makeText(this, "Ошибка загрузки: $it", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun updateFavoriteAthleteData(athlete: Athlete) {
+        lifecycleScope.launch {
+            favoritesRepository.updateFavoriteAthlete(athlete)
         }
     }
 
@@ -85,34 +221,56 @@ class AthleteDetailActivity : AppCompatActivity() {
             editLastName.setText(athlete.lastName ?: "Не указана")
             editFirstName.setText(athlete.firstName ?: "Не указано")
             editBirthDate.setText(formatBirthDate(athlete.birthDate))
-
-            // ИСПРАВЛЕНИЕ: displayGender → gender
-            editGender.setText(athlete.gender ?: "Не указан")
-
+            editGender.setText(formatGender(athlete.gender))
             editRegion.setText(athlete.region ?: "Не указан")
             editRegionCode.setText(athlete.regionCode ?: "Не указан")
             editSportsRank.setText(athlete.sportsRank ?: "Не указан")
 
-            // ИСПРАВЛЕНИЕ: fullName формируем из lastName и firstName
             val fullName = "${athlete.lastName ?: ""} ${athlete.firstName ?: ""}".trim()
-            supportActionBar?.title = fullName
+            supportActionBar?.title = if (fullName.isNotBlank()) fullName else "Спортсмен"
+        }
+    }
+
+    private fun formatGender(gender: String?): String {
+        return when (gender?.lowercase()) {
+            "male", "м", "мужской" -> "Мужской"
+            "female", "ж", "женский" -> "Женский"
+            else -> "Не указан"
         }
     }
 
     private fun formatBirthDate(rawDate: String?): String {
         if (rawDate.isNullOrBlank()) return "Не указана"
         return try {
-            val inputFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
-            val outputFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-            val date = inputFormat.parse(rawDate)
-            date?.let { outputFormat.format(it) } ?: rawDate
+            val formats = listOf(
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()),
+                SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()),
+                SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
+            )
+
+            for (format in formats) {
+                try {
+                    val date = format.parse(rawDate)
+                    if (date != null) {
+                        val outputFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                        return outputFormat.format(date)
+                    }
+                } catch (e: Exception) {
+                    // Пробуем следующий формат
+                }
+            }
+            rawDate
         } catch (e: Exception) {
             rawDate
         }
     }
 
+    private fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 }

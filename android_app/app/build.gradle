@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'  // Добавь эту строку
 }
 
 android {
@@ -92,4 +93,13 @@ dependencies {
 
     // Для загрузки изображений (если еще не добавил)
     implementation 'com.github.bumptech.glide:glide:4.16.0'
+
+
+    // Room для локальной БД
+    implementation 'androidx.room:room-runtime:2.6.1'
+    implementation 'androidx.room:room-ktx:2.6.1'
+    kapt 'androidx.room:room-compiler:2.6.1'
+
+    // Для работы с корутинами
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 }

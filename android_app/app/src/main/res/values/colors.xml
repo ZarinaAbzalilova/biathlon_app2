@@ -11,4 +11,5 @@
     <color name="card_background">#FFFFFF</color>
     <color name="error">#D32F2F</color>
     <color name="success">#388E3C</color>
+    <color name="favorite_button">#FFC107</color> <!-- Желтый цвет для кнопки избранного -->
 </resources>

@@ -1,0 +1,12 @@
+package com.biathlonapp.ui.stats
+
+// Единый класс для отображения в адаптере
+data class RaceResultDisplay(
+    val discipline: String,
+    val date: String,
+    val nameRace: String,
+    val placeRace: String,
+    val startNumber: Int?,
+    val finishPlace: Int?,
+    val missCount: Int?
+)

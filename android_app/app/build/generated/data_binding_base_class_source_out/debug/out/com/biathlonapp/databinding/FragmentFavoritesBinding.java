@@ -4,11 +4,14 @@ package com.biathlonapp.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.biathlonapp.R;
@@ -18,24 +21,46 @@ import java.lang.String;
 
 public final class FragmentFavoritesBinding implements ViewBinding {
   @NonNull
-  private final FrameLayout rootView;
+  private final LinearLayout rootView;
+
+  @NonNull
+  public final Button buttonRetry;
+
+  @NonNull
+  public final LinearLayout layoutError;
+
+  @NonNull
+  public final ProgressBar progressLoading;
 
   @NonNull
   public final RecyclerView recyclerFavorites;
 
   @NonNull
+  public final SwipeRefreshLayout swipeRefresh;
+
+  @NonNull
   public final TextView textEmpty;
 
-  private FragmentFavoritesBinding(@NonNull FrameLayout rootView,
-      @NonNull RecyclerView recyclerFavorites, @NonNull TextView textEmpty) {
+  @NonNull
+  public final TextView textError;
+
+  private FragmentFavoritesBinding(@NonNull LinearLayout rootView, @NonNull Button buttonRetry,
+      @NonNull LinearLayout layoutError, @NonNull ProgressBar progressLoading,
+      @NonNull RecyclerView recyclerFavorites, @NonNull SwipeRefreshLayout swipeRefresh,
+      @NonNull TextView textEmpty, @NonNull TextView textError) {
     this.rootView = rootView;
+    this.buttonRetry = buttonRetry;
+    this.layoutError = layoutError;
+    this.progressLoading = progressLoading;
     this.recyclerFavorites = recyclerFavorites;
+    this.swipeRefresh = swipeRefresh;
     this.textEmpty = textEmpty;
+    this.textError = textError;
   }
 
   @Override
   @NonNull
-  public FrameLayout getRoot() {
+  public LinearLayout getRoot() {
     return rootView;
   }
 
@@ -60,9 +85,33 @@ public final class FragmentFavoritesBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.buttonRetry;
+      Button buttonRetry = ViewBindings.findChildViewById(rootView, id);
+      if (buttonRetry == null) {
+        break missingId;
+      }
+
+      id = R.id.layoutError;
+      LinearLayout layoutError = ViewBindings.findChildViewById(rootView, id);
+      if (layoutError == null) {
+        break missingId;
+      }
+
+      id = R.id.progressLoading;
+      ProgressBar progressLoading = ViewBindings.findChildViewById(rootView, id);
+      if (progressLoading == null) {
+        break missingId;
+      }
+
       id = R.id.recyclerFavorites;
       RecyclerView recyclerFavorites = ViewBindings.findChildViewById(rootView, id);
       if (recyclerFavorites == null) {
+        break missingId;
+      }
+
+      id = R.id.swipeRefresh;
+      SwipeRefreshLayout swipeRefresh = ViewBindings.findChildViewById(rootView, id);
+      if (swipeRefresh == null) {
         break missingId;
       }
 
@@ -72,7 +121,14 @@ public final class FragmentFavoritesBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentFavoritesBinding((FrameLayout) rootView, recyclerFavorites, textEmpty);
+      id = R.id.textError;
+      TextView textError = ViewBindings.findChildViewById(rootView, id);
+      if (textError == null) {
+        break missingId;
+      }
+
+      return new FragmentFavoritesBinding((LinearLayout) rootView, buttonRetry, layoutError,
+          progressLoading, recyclerFavorites, swipeRefresh, textEmpty, textError);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
