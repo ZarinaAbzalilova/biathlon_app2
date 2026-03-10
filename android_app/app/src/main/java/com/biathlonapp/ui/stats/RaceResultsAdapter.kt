@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.biathlonapp.databinding.ItemRaceResultBinding
 
 class RaceResultsAdapter(
-    private val onPdfDownloadClick: (String) -> Unit  // Теперь принимает raceId или pdfUrl
+    private val onPdfDownloadClick: (String) -> Unit  // Принимает pdfUrl
 ) : ListAdapter<RaceResultDisplay, RaceResultsAdapter.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,8 +31,15 @@ class RaceResultsAdapter(
             binding.textMissCount.text = "Промахи: ${result.missCount ?: "N/A"}"
             binding.textStartNumber.text = "Стартовый номер: ${result.startNumber ?: "N/A"}"
 
-            // PDF кнопка пока скрыта, так как у нас нет pdfUrl в этом классе
-            binding.buttonDownloadPdf.visibility = android.view.View.GONE
+            // Показываем кнопку PDF если есть ссылка
+            if (!result.pdfUrl.isNullOrBlank()) {
+                binding.buttonDownloadPdf.visibility = android.view.View.VISIBLE
+                binding.buttonDownloadPdf.setOnClickListener {
+                    onPdfDownloadClick(result.pdfUrl)
+                }
+            } else {
+                binding.buttonDownloadPdf.visibility = android.view.View.GONE
+            }
         }
     }
 

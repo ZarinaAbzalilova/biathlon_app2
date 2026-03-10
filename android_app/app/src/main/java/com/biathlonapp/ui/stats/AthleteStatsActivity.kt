@@ -66,7 +66,9 @@ class AthleteStatsActivity : AppCompatActivity() {
                 placeRace = result.placeRace ?: "",
                 startNumber = result.startNumber,
                 finishPlace = result.finishPlace,
-                missCount = result.missCount
+                missCount = result.missCount,
+                pdfUrl = null,  // У кэшированных результатов нет pdfUrl
+                raceId = null
             )
         }
         adapter.submitList(displayItems)
@@ -85,7 +87,9 @@ class AthleteStatsActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter = RaceResultsAdapter(
-            onPdfDownloadClick = { /* TODO: реализовать скачивание PDF */ }
+            onPdfDownloadClick = { pdfUrl ->
+                openPdf(pdfUrl)  // ← обработчик клика
+            }
         )
         binding.recyclerResults.apply {
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@AthleteStatsActivity)
@@ -93,10 +97,15 @@ class AthleteStatsActivity : AppCompatActivity() {
         }
     }
 
+    private fun openPdf(pdfUrl: String) {
+        // Открываем PDF в браузере или скачиваем
+        val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(pdfUrl))
+        startActivity(intent)
+    }
+
     private fun observeViewModel() {
         viewModel.athleteResults.observe(this) { response ->
-            val resultsList = response.races ?: emptyList()  // ← используем races, так как это имя переменной
-            android.util.Log.d("StatsDebug", "Received ${resultsList.size} results")
+            val resultsList = response.races ?: emptyList()
             val displayItems = resultsList.map { race ->
                 RaceResultDisplay(
                     discipline = race.raceInfo?.discipline ?: "Неизвестно",
@@ -105,7 +114,9 @@ class AthleteStatsActivity : AppCompatActivity() {
                     placeRace = race.raceInfo?.placeRace ?: "",
                     startNumber = race.athletePerformance?.startNumber,
                     finishPlace = race.athletePerformance?.finishPlace,
-                    missCount = race.athletePerformance?.missCount
+                    missCount = race.athletePerformance?.missCount,
+                    pdfUrl = race.pdfUrl,  // ← ПЕРЕДАЕМ pdfUrl
+                    raceId = race.raceId    // ← ПЕРЕДАЕМ raceId
                 )
             }
             adapter.submitList(displayItems)

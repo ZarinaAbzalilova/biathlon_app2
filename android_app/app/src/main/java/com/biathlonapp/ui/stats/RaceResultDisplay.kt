@@ -8,5 +8,7 @@ data class RaceResultDisplay(
     val placeRace: String,
     val startNumber: Int?,
     val finishPlace: Int?,
-    val missCount: Int?
+    val missCount: Int?,
+    val pdfUrl: String? = null,  // ← ДОБАВЬ ЭТО ПОЛЕ
+    val raceId: String? = null
 )
