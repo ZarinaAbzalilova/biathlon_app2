@@ -2,11 +2,12 @@ package com.biathlonapp.ui.stats
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.biathlonapp.data.local.FavoriteResult
 import com.biathlonapp.data.repository.FavoritesRepository
-import com.biathlonapp.data.model.Athlete
 import com.biathlonapp.databinding.ActivityAthleteStatsBinding
 import kotlinx.coroutines.launch
 
@@ -38,6 +39,7 @@ class AthleteStatsActivity : AppCompatActivity() {
 
         setupToolbar()
         setupRecyclerView()
+        setupFilterSpinner()
 
         // Сначала показываем кэш (если есть)
         loadCachedResults()
@@ -67,12 +69,11 @@ class AthleteStatsActivity : AppCompatActivity() {
                 startNumber = result.startNumber,
                 finishPlace = result.finishPlace,
                 missCount = result.missCount,
-                pdfUrl = null,  // У кэшированных результатов нет pdfUrl
+                pdfUrl = null,
                 raceId = null
             )
         }
         adapter.submitList(displayItems)
-        //binding.textCacheHint.visibility = View.VISIBLE
     }
 
     private fun setupToolbar() {
@@ -88,7 +89,7 @@ class AthleteStatsActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         adapter = RaceResultsAdapter(
             onPdfDownloadClick = { pdfUrl ->
-                openPdf(pdfUrl)  // ← обработчик клика
+                openPdf(pdfUrl)
             }
         )
         binding.recyclerResults.apply {
@@ -97,29 +98,62 @@ class AthleteStatsActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupFilterSpinner() {
+        val spinnerAdapter = ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_spinner_item,
+            mutableListOf("Загрузка...")
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerDiscipline.adapter = spinnerAdapter
+
+        binding.spinnerDiscipline.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selected = parent?.getItemAtPosition(position) as? String
+                if (selected != null && selected != "Загрузка...") {
+                    viewModel.setDisciplineFilter(if (selected == "Все дисциплины") null else selected)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                viewModel.setDisciplineFilter(null)
+            }
+        }
+    }
+
     private fun openPdf(pdfUrl: String) {
-        // Открываем PDF в браузере или скачиваем
         val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(pdfUrl))
         startActivity(intent)
     }
 
     private fun observeViewModel() {
-        viewModel.athleteResults.observe(this) { response ->
-            val resultsList = response.races ?: emptyList()
-            val displayItems = resultsList.map { race ->
-                RaceResultDisplay(
-                    discipline = race.raceInfo?.discipline ?: "Неизвестно",
-                    date = race.raceInfo?.date ?: "",
-                    nameRace = race.raceInfo?.nameRace ?: "",
-                    placeRace = race.raceInfo?.placeRace ?: "",
-                    startNumber = race.athletePerformance?.startNumber,
-                    finishPlace = race.athletePerformance?.finishPlace,
-                    missCount = race.athletePerformance?.missCount,
-                    pdfUrl = race.pdfUrl,  // ← ПЕРЕДАЕМ pdfUrl
-                    raceId = race.raceId    // ← ПЕРЕДАЕМ raceId
-                )
+        // Наблюдаем за отфильтрованными результатами
+        viewModel.filteredResults.observe(this) { results ->
+            android.util.Log.d("FilterDebug", "Results received: ${results.size}")
+            adapter.submitList(results)
+
+            if (results.isEmpty()) {
+                binding.textEmpty.visibility = View.VISIBLE
+                binding.recyclerResults.visibility = View.GONE
+            } else {
+                binding.textEmpty.visibility = View.GONE
+                binding.recyclerResults.visibility = View.VISIBLE
             }
-            adapter.submitList(displayItems)
+        }
+
+        // Наблюдаем за доступными дисциплинами
+        viewModel.availableDisciplines.observe(this) { disciplines ->
+            android.util.Log.d("FilterDebug", "Disciplines received: $disciplines")
+            val spinnerAdapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item,
+                disciplines
+            )
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerDiscipline.adapter = spinnerAdapter
+
+            // Показываем фильтр только если есть дисциплины (больше чем "Все дисциплины")
+            binding.layoutFilter.visibility = if (disciplines.size > 1) View.VISIBLE else View.GONE
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
@@ -136,8 +170,7 @@ class AthleteStatsActivity : AppCompatActivity() {
         }
 
         viewModel.isFromCache.observe(this) { isFromCache ->
-            //binding.textCacheHint.visibility = if (isFromCache && adapter.itemCount > 0)
-                //View.VISIBLE else View.GONE
+            // Можешь добавить индикатор кэша если нужно
         }
     }
 

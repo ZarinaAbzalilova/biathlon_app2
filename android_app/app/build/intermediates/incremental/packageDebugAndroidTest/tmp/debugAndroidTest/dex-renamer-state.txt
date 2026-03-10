@@ -1,0 +1,7 @@
+#Tue Mar 10 19:39:05 YEKT 2026
+base.0=C\:\\biathlon_app2\\android_app\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeExtDexDebugAndroidTest\\classes.dex
+base.1=C\:\\biathlon_app2\\android_app\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeProjectDexDebugAndroidTest\\0\\classes.dex
+path.0=classes.dex
+path.1=0/classes.dex
+renamed.0=classes.dex
+renamed.1=classes2.dex
