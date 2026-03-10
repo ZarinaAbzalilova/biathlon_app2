@@ -56,28 +56,14 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/text_cache_hint"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_filter"
         tools:listitem="@layout/item_race_result" />
 
     <!-- Cache Hint - ДОБАВЛЕНО ЗДЕСЬ -->
-    <TextView
-        android:id="@+id/text_cache_hint"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:text="Загружено из кэша"
-        android:textSize="12sp"
-        android:textColor="@android:color/darker_gray"
-        android:padding="8dp"
-        android:background="#E0E0E0"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/progress_loading"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
     <!-- Loading ProgressBar -->
     <ProgressBar

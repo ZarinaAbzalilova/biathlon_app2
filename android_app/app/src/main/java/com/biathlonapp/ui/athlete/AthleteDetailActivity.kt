@@ -76,7 +76,7 @@ class AthleteDetailActivity : AppCompatActivity() {
 
     private fun loadFromCache(athleteId: String) {
         lifecycleScope.launch {
-            val cachedAthlete = favoritesRepository.getFavoriteById(athleteId)
+            val cachedAthlete = favoritesRepository.getFavoriteAthleteById(athleteId)
             if (cachedAthlete != null) {
                 // Создаем Athlete из FavoriteAthlete
                 val athlete = Athlete(

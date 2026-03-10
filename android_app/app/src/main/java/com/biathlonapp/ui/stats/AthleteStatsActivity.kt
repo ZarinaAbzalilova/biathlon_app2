@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.biathlonapp.data.local.FavoriteResult
 import com.biathlonapp.data.repository.FavoritesRepository
+import com.biathlonapp.data.model.Athlete
 import com.biathlonapp.databinding.ActivityAthleteStatsBinding
 import kotlinx.coroutines.launch
 
@@ -44,6 +45,7 @@ class AthleteStatsActivity : AppCompatActivity() {
         // Потом загружаем с сервера
         viewModel.loadAthleteResults(athleteId!!)
         observeViewModel()
+        android.util.Log.d("StatsDebug", "AthleteId: $athleteId")
     }
 
     private fun loadCachedResults() {
@@ -68,7 +70,7 @@ class AthleteStatsActivity : AppCompatActivity() {
             )
         }
         adapter.submitList(displayItems)
-        binding.textCacheHint.visibility = View.VISIBLE
+        //binding.textCacheHint.visibility = View.VISIBLE
     }
 
     private fun setupToolbar() {
@@ -93,7 +95,9 @@ class AthleteStatsActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.athleteResults.observe(this) { response ->
-            val displayItems = response.races.map { race ->
+            val resultsList = response.races ?: emptyList()  // ← используем races, так как это имя переменной
+            android.util.Log.d("StatsDebug", "Received ${resultsList.size} results")
+            val displayItems = resultsList.map { race ->
                 RaceResultDisplay(
                     discipline = race.raceInfo?.discipline ?: "Неизвестно",
                     date = race.raceInfo?.date ?: "",
@@ -105,7 +109,6 @@ class AthleteStatsActivity : AppCompatActivity() {
                 )
             }
             adapter.submitList(displayItems)
-            binding.textCacheHint.visibility = View.GONE
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
@@ -122,8 +125,8 @@ class AthleteStatsActivity : AppCompatActivity() {
         }
 
         viewModel.isFromCache.observe(this) { isFromCache ->
-            binding.textCacheHint.visibility = if (isFromCache && adapter.itemCount > 0)
-                View.VISIBLE else View.GONE
+            //binding.textCacheHint.visibility = if (isFromCache && adapter.itemCount > 0)
+                //View.VISIBLE else View.GONE
         }
     }
 

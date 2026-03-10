@@ -2,9 +2,11 @@ package com.biathlonapp.data.repository
 
 import com.biathlonapp.data.api.ApiClient
 import com.biathlonapp.data.model.Athlete
-import com.biathlonapp.data.model.AthleteResultsResponse
+import com.biathlonapp.utils.Result  // ← Импортируем свой Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.biathlonapp.data.model.AthleteResultsResponse
+
 
 class BiathlonRepository {
 
@@ -15,13 +17,13 @@ class BiathlonRepository {
             val response = apiService.getAthletes()
             if (response.isSuccessful) {
                 response.body()?.let { athletes ->
-                    Result.success(athletes)
-                } ?: Result.failure(Exception("Пустой ответ от сервера"))
+                    Result.Success(athletes)  // ← используем свой Success
+                } ?: Result.Error(Exception("Пустой ответ от сервера"))  // ← используем свой Error
             } else {
-                Result.failure(Exception("Ошибка сервера: ${response.code()} ${response.message()}"))
+                Result.Error(Exception("Ошибка сервера: ${response.code()} ${response.message()}"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.Error(e)
         }
     }
 
@@ -30,13 +32,13 @@ class BiathlonRepository {
             val response = apiService.searchAthletes(query)
             if (response.isSuccessful) {
                 response.body()?.let { athletes ->
-                    Result.success(athletes)
-                } ?: Result.failure(Exception("Пустой ответ от сервера"))
+                    Result.Success(athletes)
+                } ?: Result.Error(Exception("Пустой ответ от сервера"))
             } else {
-                Result.failure(Exception("Ошибка сервера: ${response.code()} ${response.message()}"))
+                Result.Error(Exception("Ошибка сервера: ${response.code()} ${response.message()}"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.Error(e)
         }
     }
 
@@ -45,17 +47,16 @@ class BiathlonRepository {
             val response = apiService.getAthleteResults(athleteId)
             if (response.isSuccessful) {
                 response.body()?.let { results ->
-                    Result.success(results)
-                } ?: Result.failure(Exception("Пустой ответ от сервера"))
+                    Result.Success(results)
+                } ?: Result.Error(Exception("Пустой ответ от сервера"))
             } else {
-                Result.failure(Exception("Ошибка сервера: ${response.code()} ${response.message()}"))
+                Result.Error(Exception("Ошибка сервера: ${response.code()} ${response.message()}"))
             }
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.Error(e)
         }
     }
 
-    // В BiathlonRepository
     suspend fun getRacePdfUrl(raceId: String, athleteId: String): String? {
         return try {
             val response = apiService.getRacePdfUrl(raceId, athleteId)
@@ -68,5 +69,4 @@ class BiathlonRepository {
             null
         }
     }
-
 }

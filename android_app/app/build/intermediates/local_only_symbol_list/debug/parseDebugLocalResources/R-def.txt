@@ -121,7 +121,6 @@ id text_athlete_gender
 id text_athlete_name
 id text_athlete_rank
 id text_athlete_region
-id text_cache_hint
 id text_empty
 id text_error
 id toolbar

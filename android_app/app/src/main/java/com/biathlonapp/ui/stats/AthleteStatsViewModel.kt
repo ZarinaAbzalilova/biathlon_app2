@@ -5,9 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.biathlonapp.data.model.AthleteResultsResponse
 import com.biathlonapp.data.repository.BiathlonRepository
 import com.biathlonapp.data.repository.FavoritesRepository
+import com.biathlonapp.utils.Result
+import com.biathlonapp.data.model.AthleteResultsResponse// ← Добавить импорт
 import kotlinx.coroutines.launch
 
 class AthleteStatsViewModel(application: Application) : AndroidViewModel(application) {
@@ -44,22 +45,25 @@ class AthleteStatsViewModel(application: Application) : AndroidViewModel(applica
                 // Игнорируем ошибки кэша
             }
 
+            // Загружаем с сервера - ИСПРАВЛЕНО: используем when вместо fold
             // Загружаем с сервера
-            repository.getAthleteResults(athleteId).fold(
-                onSuccess = { response ->
-                    _athleteResults.value = response
+            when (val result = repository.getAthleteResults(athleteId)) {
+                is Result.Success -> {
+                    _athleteResults.value = result.data
                     _isLoading.value = false
 
-                    // Сохраняем в кэш
-                    viewModelScope.launch {
-                        favoritesRepository.saveAthleteResults(athleteId, response.races)
+                    // Сохраняем в кэш - добавляем проверку на null
+                    result.data.races?.let { races ->
+                        viewModelScope.launch {
+                            favoritesRepository.saveAthleteResults(athleteId, races)
+                        }
                     }
-                },
-                onFailure = { exception ->
-                    _error.value = exception.message ?: "Ошибка загрузки"
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.message ?: "Ошибка загрузки"
                     _isLoading.value = false
                 }
-            )
+            }
         }
     }
 }

@@ -3681,7 +3681,6 @@ int id text_athlete_gender 0x7f090218
 int id text_athlete_name 0x7f090219
 int id text_athlete_rank 0x7f09021a
 int id text_athlete_region 0x7f09021b
-int id text_cache_hint 0x7f090255
 int id text_empty 0x7f09021c
 int id text_error 0x7f09021d
 int id text_input_end_icon 0x7f09021e

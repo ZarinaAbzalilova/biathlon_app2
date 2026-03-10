@@ -57,14 +57,6 @@ data class Athlete(
     }
 }
 
-// Модель ответа с результатами
-data class AthleteResultsResponse(
-    @SerializedName("athlete")
-    val athlete: Athlete,
-
-    @SerializedName("races")
-    val races: List<RaceResult>
-)
 
 // ЕДИНАЯ ВЕРСИЯ RaceResult
 data class RaceResult(

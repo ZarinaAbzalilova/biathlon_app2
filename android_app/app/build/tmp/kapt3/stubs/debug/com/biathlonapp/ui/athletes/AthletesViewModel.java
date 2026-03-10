@@ -36,6 +36,9 @@ public final class AthletesViewModel extends androidx.lifecycle.ViewModel {
         return null;
     }
     
+    public final void loadAthletes() {
+    }
+    
     public final void loadAthletesByRank(@org.jetbrains.annotations.NotNull()
     java.lang.String sportsRank) {
     }
@@ -43,9 +46,6 @@ public final class AthletesViewModel extends androidx.lifecycle.ViewModel {
     public final void loadAthletesByGenderAndRank(@org.jetbrains.annotations.NotNull()
     java.lang.String gender, @org.jetbrains.annotations.NotNull()
     java.lang.String sportsRank) {
-    }
-    
-    public final void loadAthletes() {
     }
     
     public final void searchAthletes(@org.jetbrains.annotations.NotNull()

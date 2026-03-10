@@ -1,7 +1,6 @@
 package com.biathlonapp.data.api
 
 import com.biathlonapp.data.model.Athlete
-import com.biathlonapp.data.model.AthleteResultsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -9,6 +8,7 @@ import retrofit2.http.Query
 import com.biathlonapp.data.model.PdfUrlResponse
 import com.biathlonapp.data.model.RaceEvent
 import retrofit2.Retrofit
+import com.biathlonapp.data.model.AthleteResultsResponse
 import retrofit2.converter.gson.GsonConverterFactory
 
 interface BiathlonApiService {
