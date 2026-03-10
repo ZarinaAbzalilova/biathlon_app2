@@ -148,6 +148,10 @@ ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:30:9-32
 		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:32:13-55
 	android:name
 		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:31:13-55
+activity#com.biathlonapp.ui.team.TeamListActivity
+ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:33:9-62
+	android:name
+		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:33:19-59
 activity#com.biathlonapp.MainActivity
 ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:34:9-41:20
 	android:exported
