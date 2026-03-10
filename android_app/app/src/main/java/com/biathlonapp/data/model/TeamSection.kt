@@ -11,3 +11,9 @@ sealed class TeamItem {
         val teamType: String
     ) : TeamItem(), Serializable
 }
+enum class TeamType {
+    MEN_MAIN,      // Основная мужская
+    WOMEN_MAIN,     // Основная женская
+    MEN_RESERVE,    // Резервная мужская
+    WOMEN_RESERVE   // Резервная женская
+}

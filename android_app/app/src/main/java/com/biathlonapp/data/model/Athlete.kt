@@ -26,8 +26,12 @@ data class Athlete(
     @SerializedName("sports_rank")
     val sportsRank: String? = null,
 
+    @SerializedName("team")  // ← НОВОЕ ПОЛЕ
+    val team: String? = null,
+
     @SerializedName("birth_date")
     val birthDate: String? = null
+
 ) {
     // Конвертер в FavoriteAthlete
     fun toFavoriteAthlete(): FavoriteAthlete {
@@ -54,6 +58,16 @@ data class Athlete(
     // Для удобства отображения полного имени
     fun getFullName(): String {
         return "${lastName ?: ""} ${firstName ?: ""}".trim()
+    }
+
+    fun getTeamDisplayName(): String {
+        return when (team) {
+            "men_main" -> "Основная мужская сборная"
+            "women_main" -> "Основная женская сборная"
+            "men_reserve" -> "Резервная мужская сборная"
+            "women_reserve" -> "Резервная женская сборная"
+            else -> ""
+        }
     }
 }
 

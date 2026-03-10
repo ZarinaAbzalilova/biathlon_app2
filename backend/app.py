@@ -199,6 +199,33 @@ def get_races_by_month():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/athletes/by-team', methods=['GET'])
+def get_athletes_by_team():
+    """Получить спортсменов по команде"""
+    try:
+        team = request.args.get('team')
+        
+        if not team:
+            return jsonify({"error": "Укажите team"}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        query = "SELECT * FROM athlete WHERE team = %s ORDER BY last_name, first_name"
+        cursor.execute(query, (team,))
+        athletes = cursor.fetchall()
+        
+        # Преобразуем даты
+        for athlete in athletes:
+            if athlete['birth_date']:
+                athlete['birth_date'] = athlete['birth_date'].strftime('%Y-%m-%d')
+        
+        conn.close()
+        
+        return jsonify(athletes)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/api/calendar/races/by-date', methods=['GET'])
 def get_races_by_date():
     """Получить гонки за конкретную дату"""

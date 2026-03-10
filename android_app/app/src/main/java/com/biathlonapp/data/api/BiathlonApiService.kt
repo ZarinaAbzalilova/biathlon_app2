@@ -13,6 +13,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 interface BiathlonApiService {
 
+    @GET("api/athletes/by-team")
+    suspend fun getAthletesByTeam(
+        @Query("team") team: String
+    ): Response<List<Athlete>>
+
     @GET("api/athletes")
     suspend fun getAthletes(): Response<List<Athlete>>
 
