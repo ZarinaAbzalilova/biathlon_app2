@@ -18,11 +18,12 @@ class TeamRepository {
                 TeamType.WOMEN_RESERVE -> "women_reserve"
             }
 
-            // TODO: добавить endpoint на сервере
-            // val response = apiService.getAthletesByTeam(teamValue)
-
-            // Пока заглушка - вернем пустой список
-            Result.Success(emptyList())
+            val response = apiService.getAthletesByTeam(teamValue)  // ← здесь параметр team
+            if (response.isSuccessful) {
+                Result.Success(response.body() ?: emptyList())
+            } else {
+                Result.Error(Exception("Ошибка загрузки: ${response.code()}"))
+            }
         } catch (e: Exception) {
             Result.Error(e)
         }

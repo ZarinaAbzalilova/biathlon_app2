@@ -4,6 +4,7 @@ array month_names
 color accent
 color background
 color card_background
+color category_card_bg
 color divider
 color error
 color favorite_button
@@ -53,7 +54,6 @@ id cardDay
 id cardFavorite
 id cardGoogleCalendar
 id cardNews
-id cardRoot
 id edit_birth_date
 id edit_first_name
 id edit_gender
@@ -85,6 +85,11 @@ id recycler_results
 id searchEditText
 id spinner_discipline
 id swipeRefresh
+id textAthleteAge
+id textAthleteName
+id textAthleteRank
+id textAthleteRegion
+id textCategoryTitle
 id textComments
 id textContent
 id textDate
@@ -130,6 +135,7 @@ layout activity_athlete_detail
 layout activity_athlete_stats
 layout activity_main
 layout activity_news_detail
+layout activity_team_list
 layout dialog_race_events
 layout fragment_athletes
 layout fragment_calendar
@@ -144,6 +150,7 @@ layout item_favorite_athlete
 layout item_news
 layout item_race_event
 layout item_race_result
+layout item_team_athlete
 layout item_team_category
 layout item_team_header
 menu bottom_navigation_menu

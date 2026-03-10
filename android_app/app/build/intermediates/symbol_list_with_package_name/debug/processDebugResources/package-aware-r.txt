@@ -1392,6 +1392,7 @@ color cardview_dark_background
 color cardview_light_background
 color cardview_shadow_end_color
 color cardview_shadow_start_color
+color category_card_bg
 color design_bottom_navigation_shadow_color
 color design_box_stroke_color
 color design_dark_default_color_background
@@ -3263,7 +3264,6 @@ id cardDay
 id cardFavorite
 id cardGoogleCalendar
 id cardNews
-id cardRoot
 id carryVelocity
 id center
 id centerCrop
@@ -3641,6 +3641,11 @@ id tag_unhandled_key_listeners
 id tag_window_insets_animation_callback
 id text
 id text2
+id textAthleteAge
+id textAthleteName
+id textAthleteRank
+id textAthleteRegion
+id textCategoryTitle
 id textComments
 id textContent
 id textDate
@@ -3857,6 +3862,7 @@ layout activity_athlete_detail
 layout activity_athlete_stats
 layout activity_main
 layout activity_news_detail
+layout activity_team_list
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
@@ -3889,6 +3895,7 @@ layout item_favorite_athlete
 layout item_news
 layout item_race_event
 layout item_race_result
+layout item_team_athlete
 layout item_team_category
 layout item_team_header
 layout m3_alert_dialog

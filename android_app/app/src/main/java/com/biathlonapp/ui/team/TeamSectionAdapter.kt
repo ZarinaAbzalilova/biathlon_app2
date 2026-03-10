@@ -71,7 +71,7 @@ class TeamSectionAdapter(
         private val onCategoryClick: (TeamItem.Category) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(category: TeamItem.Category) {
-            binding.textTitle.text = category.title
+            //binding.textTitle.text = category.title
 
 
             // Устанавливаем цвет в зависимости от пола
@@ -82,9 +82,7 @@ class TeamSectionAdapter(
             }
 
 
-            binding.cardRoot.setOnClickListener {
-                onCategoryClick(category)
-            }
+
         }
     }
 }

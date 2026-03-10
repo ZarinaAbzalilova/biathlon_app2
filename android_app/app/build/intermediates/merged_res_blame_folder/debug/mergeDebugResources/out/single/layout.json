@@ -40,6 +40,10 @@
         "source": "com.biathlonapp-main-47:/layout/fragment_search.xml"
     },
     {
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/activity_team_list.xml",
+        "source": "com.biathlonapp-main-47:/layout/activity_team_list.xml"
+    },
+    {
         "merged": "com.biathlonapp-mergeDebugResources-44:/layout/activity_main.xml",
         "source": "com.biathlonapp-main-47:/layout/activity_main.xml"
     },
@@ -54,6 +58,10 @@
     {
         "merged": "com.biathlonapp-mergeDebugResources-44:/layout/fragment_favorites.xml",
         "source": "com.biathlonapp-main-47:/layout/fragment_favorites.xml"
+    },
+    {
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_team_athlete.xml",
+        "source": "com.biathlonapp-main-47:/layout/item_team_athlete.xml"
     },
     {
         "merged": "com.biathlonapp-mergeDebugResources-44:/layout/fragment_athletes.xml",

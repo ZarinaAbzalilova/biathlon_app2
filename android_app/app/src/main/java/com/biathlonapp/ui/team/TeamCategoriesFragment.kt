@@ -6,16 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.biathlonapp.MainActivity
-import com.biathlonapp.R
-import com.biathlonapp.data.model.TeamItem
+import com.biathlonapp.data.model.TeamType
 import com.biathlonapp.databinding.FragmentTeamCategoriesBinding
 
 class TeamCategoriesFragment : Fragment() {
 
     private var _binding: FragmentTeamCategoriesBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter: TeamSectionAdapter
+
+    private lateinit var categoriesAdapter: TeamCategoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,76 +29,36 @@ class TeamCategoriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        loadTeamSections()
+        loadCategories()
     }
 
     private fun setupRecyclerView() {
-        adapter = TeamSectionAdapter { category ->
+        categoriesAdapter = TeamCategoryAdapter { category ->
             openTeamList(category)
         }
 
         binding.recyclerCategories.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = this@TeamCategoriesFragment.adapter
+            adapter = categoriesAdapter
         }
     }
 
-    private fun loadTeamSections() {
-        val items = listOf(
-            // Мужская секция
-            TeamItem.Header("Мужская"),
-            TeamItem.Category(
-                id = 1,
-                title = "Основная команда",
-                gender = "male",
-                teamType = "main"
-            ),
-            TeamItem.Category(
-                id = 2,
-                title = "Резервная команда",
-                gender = "male",
-                teamType = "reserve"
-            ),
-
-            // Женская секция
-            TeamItem.Header("Женская"),
-            TeamItem.Category(
-                id = 3,
-                title = "Основная команда",
-                gender = "female",
-                teamType = "main"
-            ),
-            TeamItem.Category(
-                id = 4,
-                title = "Резервная команда",
-                gender = "female",
-                teamType = "reserve"
-            )
+    private fun loadCategories() {
+        val categories = listOf(
+            TeamCategory("Основная мужская сборная", TeamType.MEN_MAIN),
+            TeamCategory("Основная женская сборная", TeamType.WOMEN_MAIN),
+            TeamCategory("Резервная мужская сборная", TeamType.MEN_RESERVE),
+            TeamCategory("Резервная женская сборная", TeamType.WOMEN_RESERVE)
         )
-        adapter.submitList(items)
+        categoriesAdapter.submitList(categories)
     }
 
-    private fun openTeamList(category: TeamItem.Category) {
-        val sportsRank = when {
-            category.title.contains("Основная") || category.teamType == "main" -> "МСМК"
-            category.title.contains("Резервная") || category.teamType == "reserve" -> "МС"
-            else -> ""
+    private fun openTeamList(category: TeamCategory) {
+        val intent = android.content.Intent(requireContext(), TeamListActivity::class.java).apply {
+            putExtra("category_title", category.title)
+            putExtra("team_type", category.type)
         }
-
-        val fragment = TeamListFragment.newInstance(
-            categoryTitle = category.title,
-            gender = category.gender,
-            sportsRank = sportsRank
-        )
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(android.R.id.content, fragment)
-            .addToBackStack("team_list")
-            .commit()
-
-        // Скрываем нижнюю навигацию
-        //val mainActivity = requireActivity() as? MainActivity
-        //mainActivity?.hideBottomNavigation(true)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

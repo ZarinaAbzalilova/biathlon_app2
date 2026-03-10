@@ -20,16 +20,12 @@ public final class ItemTeamCategoryBinding implements ViewBinding {
   private final MaterialCardView rootView;
 
   @NonNull
-  public final MaterialCardView cardRoot;
-
-  @NonNull
-  public final TextView textTitle;
+  public final TextView textCategoryTitle;
 
   private ItemTeamCategoryBinding(@NonNull MaterialCardView rootView,
-      @NonNull MaterialCardView cardRoot, @NonNull TextView textTitle) {
+      @NonNull TextView textCategoryTitle) {
     this.rootView = rootView;
-    this.cardRoot = cardRoot;
-    this.textTitle = textTitle;
+    this.textCategoryTitle = textCategoryTitle;
   }
 
   @Override
@@ -59,15 +55,13 @@ public final class ItemTeamCategoryBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      MaterialCardView cardRoot = (MaterialCardView) rootView;
-
-      id = R.id.textTitle;
-      TextView textTitle = ViewBindings.findChildViewById(rootView, id);
-      if (textTitle == null) {
+      id = R.id.textCategoryTitle;
+      TextView textCategoryTitle = ViewBindings.findChildViewById(rootView, id);
+      if (textCategoryTitle == null) {
         break missingId;
       }
 
-      return new ItemTeamCategoryBinding((MaterialCardView) rootView, cardRoot, textTitle);
+      return new ItemTeamCategoryBinding((MaterialCardView) rootView, textCategoryTitle);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
