@@ -90,8 +90,6 @@ class CalendarViewModel(
         val days = mutableListOf<CalendarDay>()
         val cal = calendar.clone() as Calendar
 
-        // ⬇️ РАСКОММЕНТИРУЙ И ИСПРАВЬ ЭТОТ КОД
-        // Устанавливаем на первый день месяца
         cal.set(Calendar.DAY_OF_MONTH, 1)
 
         // Получаем день недели первого дня (1 = воскресенье, 2 = понедельник...)
