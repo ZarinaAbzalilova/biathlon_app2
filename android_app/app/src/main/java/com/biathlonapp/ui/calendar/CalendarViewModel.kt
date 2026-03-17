@@ -91,25 +91,21 @@ class CalendarViewModel(
         val cal = calendar.clone() as Calendar
 
         cal.set(Calendar.DAY_OF_MONTH, 1)
-
-        // Получаем день недели первого дня (1 = воскресенье, 2 = понедельник...)
         val firstDayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
 
-        // Смещаем календарь назад, чтобы первый день недели был понедельником
         val daysToSubtract = when (firstDayOfWeek) {
-            Calendar.SUNDAY -> 6      // Воскресенье -> смещаем на 6 дней назад
-            Calendar.MONDAY -> 0       // Понедельник -> без смещения
-            Calendar.TUESDAY -> 1      // Вторник -> на 1 день назад
-            Calendar.WEDNESDAY -> 2    // Среда -> на 2 дня назад
-            Calendar.THURSDAY -> 3     // Четверг -> на 3 дня назад
-            Calendar.FRIDAY -> 4       // Пятница -> на 4 дня назад
-            Calendar.SATURDAY -> 5     // Суббота -> на 5 дней назад
+            Calendar.SUNDAY -> 6
+            Calendar.MONDAY -> 0
+            Calendar.TUESDAY -> 1
+            Calendar.WEDNESDAY -> 2
+            Calendar.THURSDAY -> 3
+            Calendar.FRIDAY -> 4
+            Calendar.SATURDAY -> 5
             else -> 0
         }
 
         cal.add(Calendar.DAY_OF_MONTH, -daysToSubtract)
 
-        // Группируем события по датам
         val eventsByDate = events.groupBy { event ->
             val eventCal = Calendar.getInstance()
             eventCal.time = event.date
@@ -118,11 +114,6 @@ class CalendarViewModel(
                 eventCal.get(Calendar.MONTH),
                 eventCal.get(Calendar.DAY_OF_MONTH)
             )
-        }
-
-        android.util.Log.d("CalendarDebug", "Events grouped: ${eventsByDate.size} unique dates")
-        eventsByDate.forEach { (dateKey, eventList) ->
-            android.util.Log.d("CalendarDebug", "Date $dateKey has ${eventList.size} events")
         }
 
         for (i in 0 until 42) {
@@ -137,14 +128,15 @@ class CalendarViewModel(
 
             val dayEvents = eventsByDate[dateKey] ?: emptyList()
 
-            // Определяем наличие мужских и женских гонок
+            // Определяем наличие разных типов гонок
             val hasMaleEvent = dayEvents.any { it.gender == "М" }
             val hasFemaleEvent = dayEvents.any { it.gender == "Ж" }
+            val hasMixedEvent = dayEvents.any { it.isMixed }  // ← НОВОЕ
 
             if (dayEvents.isNotEmpty()) {
                 android.util.Log.d(
                     "CalendarDebug",
-                    "Day ${dayCal.get(Calendar.DAY_OF_MONTH)}: Male=$hasMaleEvent, Female=$hasFemaleEvent, Events=${dayEvents.size}"
+                    "Day ${dayCal.get(Calendar.DAY_OF_MONTH)}: Male=$hasMaleEvent, Female=$hasFemaleEvent, Mixed=$hasMixedEvent"
                 )
             }
 
@@ -156,7 +148,8 @@ class CalendarViewModel(
                     hasEvent = dayEvents.isNotEmpty(),
                     events = dayEvents,
                     hasMaleEvent = hasMaleEvent,
-                    hasFemaleEvent = hasFemaleEvent
+                    hasFemaleEvent = hasFemaleEvent,
+                    hasMixedEvent = hasMixedEvent  // ← НОВОЕ
                 )
             )
 

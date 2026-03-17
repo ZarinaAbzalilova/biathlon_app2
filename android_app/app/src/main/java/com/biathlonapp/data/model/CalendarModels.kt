@@ -16,7 +16,8 @@ data class CalendarDay(
     val hasEvent: Boolean = false,
     val events: List<RaceEvent> = emptyList(),
     val hasMaleEvent: Boolean = false,  // ← НОВОЕ
-    val hasFemaleEvent: Boolean = false  // ← НОВОЕ
+    val hasFemaleEvent: Boolean = false,
+    val hasMixedEvent: Boolean = false  // ← НОВОЕ
 ): Serializable
 
 // ИСПРАВЛЕНО: под данные из таблицы races
@@ -32,5 +33,7 @@ data class RaceEvent(
     val category: String = "",
     val description: String? = null,
     val hasMale: Boolean = false,
-    val hasFemale: Boolean = false
+    val hasFemale: Boolean = false,
+    val hasMixed: Boolean = false,  // ← НОВОЕ
+    val isMixed: Boolean = false    // ← НОВОЕ
 ) : Serializable

@@ -18,13 +18,15 @@ data class CalendarRaceResponse(
     val discipline: String,
     val gender: String,
     val date: String,
-    val pdf_url: String
+    val pdf_url: String,
+    val is_mixed: Boolean = false
 )
 
 data class DayEventsResponse(
     val date: String,
     val has_male: Int,
     val has_female: Int,
+    val has_mixed: Int,
     val races: List<CalendarRaceResponse>
 )
 

@@ -47,7 +47,6 @@ class CalendarAdapter(
         fun bind(day: CalendarDay) {
             binding.textDay.text = day.dayOfMonth.toString()
 
-            // Для дней не из текущего месяца делаем текст бледнее
             if (!day.isCurrentMonth) {
                 binding.textDay.alpha = 0.3f
             } else {
@@ -55,39 +54,58 @@ class CalendarAdapter(
             }
 
             // Управление видимостью точек
-            if (day.hasMaleEvent && day.hasFemaleEvent) {
-                // Показываем обе точки
-                binding.viewMaleDot.visibility = View.VISIBLE
-                binding.viewFemaleDot.visibility = View.VISIBLE
-                binding.viewEventDot.visibility = View.GONE
-                binding.textDay.setTextColor(Color.BLACK)
-            } else if (day.hasMaleEvent) {
-                // Только мужская точка (синяя)
-                binding.viewMaleDot.visibility = View.VISIBLE
-                binding.viewFemaleDot.visibility = View.GONE
-                binding.viewEventDot.visibility = View.GONE
-                binding.textDay.setTextColor(Color.BLACK)
-            } else if (day.hasFemaleEvent) {
-                // Только женская точка (красная)
-                binding.viewMaleDot.visibility = View.GONE
-                binding.viewFemaleDot.visibility = View.VISIBLE
-                binding.viewEventDot.visibility = View.GONE
-                binding.textDay.setTextColor(Color.BLACK)
-            } else if (day.hasEvent) {
-                // Если нет разделения по полу, показываем обычную точку
-                binding.viewMaleDot.visibility = View.GONE
-                binding.viewFemaleDot.visibility = View.GONE
-                binding.viewEventDot.visibility = View.VISIBLE
-                binding.textDay.setTextColor(Color.parseColor("#2196F3"))
-            } else {
-                // Нет событий - скрываем все точки
-                binding.viewMaleDot.visibility = View.GONE
-                binding.viewFemaleDot.visibility = View.GONE
-                binding.viewEventDot.visibility = View.GONE
-                binding.textDay.setTextColor(Color.BLACK)
+            when {
+                day.hasMixedEvent -> {
+                    // Смешанная эстафета - голубая точка
+                    binding.viewMixedDot.visibility = View.VISIBLE
+                    binding.viewMaleDot.visibility = View.GONE
+                    binding.viewFemaleDot.visibility = View.GONE
+                    binding.viewEventDot.visibility = View.GONE
+                    binding.textDay.setTextColor(Color.BLACK)
+                }
+                day.hasMaleEvent && day.hasFemaleEvent -> {
+                    // Обе точки
+                    binding.viewMaleDot.visibility = View.VISIBLE
+                    binding.viewFemaleDot.visibility = View.VISIBLE
+                    binding.viewMixedDot.visibility = View.GONE
+                    binding.viewEventDot.visibility = View.GONE
+                    binding.textDay.setTextColor(Color.BLACK)
+                }
+                day.hasMaleEvent -> {
+                    // Только мужская
+                    binding.viewMaleDot.visibility = View.VISIBLE
+                    binding.viewFemaleDot.visibility = View.GONE
+                    binding.viewMixedDot.visibility = View.GONE
+                    binding.viewEventDot.visibility = View.GONE
+                    binding.textDay.setTextColor(Color.BLACK)
+                }
+                day.hasFemaleEvent -> {
+                    // Только женская
+                    binding.viewMaleDot.visibility = View.GONE
+                    binding.viewFemaleDot.visibility = View.VISIBLE
+                    binding.viewMixedDot.visibility = View.GONE
+                    binding.viewEventDot.visibility = View.GONE
+                    binding.textDay.setTextColor(Color.BLACK)
+                }
+                day.hasEvent -> {
+                    // Обычная точка
+                    binding.viewMaleDot.visibility = View.GONE
+                    binding.viewFemaleDot.visibility = View.GONE
+                    binding.viewMixedDot.visibility = View.GONE
+                    binding.viewEventDot.visibility = View.VISIBLE
+                    binding.textDay.setTextColor(Color.parseColor("#2196F3"))
+                }
+                else -> {
+                    // Нет событий
+                    binding.viewMaleDot.visibility = View.GONE
+                    binding.viewFemaleDot.visibility = View.GONE
+                    binding.viewMixedDot.visibility = View.GONE
+                    binding.viewEventDot.visibility = View.GONE
+                    binding.textDay.setTextColor(Color.BLACK)
+                }
             }
 
-            // Проверяем, является ли день сегодняшним
+            // Проверка на сегодня
             val calendar = Calendar.getInstance()
             val today = calendar.get(Calendar.DAY_OF_MONTH)
             val currentMonth = calendar.get(Calendar.MONTH)
@@ -100,16 +118,13 @@ class CalendarAdapter(
                     dayCalendar.get(Calendar.YEAR) == currentYear &&
                     day.isCurrentMonth
 
-            if (isToday) {
-                binding.cardDay.setCardBackgroundColor(android.graphics.Color.parseColor("#E3F2FD"))
-            } else {
-                binding.cardDay.setCardBackgroundColor(android.graphics.Color.WHITE)
-            }
+            binding.cardDay.setCardBackgroundColor(
+                if (isToday) android.graphics.Color.parseColor("#E3F2FD")
+                else android.graphics.Color.WHITE
+            )
 
             binding.cardDay.setOnClickListener {
-                if (day.isCurrentMonth) {
-                    onDayClick(day)
-                }
+                if (day.isCurrentMonth) onDayClick(day)
             }
         }
     }

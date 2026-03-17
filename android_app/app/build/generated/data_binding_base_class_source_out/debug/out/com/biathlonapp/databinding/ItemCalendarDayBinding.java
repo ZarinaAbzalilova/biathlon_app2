@@ -34,15 +34,19 @@ public final class ItemCalendarDayBinding implements ViewBinding {
   @NonNull
   public final View viewMaleDot;
 
+  @NonNull
+  public final View viewMixedDot;
+
   private ItemCalendarDayBinding(@NonNull MaterialCardView rootView,
       @NonNull MaterialCardView cardDay, @NonNull TextView textDay, @NonNull View viewEventDot,
-      @NonNull View viewFemaleDot, @NonNull View viewMaleDot) {
+      @NonNull View viewFemaleDot, @NonNull View viewMaleDot, @NonNull View viewMixedDot) {
     this.rootView = rootView;
     this.cardDay = cardDay;
     this.textDay = textDay;
     this.viewEventDot = viewEventDot;
     this.viewFemaleDot = viewFemaleDot;
     this.viewMaleDot = viewMaleDot;
+    this.viewMixedDot = viewMixedDot;
   }
 
   @Override
@@ -98,8 +102,14 @@ public final class ItemCalendarDayBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.viewMixedDot;
+      View viewMixedDot = ViewBindings.findChildViewById(rootView, id);
+      if (viewMixedDot == null) {
+        break missingId;
+      }
+
       return new ItemCalendarDayBinding((MaterialCardView) rootView, cardDay, textDay, viewEventDot,
-          viewFemaleDot, viewMaleDot);
+          viewFemaleDot, viewMaleDot, viewMixedDot);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

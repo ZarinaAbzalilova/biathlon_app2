@@ -32,7 +32,9 @@ class CalendarRepository(
                             gender = race.gender,
                             pdfUrl = race.pdf_url,
                             hasMale = dayEvents.has_male == 1,
-                            hasFemale = dayEvents.has_female == 1
+                            hasFemale = dayEvents.has_female == 1,
+                            hasMixed = dayEvents.has_mixed == 1,  // ← НОВОЕ
+                            isMixed = race.is_mixed  // ← НОВОЕ
                         )
                     }
                 }

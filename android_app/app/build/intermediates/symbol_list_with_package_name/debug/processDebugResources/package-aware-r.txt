@@ -3023,6 +3023,7 @@ drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
 drawable circle_blue
+drawable circle_cyan
 drawable circle_red
 drawable design_fab_background
 drawable design_ic_visibility
@@ -3732,6 +3733,7 @@ id vertical_only
 id viewEventDot
 id viewFemaleDot
 id viewMaleDot
+id viewMixedDot
 id viewPager
 id view_offset_helper
 id view_transition

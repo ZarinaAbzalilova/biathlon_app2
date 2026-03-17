@@ -48,19 +48,25 @@ class RaceEventsAdapter(
             binding.textDiscipline.text = formatDiscipline(event.discipline)
             binding.textLocation.text = event.location
 
-            // Добавляем индикатор пола
-            when (event.gender) {
-                "М" -> {
+            when {
+                event.isMixed -> {
+                    // Смешанная эстафета
+                    binding.textGender.text = "Смешанная эстафета"
+                    binding.textGender.setTextColor(Color.WHITE)
+                    binding.genderBadge.setCardBackgroundColor(Color.parseColor("#00BCD4")) // Голубой
+                    binding.cardEvent.setCardBackgroundColor(Color.parseColor("#E0F7FA")) // Светло-голубой
+                }
+                event.gender == "М" -> {
                     binding.textGender.text = "Мужчины"
                     binding.textGender.setTextColor(Color.WHITE)
-                    binding.genderBadge.setCardBackgroundColor(Color.parseColor("#2196F3")) // Синий
-                    binding.cardEvent.setCardBackgroundColor(Color.parseColor("#E3F2FD")) // Светло-синий фон
+                    binding.genderBadge.setCardBackgroundColor(Color.parseColor("#2196F3"))
+                    binding.cardEvent.setCardBackgroundColor(Color.parseColor("#E3F2FD"))
                 }
-                "Ж" -> {
+                event.gender == "Ж" -> {
                     binding.textGender.text = "Женщины"
                     binding.textGender.setTextColor(Color.WHITE)
-                    binding.genderBadge.setCardBackgroundColor(Color.parseColor("#E91E63")) // Розовый
-                    binding.cardEvent.setCardBackgroundColor(Color.parseColor("#FCE4EC")) // Светло-розовый фон
+                    binding.genderBadge.setCardBackgroundColor(Color.parseColor("#E91E63"))
+                    binding.cardEvent.setCardBackgroundColor(Color.parseColor("#FCE4EC"))
                 }
                 else -> {
                     binding.textGender.text = ""
@@ -69,7 +75,7 @@ class RaceEventsAdapter(
                 }
             }
 
-            // Форматируем время, если нужно
+            // Форматируем время
             val calendar = Calendar.getInstance()
             calendar.time = event.date
             val hour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -82,9 +88,7 @@ class RaceEventsAdapter(
                 binding.textTime.visibility = View.GONE
             }
 
-            itemView.setOnClickListener {
-                onEventClick(event)
-            }
+            itemView.setOnClickListener { onEventClick(event) }
         }
 
         private fun formatDiscipline(discipline: String?): String {

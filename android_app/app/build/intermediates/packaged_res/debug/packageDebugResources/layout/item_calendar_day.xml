@@ -49,6 +49,15 @@
                 android:background="@drawable/circle_red"
                 android:visibility="gone" />
 
+            <!-- Голубая точка для смешанных эстафет -->
+            <View
+                android:id="@+id/viewMixedDot"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/circle_cyan"
+                android:visibility="gone" />
+
             <!-- Обычная синяя точка (если нет разделения) -->
             <View
                 android:id="@+id/viewEventDot"

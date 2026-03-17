@@ -17,6 +17,7 @@ color stats_button
 color success
 drawable badge_background
 drawable circle_blue
+drawable circle_cyan
 drawable circle_red
 drawable ic_arrow_back
 drawable ic_arrow_forward
@@ -136,6 +137,7 @@ id toolbar
 id viewEventDot
 id viewFemaleDot
 id viewMaleDot
+id viewMixedDot
 id viewPager
 layout activity_athlete_detail
 layout activity_athlete_stats
