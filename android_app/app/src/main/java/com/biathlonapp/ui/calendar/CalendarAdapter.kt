@@ -54,11 +54,35 @@ class CalendarAdapter(
                 binding.textDay.alpha = 1.0f
             }
 
-            // ⬇️ ПРОВЕРЬ ЭТОТ КОД
-            if (day.hasEvent) {
+            // Управление видимостью точек
+            if (day.hasMaleEvent && day.hasFemaleEvent) {
+                // Показываем обе точки
+                binding.viewMaleDot.visibility = View.VISIBLE
+                binding.viewFemaleDot.visibility = View.VISIBLE
+                binding.viewEventDot.visibility = View.GONE
+                binding.textDay.setTextColor(Color.BLACK)
+            } else if (day.hasMaleEvent) {
+                // Только мужская точка (синяя)
+                binding.viewMaleDot.visibility = View.VISIBLE
+                binding.viewFemaleDot.visibility = View.GONE
+                binding.viewEventDot.visibility = View.GONE
+                binding.textDay.setTextColor(Color.BLACK)
+            } else if (day.hasFemaleEvent) {
+                // Только женская точка (красная)
+                binding.viewMaleDot.visibility = View.GONE
+                binding.viewFemaleDot.visibility = View.VISIBLE
+                binding.viewEventDot.visibility = View.GONE
+                binding.textDay.setTextColor(Color.BLACK)
+            } else if (day.hasEvent) {
+                // Если нет разделения по полу, показываем обычную точку
+                binding.viewMaleDot.visibility = View.GONE
+                binding.viewFemaleDot.visibility = View.GONE
                 binding.viewEventDot.visibility = View.VISIBLE
                 binding.textDay.setTextColor(Color.parseColor("#2196F3"))
             } else {
+                // Нет событий - скрываем все точки
+                binding.viewMaleDot.visibility = View.GONE
+                binding.viewFemaleDot.visibility = View.GONE
                 binding.viewEventDot.visibility = View.GONE
                 binding.textDay.setTextColor(Color.BLACK)
             }

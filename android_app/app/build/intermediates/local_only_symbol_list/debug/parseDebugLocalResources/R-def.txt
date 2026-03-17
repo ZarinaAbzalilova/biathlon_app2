@@ -17,6 +17,7 @@ color stats_button
 color success
 drawable badge_background
 drawable circle_blue
+drawable circle_red
 drawable ic_arrow_back
 drawable ic_arrow_forward
 drawable ic_arrow_left
@@ -51,6 +52,7 @@ id button_favorite
 id button_retry
 id button_stats
 id cardDay
+id cardEvent
 id cardFavorite
 id cardGoogleCalendar
 id cardNews
@@ -61,6 +63,7 @@ id edit_last_name
 id edit_region
 id edit_region_code
 id edit_sports_rank
+id genderBadge
 id imageAthlete
 id imageNews
 id layoutError
@@ -100,6 +103,7 @@ id textEmpty
 id textError
 id textFinishPlace
 id textFri
+id textGender
 id textHeader
 id textLikes
 id textLocation
@@ -130,6 +134,8 @@ id text_empty
 id text_error
 id toolbar
 id viewEventDot
+id viewFemaleDot
+id viewMaleDot
 id viewPager
 layout activity_athlete_detail
 layout activity_athlete_stats

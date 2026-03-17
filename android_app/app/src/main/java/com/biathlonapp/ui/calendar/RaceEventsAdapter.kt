@@ -1,8 +1,10 @@
 package com.biathlonapp.ui.calendar
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.biathlonapp.data.model.RaceEvent
 import com.biathlonapp.databinding.ItemRaceEventBinding
@@ -46,6 +48,27 @@ class RaceEventsAdapter(
             binding.textDiscipline.text = formatDiscipline(event.discipline)
             binding.textLocation.text = event.location
 
+            // Добавляем индикатор пола
+            when (event.gender) {
+                "М" -> {
+                    binding.textGender.text = "Мужчины"
+                    binding.textGender.setTextColor(Color.WHITE)
+                    binding.genderBadge.setCardBackgroundColor(Color.parseColor("#2196F3")) // Синий
+                    binding.cardEvent.setCardBackgroundColor(Color.parseColor("#E3F2FD")) // Светло-синий фон
+                }
+                "Ж" -> {
+                    binding.textGender.text = "Женщины"
+                    binding.textGender.setTextColor(Color.WHITE)
+                    binding.genderBadge.setCardBackgroundColor(Color.parseColor("#E91E63")) // Розовый
+                    binding.cardEvent.setCardBackgroundColor(Color.parseColor("#FCE4EC")) // Светло-розовый фон
+                }
+                else -> {
+                    binding.textGender.text = ""
+                    binding.genderBadge.visibility = View.GONE
+                    binding.cardEvent.setCardBackgroundColor(Color.WHITE)
+                }
+            }
+
             // Форматируем время, если нужно
             val calendar = Calendar.getInstance()
             calendar.time = event.date
@@ -78,8 +101,6 @@ class RaceEventsAdapter(
                 "BT_SingleRelay" -> "Одиночная эстафета"
                 "BT_Marathon" -> "Марафон"
                 "BT_SuperPursuit" -> "Супер-пасьют"
-
-
                 else -> discipline ?: ""
             }
         }

@@ -120,7 +120,6 @@ class CalendarViewModel(
             )
         }
 
-        // ⬇️ ДОБАВЬ ЛОГИРОВАНИЕ
         android.util.Log.d("CalendarDebug", "Events grouped: ${eventsByDate.size} unique dates")
         eventsByDate.forEach { (dateKey, eventList) ->
             android.util.Log.d("CalendarDebug", "Date $dateKey has ${eventList.size} events")
@@ -138,11 +137,14 @@ class CalendarViewModel(
 
             val dayEvents = eventsByDate[dateKey] ?: emptyList()
 
-            // ⬇️ ЛОГИРУЙ КАЖДЫЙ ДЕНЬ (можно закомментировать после отладки)
+            // Определяем наличие мужских и женских гонок
+            val hasMaleEvent = dayEvents.any { it.gender == "М" }
+            val hasFemaleEvent = dayEvents.any { it.gender == "Ж" }
+
             if (dayEvents.isNotEmpty()) {
                 android.util.Log.d(
                     "CalendarDebug",
-                    "Day ${dayCal.get(Calendar.DAY_OF_MONTH)} has ${dayEvents.size} events"
+                    "Day ${dayCal.get(Calendar.DAY_OF_MONTH)}: Male=$hasMaleEvent, Female=$hasFemaleEvent, Events=${dayEvents.size}"
                 )
             }
 
@@ -152,7 +154,9 @@ class CalendarViewModel(
                     dayOfMonth = dayCal.get(Calendar.DAY_OF_MONTH),
                     isCurrentMonth = isCurrentMonth,
                     hasEvent = dayEvents.isNotEmpty(),
-                    events = dayEvents
+                    events = dayEvents,
+                    hasMaleEvent = hasMaleEvent,
+                    hasFemaleEvent = hasFemaleEvent
                 )
             )
 

@@ -1,5 +1,0 @@
-com.biathlonapp.test.app-core-1.6.1-0 C:\Users\abzal\.gradle\caches\8.11.1\transforms\7f34cab1de7f55e61c9539a17914b6b9\transformed\core-1.6.1\res
-com.biathlonapp.test.app-androidTest-1 C:\biathlon_app2\android_app\app\build\generated\res\resValues\androidTest\debug
-com.biathlonapp.test.app-mergeDebugAndroidTestResources-2 C:\biathlon_app2\android_app\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
-com.biathlonapp.test.app-mergeDebugAndroidTestResources-3 C:\biathlon_app2\android_app\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
-com.biathlonapp.test.app-debugAndroidTest-4 C:\biathlon_app2\android_app\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources

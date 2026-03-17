@@ -20,7 +20,16 @@ public final class ItemRaceEventBinding implements ViewBinding {
   private final MaterialCardView rootView;
 
   @NonNull
+  public final MaterialCardView cardEvent;
+
+  @NonNull
+  public final MaterialCardView genderBadge;
+
+  @NonNull
   public final TextView textDiscipline;
+
+  @NonNull
+  public final TextView textGender;
 
   @NonNull
   public final TextView textLocation;
@@ -31,10 +40,15 @@ public final class ItemRaceEventBinding implements ViewBinding {
   @NonNull
   public final TextView textTitle;
 
-  private ItemRaceEventBinding(@NonNull MaterialCardView rootView, @NonNull TextView textDiscipline,
+  private ItemRaceEventBinding(@NonNull MaterialCardView rootView,
+      @NonNull MaterialCardView cardEvent, @NonNull MaterialCardView genderBadge,
+      @NonNull TextView textDiscipline, @NonNull TextView textGender,
       @NonNull TextView textLocation, @NonNull TextView textTime, @NonNull TextView textTitle) {
     this.rootView = rootView;
+    this.cardEvent = cardEvent;
+    this.genderBadge = genderBadge;
     this.textDiscipline = textDiscipline;
+    this.textGender = textGender;
     this.textLocation = textLocation;
     this.textTime = textTime;
     this.textTitle = textTitle;
@@ -67,9 +81,23 @@ public final class ItemRaceEventBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      MaterialCardView cardEvent = (MaterialCardView) rootView;
+
+      id = R.id.genderBadge;
+      MaterialCardView genderBadge = ViewBindings.findChildViewById(rootView, id);
+      if (genderBadge == null) {
+        break missingId;
+      }
+
       id = R.id.textDiscipline;
       TextView textDiscipline = ViewBindings.findChildViewById(rootView, id);
       if (textDiscipline == null) {
+        break missingId;
+      }
+
+      id = R.id.textGender;
+      TextView textGender = ViewBindings.findChildViewById(rootView, id);
+      if (textGender == null) {
         break missingId;
       }
 
@@ -91,8 +119,8 @@ public final class ItemRaceEventBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ItemRaceEventBinding((MaterialCardView) rootView, textDiscipline, textLocation,
-          textTime, textTitle);
+      return new ItemRaceEventBinding((MaterialCardView) rootView, cardEvent, genderBadge,
+          textDiscipline, textGender, textLocation, textTime, textTitle);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

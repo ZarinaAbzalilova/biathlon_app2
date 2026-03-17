@@ -3023,6 +3023,7 @@ drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
 drawable circle_blue
+drawable circle_red
 drawable design_fab_background
 drawable design_ic_visibility
 drawable design_ic_visibility_off
@@ -3261,6 +3262,7 @@ id cache_measures
 id callMeasure
 id cancel_button
 id cardDay
+id cardEvent
 id cardFavorite
 id cardGoogleCalendar
 id cardNews
@@ -3369,6 +3371,7 @@ id forever
 id fragment_container_view_tag
 id frost
 id fullscreen_header
+id genderBadge
 id ghost_view
 id ghost_view_holder
 id glide_custom_view_target_tag
@@ -3657,6 +3660,7 @@ id textEnd
 id textError
 id textFinishPlace
 id textFri
+id textGender
 id textHeader
 id textLikes
 id textLocation
@@ -3726,6 +3730,8 @@ id useLogo
 id vertical
 id vertical_only
 id viewEventDot
+id viewFemaleDot
+id viewMaleDot
 id viewPager
 id view_offset_helper
 id view_transition

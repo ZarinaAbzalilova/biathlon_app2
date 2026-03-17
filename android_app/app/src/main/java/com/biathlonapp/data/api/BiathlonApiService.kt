@@ -11,6 +11,23 @@ import retrofit2.Retrofit
 import com.biathlonapp.data.model.AthleteResultsResponse
 import retrofit2.converter.gson.GsonConverterFactory
 
+data class CalendarRaceResponse(
+    val id: String,
+    val title: String,
+    val location: String,
+    val discipline: String,
+    val gender: String,
+    val date: String,
+    val pdf_url: String
+)
+
+data class DayEventsResponse(
+    val date: String,
+    val has_male: Int,
+    val has_female: Int,
+    val races: List<CalendarRaceResponse>
+)
+
 interface BiathlonApiService {
 
     @GET("api/athletes/by-team")
@@ -39,18 +56,23 @@ interface BiathlonApiService {
         @Query("athlete_id") athleteId: String
     ): Response<PdfUrlResponse>
 
-    // ===== НОВЫЕ МЕТОДЫ ДЛЯ КАЛЕНДАРЯ =====
+    // ===== ОБНОВЛЕННЫЕ МЕТОДЫ ДЛЯ КАЛЕНДАРЯ =====
     @GET("api/calendar/races")
-    suspend fun getRacesByMonth(
+    suspend fun getCalendarRaces(
         @Query("year") year: Int,
         @Query("month") month: Int
-    ): Response<List<RaceEvent>>
+    ): Response<List<DayEventsResponse>>
 
     @GET("api/calendar/races/by-date")
     suspend fun getRacesByDate(
         @Query("date") date: String
-    ): Response<List<RaceEvent>>
+    ): Response<List<CalendarRaceResponse>>
 
+    @GET("api/race/{raceId}/{gender}")
+    suspend fun getRaceDetails(
+        @Path("raceId") raceId: String,
+        @Path("gender") gender: String
+    ): Response<CalendarRaceResponse>
     companion object {
         const val BASE_URL = "https://biathlon-app2.onrender.com"
         fun create(): BiathlonApiService {
