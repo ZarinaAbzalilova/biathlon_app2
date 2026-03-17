@@ -155,10 +155,10 @@ def get_athlete_results(athlete_id):
     
 @app.route('/api/calendar/races', methods=['GET'])
 def get_races_by_month():
-    """Получить гонки за определенный месяц с разделением по полу"""
+    """Получить гонки за определенный месяц"""
     try:
         year = request.args.get('year', type=int)
-        month = request.args.get('month', type=int)  # 1-12
+        month = request.args.get('month', type=int)
         
         if not year or not month:
             return jsonify({"error": "Укажите year и month"}), 400
@@ -166,14 +166,13 @@ def get_races_by_month():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         
-        # Получаем первый и последний день месяца
         start_date = f"{year:04d}-{month:02d}-01"
         if month == 12:
             end_date = f"{year+1:04d}-01-01"
         else:
             end_date = f"{year:04d}-{month+1:02d}-01"
         
-        # Получаем все гонки за месяц с информацией о поле
+        # Получаем все гонки за месяц
         query = """
         SELECT 
             r.race_id as id,
@@ -186,39 +185,52 @@ def get_races_by_month():
         FROM races r
         JOIN race_pdf_urls p ON r.race_id = p.race_id
         WHERE p.date >= %s AND p.date < %s
-        ORDER BY p.date, p.gender
+        ORDER BY p.date, 
+                 CASE 
+                     WHEN r.discipline IN ('BT_MixedRelay', 'BT_SingleMixedRelay') THEN 0 
+                     ELSE 1 
+                 END,
+                 p.gender
         """
         
         cursor.execute(query, (start_date, end_date))
         races = cursor.fetchall()
         
-        # Преобразуем даты в строки
-        for race in races:
-            if race['date']:
-                race['date'] = race['date'].strftime('%Y-%m-%d')
-        
-        # Группируем по датам для удобства Android
+        # Группируем по датам
         races_by_date = {}
         for race in races:
-            date_str = race['date']
+            date_str = race['date'].strftime('%Y-%m-%d')
             if date_str not in races_by_date:
                 races_by_date[date_str] = {
                     'date': date_str,
                     'has_male': 0,
                     'has_female': 0,
+                    'has_mixed': 0,  # ← НОВОЕ
                     'races': []
                 }
             
-            # Обновляем флаги
-            if race['gender'] == 'М':
-                races_by_date[date_str]['has_male'] = 1
-            elif race['gender'] == 'Ж':
-                races_by_date[date_str]['has_female'] = 1
-            
-            races_by_date[date_str]['races'].append(race)
+            # Определяем тип гонки
+            if race['discipline'] in ['BT_MixedRelay', 'BT_SingleMixedRelay']:
+                races_by_date[date_str]['has_mixed'] = 1
+                # Для смешанных гонок добавляем только одну запись (если еще не добавили)
+                existing_mixed = any(
+                    r['id'] == race['id'] and r['is_mixed'] == True 
+                    for r in races_by_date[date_str]['races']
+                )
+                if not existing_mixed:
+                    race['is_mixed'] = True
+                    race['gender'] = 'Смешанная'
+                    races_by_date[date_str]['races'].append(race)
+            else:
+                # Обычные гонки по полу
+                if race['gender'] == 'М':
+                    races_by_date[date_str]['has_male'] = 1
+                elif race['gender'] == 'Ж':
+                    races_by_date[date_str]['has_female'] = 1
+                race['is_mixed'] = False
+                races_by_date[date_str]['races'].append(race)
         
         conn.close()
-        
         return jsonify(list(races_by_date.values()))
         
     except Exception as e:
