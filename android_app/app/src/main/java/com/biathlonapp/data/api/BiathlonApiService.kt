@@ -9,6 +9,7 @@ import com.biathlonapp.data.model.PdfUrlResponse
 import com.biathlonapp.data.model.RaceEvent
 import retrofit2.Retrofit
 import com.biathlonapp.data.model.AthleteResultsResponse
+import com.biathlonapp.data.model.RaceResultsResponse
 import retrofit2.converter.gson.GsonConverterFactory
 
 data class CalendarRaceResponse(
@@ -69,6 +70,10 @@ interface BiathlonApiService {
     suspend fun getRacesByDate(
         @Query("date") date: String
     ): Response<List<CalendarRaceResponse>>
+    @GET("api/race/{raceId}/results")
+    suspend fun getRaceResults(
+        @Path("raceId") raceId: String
+    ): Response<RaceResultsResponse>
 
     @GET("api/race/{raceId}/{gender}")
     suspend fun getRaceDetails(

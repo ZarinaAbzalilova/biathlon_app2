@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.biathlonapp.databinding.ItemRaceResultBinding
 
 class RaceResultsAdapter(
-    private val onPdfDownloadClick: (String) -> Unit  // Принимает pdfUrl
+    private val onPdfDownloadClick: (String) -> Unit, // Принимает pdfUrl
+    private val onRaceClick: (String) -> Unit
 ) : ListAdapter<RaceResultDisplay, RaceResultsAdapter.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,6 +31,9 @@ class RaceResultsAdapter(
             binding.textFinishPlace.text = "Место: ${result.finishPlace ?: "N/A"}"
             binding.textMissCount.text = "Промахи: ${result.missCount ?: "N/A"}"
             binding.textStartNumber.text = "Стартовый номер: ${result.startNumber ?: "N/A"}"
+            itemView.setOnClickListener {
+                result.raceId?.let { onRaceClick(it) }
+            }
 
             // Показываем кнопку PDF если есть ссылка
             if (!result.pdfUrl.isNullOrBlank()) {

@@ -1,5 +1,6 @@
 package com.biathlonapp.ui.calendar
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.biathlonapp.data.model.CalendarDay
 import com.biathlonapp.data.model.RaceEvent
 import com.biathlonapp.databinding.DialogRaceEventsBinding
+import com.biathlonapp.ui.raceprotocol.RaceProtocolActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -71,8 +73,9 @@ class RaceEventsDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun openRaceDetails(event: RaceEvent) {
-        // Открыть детали гонки или PDF протокол
-        // Можно добавить навигацию к результатам гонки
+        val intent = Intent(requireContext(), RaceProtocolActivity::class.java)
+        intent.putExtra(RaceProtocolActivity.EXTRA_RACE_ID, event.id)
+        startActivity(intent)
     }
 
     companion object {
