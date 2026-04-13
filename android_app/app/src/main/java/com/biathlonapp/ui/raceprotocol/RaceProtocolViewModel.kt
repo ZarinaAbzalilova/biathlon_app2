@@ -27,7 +27,10 @@ class RaceProtocolViewModel : ViewModel() {
             _error.value = null
 
             try {
-                android.util.Log.d("RaceProtocol", "Loading race results for ID: $raceId")
+                // Временно для теста - полный URL
+                val url = "https://biathlon-app2.onrender.com/api/race/$raceId/results"
+                android.util.Log.d("RaceProtocol", "Loading: $url")
+
                 val response = apiService.getRaceResults(raceId)
                 android.util.Log.d("RaceProtocol", "Response code: ${response.code()}")
 

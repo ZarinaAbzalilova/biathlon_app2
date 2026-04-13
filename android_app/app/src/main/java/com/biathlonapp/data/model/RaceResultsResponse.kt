@@ -30,7 +30,8 @@ data class RaceInfoFull(
     val placeRace: String,
 
     @SerializedName("pdf_urls")
-    val pdfUrls: List<PdfUrlInfo>? = null
+    val pdfUrls: List<PdfUrlInfo>? = null,
+    val gender: String? = null
 )
 
 data class PdfUrlInfo(

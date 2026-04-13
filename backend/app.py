@@ -271,13 +271,26 @@ def get_race_details(race_id, gender):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/api/race/<race_id>/results', methods=['GET'])
+@app.route('/api/race/<path:race_id>/results', methods=['GET'])
 def get_race_results(race_id):
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         
-        # Получаем информацию о гонке (без gender и pdf_url, так как их может быть несколько)
+        # Обработка race_id с гендерным суффиксом (например, 20260328_A_RCHM_Mass_М)
+        # Убираем суффикс для поиска в таблице races
+        clean_race_id = race_id
+        gender_suffix = None
+        
+        # Проверяем наличие суффикса _М или _Ж в конце
+        if race_id.endswith('_М'):
+            clean_race_id = race_id[:-2]
+            gender_suffix = 'М'
+        elif race_id.endswith('_Ж'):
+            clean_race_id = race_id[:-2]
+            gender_suffix = 'Ж'
+        
+        # Получаем информацию о гонке
         cursor.execute("""
             SELECT 
                 r.race_id,
@@ -287,7 +300,7 @@ def get_race_results(race_id):
                 r.place_race
             FROM races r
             WHERE r.race_id = %s
-        """, (race_id,))
+        """, (clean_race_id,))
         
         race_info = cursor.fetchone()
         
@@ -298,16 +311,16 @@ def get_race_results(race_id):
         if race_info['date']:
             race_info['date'] = race_info['date'].strftime('%Y-%m-%d')
         
-        # Получаем PDF URL (может быть несколько, берем первый или оба)
+        # Получаем PDF URL для конкретного пола
         cursor.execute("""
             SELECT pdf_url, gender
             FROM race_pdf_urls
-            WHERE race_id = %s
-        """, (race_id,))
+            WHERE race_id = %s AND gender = %s
+        """, (clean_race_id, gender_suffix))
         
         pdf_urls = cursor.fetchall()
         
-        # Получаем результаты спортсменов с JOIN athlete
+        # Получаем результаты спортсменов только для указанного пола
         cursor.execute("""
             SELECT 
                 r.start_number,
@@ -322,14 +335,14 @@ def get_race_results(race_id):
                 a.gender as athlete_gender
             FROM results r
             JOIN athlete a ON r.athlete_id = a.athlete_id
-            WHERE r.race_id = %s
+            WHERE r.race_id = %s AND a.gender = %s
             ORDER BY r.finish_place ASC
-        """, (race_id,))
+        """, (clean_race_id, gender_suffix))
         
         results = cursor.fetchall()
         conn.close()
         
-        # Формируем правильный ответ
+        # Формируем ответ
         return jsonify({
             "race_info": {
                 "race_id": race_info['race_id'],
@@ -337,7 +350,8 @@ def get_race_results(race_id):
                 "discipline": race_info['discipline'],
                 "date": race_info['date'],
                 "place_race": race_info['place_race'],
-                "pdf_urls": pdf_urls  # ← массив PDF для разных полов
+                "gender": gender_suffix,
+                "pdf_urls": pdf_urls
             },
             "results": results,
             "results_count": len(results)
