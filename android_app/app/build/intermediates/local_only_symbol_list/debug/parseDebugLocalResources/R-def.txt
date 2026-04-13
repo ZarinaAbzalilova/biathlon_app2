@@ -113,6 +113,7 @@ id textMon
 id textMonthYear
 id textName
 id textPreview
+id textRaceInfo
 id textRaceName
 id textRacePlace
 id textRegion
@@ -133,6 +134,13 @@ id text_athlete_rank
 id text_athlete_region
 id text_empty
 id text_error
+id text_finish_time
+id text_miss_count
+id text_place
+id text_region
+id text_results_count
+id text_sports_rank
+id text_start_number
 id toolbar
 id viewEventDot
 id viewFemaleDot
@@ -143,6 +151,7 @@ layout activity_athlete_detail
 layout activity_athlete_stats
 layout activity_main
 layout activity_news_detail
+layout activity_race_protocol
 layout activity_team_list
 layout dialog_race_events
 layout fragment_athletes
@@ -157,6 +166,7 @@ layout item_calendar_day
 layout item_favorite_athlete
 layout item_news
 layout item_race_event
+layout item_race_protocol
 layout item_race_result
 layout item_team_athlete
 layout item_team_category

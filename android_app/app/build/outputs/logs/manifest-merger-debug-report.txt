@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:2:1-44:12
+ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:2:1-45:12
 MERGED from [androidx.databinding:viewbinding:8.9.0] C:\Users\abzal\.gradle\caches\8.11.1\transforms\bdbb79c375a665a0b79611229e950c56\transformed\viewbinding-8.9.0\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\abzal\.gradle\caches\8.11.1\transforms\b4f6a3a2d2b0f4a8346638fccb3358fb\transformed\material-1.12.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.2.1] C:\Users\abzal\.gradle\caches\8.11.1\transforms\a5fcc51b13cb12a4e006ac53fa6894d8\transformed\constraintlayout-2.2.1\AndroidManifest.xml:2:1-9:12
@@ -82,8 +82,8 @@ ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:6:5-79
 	android:name
 		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:6:22-76
 application
-ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:9:5-42:19
-INJECTED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:9:5-42:19
+ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:9:5-43:19
+INJECTED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:9:5-43:19
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\abzal\.gradle\caches\8.11.1\transforms\b4f6a3a2d2b0f4a8346638fccb3358fb\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.12.0] C:\Users\abzal\.gradle\caches\8.11.1\transforms\b4f6a3a2d2b0f4a8346638fccb3358fb\transformed\material-1.12.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.2.1] C:\Users\abzal\.gradle\caches\8.11.1\transforms\a5fcc51b13cb12a4e006ac53fa6894d8\transformed\constraintlayout-2.2.1\AndroidManifest.xml:7:5-20
@@ -152,22 +152,26 @@ activity#com.biathlonapp.ui.team.TeamListActivity
 ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:33:9-62
 	android:name
 		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:33:19-59
+activity#com.biathlonapp.ui.raceprotocol.RaceProtocolActivity
+ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:34:9-74
+	android:name
+		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:34:19-71
 activity#com.biathlonapp.MainActivity
-ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:34:9-41:20
+ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:35:9-42:20
 	android:exported
-		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:36:13-36
+		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:37:13-36
 	android:name
-		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:35:13-41
+		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:36:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:37:13-40:29
+ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:38:13-41:29
 action#android.intent.action.MAIN
-ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:38:17-69
+ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:39:17-69
 	android:name
-		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:38:25-66
+		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:39:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:39:17-77
+ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:40:17-77
 	android:name
-		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:39:27-74
+		ADDED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml:40:27-74
 uses-sdk
 INJECTED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\biathlon_app2\android_app\app\src\main\AndroidManifest.xml

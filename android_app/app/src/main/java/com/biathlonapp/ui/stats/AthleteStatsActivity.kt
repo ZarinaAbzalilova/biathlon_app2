@@ -1,11 +1,17 @@
 package com.biathlonapp.ui.stats
 
+import android.R
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.biathlonapp.data.local.FavoriteResult
 import com.biathlonapp.data.repository.FavoritesRepository
 import com.biathlonapp.databinding.ActivityAthleteStatsBinding
@@ -35,7 +41,7 @@ class AthleteStatsActivity : AppCompatActivity() {
         }
 
         favoritesRepository = FavoritesRepository(this)
-        viewModel = androidx.lifecycle.ViewModelProvider(this)[AthleteStatsViewModel::class.java]
+        viewModel = ViewModelProvider(this)[AthleteStatsViewModel::class.java]
 
         setupToolbar()
         setupRecyclerView()
@@ -47,7 +53,7 @@ class AthleteStatsActivity : AppCompatActivity() {
         // Потом загружаем с сервера
         viewModel.loadAthleteResults(athleteId!!)
         observeViewModel()
-        android.util.Log.d("StatsDebug", "AthleteId: $athleteId")
+        Log.d("StatsDebug", "AthleteId: $athleteId")
     }
 
     private fun loadCachedResults() {
@@ -90,10 +96,11 @@ class AthleteStatsActivity : AppCompatActivity() {
         adapter = RaceResultsAdapter(
             onPdfDownloadClick = { pdfUrl ->
                 openPdf(pdfUrl)
-            }
+            },
+            onRaceClick = TODO()
         )
         binding.recyclerResults.apply {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@AthleteStatsActivity)
+            layoutManager = LinearLayoutManager(this@AthleteStatsActivity)
             adapter = this@AthleteStatsActivity.adapter
         }
     }
@@ -101,10 +108,10 @@ class AthleteStatsActivity : AppCompatActivity() {
     private fun setupFilterSpinner() {
         val spinnerAdapter = ArrayAdapter<String>(
             this,
-            android.R.layout.simple_spinner_item,
+            R.layout.simple_spinner_item,
             mutableListOf("Загрузка...")
         )
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spinnerDiscipline.adapter = spinnerAdapter
 
         binding.spinnerDiscipline.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -122,14 +129,14 @@ class AthleteStatsActivity : AppCompatActivity() {
     }
 
     private fun openPdf(pdfUrl: String) {
-        val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(pdfUrl))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(pdfUrl))
         startActivity(intent)
     }
 
     private fun observeViewModel() {
         // Наблюдаем за отфильтрованными результатами
         viewModel.filteredResults.observe(this) { results ->
-            android.util.Log.d("FilterDebug", "Results received: ${results.size}")
+            Log.d("FilterDebug", "Results received: ${results.size}")
             adapter.submitList(results)
 
             if (results.isEmpty()) {
@@ -143,13 +150,13 @@ class AthleteStatsActivity : AppCompatActivity() {
 
         // Наблюдаем за доступными дисциплинами
         viewModel.availableDisciplines.observe(this) { disciplines ->
-            android.util.Log.d("FilterDebug", "Disciplines received: $disciplines")
+            Log.d("FilterDebug", "Disciplines received: $disciplines")
             val spinnerAdapter = ArrayAdapter(
                 this,
-                android.R.layout.simple_spinner_item,
+                R.layout.simple_spinner_item,
                 disciplines
             )
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
             binding.spinnerDiscipline.adapter = spinnerAdapter
 
             // Показываем фильтр только если есть дисциплины (больше чем "Все дисциплины")

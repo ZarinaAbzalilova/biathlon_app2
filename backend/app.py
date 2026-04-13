@@ -270,73 +270,16 @@ def get_race_details(race_id, gender):
             
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 @app.route('/api/race/<race_id>/results', methods=['GET'])
 def get_race_results(race_id):
-    """Получить результаты гонки для финишного протокола"""
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        
-        # Получаем информацию о гонке
-        cursor.execute("""
-            SELECT 
-                r.race_id,
-                r.name_race,
-                r.discipline,
-                r.date,
-                r.place_race,
-                rpu.pdf_url,
-                rpu.gender
-            FROM races r
-            LEFT JOIN race_pdf_urls rpu ON r.race_id = rpu.race_id
-            WHERE r.race_id = %s
-        """, (race_id,))
-        
-        race_info = cursor.fetchone()
-        
-        if not race_info:
-            return jsonify({"error": "Гонка не найдена"}), 404
-        
-        # Получаем результаты спортсменов
-        cursor.execute("""
-            SELECT 
-                r.start_number,
-                r.finish_place,
-                r.miss_count,
-                r.finish_time,
-                a.athlete_id,
-                a.last_name,
-                a.first_name,
-                a.region,
-                a.sports_rank
-            FROM results r
-            JOIN athlete a ON r.athlete_id = a.athlete_id
-            WHERE r.race_id = %s
-            ORDER BY r.finish_place ASC
-        """, (race_id,))
-        
+        cursor.execute("SELECT * FROM results WHERE race_id = %s LIMIT 5", (race_id,))
         results = cursor.fetchall()
-        
-        # Преобразуем дату в строку
-        if race_info['date']:
-            race_info['date'] = race_info['date'].strftime('%Y-%m-%d')
-        
         conn.close()
-        
-        return jsonify({
-            "race_info": {
-                "race_id": race_info['race_id'],
-                "name_race": race_info['name_race'],
-                "discipline": race_info['discipline'],
-                "date": race_info['date'],
-                "place_race": race_info['place_race'],
-                "gender": race_info['gender'],
-                "pdf_url": race_info['pdf_url']
-            },
-            "results": results,
-            "results_count": len(results)
-        })
-        
+        return jsonify({"test": "ok", "count": len(results), "data": results})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 @app.route('/api/athletes/by-team', methods=['GET'])

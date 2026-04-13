@@ -27,13 +27,17 @@ class RaceProtocolViewModel : ViewModel() {
             _error.value = null
 
             try {
+                android.util.Log.d("RaceProtocol", "Loading race results for ID: $raceId")
                 val response = apiService.getRaceResults(raceId)
+                android.util.Log.d("RaceProtocol", "Response code: ${response.code()}")
+
                 if (response.isSuccessful && response.body() != null) {
                     _raceResults.value = response.body()
                 } else {
                     _error.value = "Ошибка загрузки: ${response.code()}"
                 }
             } catch (e: Exception) {
+                android.util.Log.e("RaceProtocol", "Error: ${e.message}")
                 _error.value = e.message ?: "Ошибка подключения"
             }
 
