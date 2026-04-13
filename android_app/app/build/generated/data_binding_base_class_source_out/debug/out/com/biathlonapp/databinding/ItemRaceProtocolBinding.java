@@ -20,6 +20,9 @@ public final class ItemRaceProtocolBinding implements ViewBinding {
   private final MaterialCardView rootView;
 
   @NonNull
+  public final TextView textAthleteFirstName;
+
+  @NonNull
   public final TextView textAthleteName;
 
   @NonNull
@@ -41,10 +44,12 @@ public final class ItemRaceProtocolBinding implements ViewBinding {
   public final TextView textStartNumber;
 
   private ItemRaceProtocolBinding(@NonNull MaterialCardView rootView,
-      @NonNull TextView textAthleteName, @NonNull TextView textFinishTime,
-      @NonNull TextView textMissCount, @NonNull TextView textPlace, @NonNull TextView textRegion,
-      @NonNull TextView textSportsRank, @NonNull TextView textStartNumber) {
+      @NonNull TextView textAthleteFirstName, @NonNull TextView textAthleteName,
+      @NonNull TextView textFinishTime, @NonNull TextView textMissCount,
+      @NonNull TextView textPlace, @NonNull TextView textRegion, @NonNull TextView textSportsRank,
+      @NonNull TextView textStartNumber) {
     this.rootView = rootView;
+    this.textAthleteFirstName = textAthleteFirstName;
     this.textAthleteName = textAthleteName;
     this.textFinishTime = textFinishTime;
     this.textMissCount = textMissCount;
@@ -81,6 +86,12 @@ public final class ItemRaceProtocolBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.text_athlete_first_name;
+      TextView textAthleteFirstName = ViewBindings.findChildViewById(rootView, id);
+      if (textAthleteFirstName == null) {
+        break missingId;
+      }
+
       id = R.id.text_athlete_name;
       TextView textAthleteName = ViewBindings.findChildViewById(rootView, id);
       if (textAthleteName == null) {
@@ -123,8 +134,9 @@ public final class ItemRaceProtocolBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ItemRaceProtocolBinding((MaterialCardView) rootView, textAthleteName,
-          textFinishTime, textMissCount, textPlace, textRegion, textSportsRank, textStartNumber);
+      return new ItemRaceProtocolBinding((MaterialCardView) rootView, textAthleteFirstName,
+          textAthleteName, textFinishTime, textMissCount, textPlace, textRegion, textSportsRank,
+          textStartNumber);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

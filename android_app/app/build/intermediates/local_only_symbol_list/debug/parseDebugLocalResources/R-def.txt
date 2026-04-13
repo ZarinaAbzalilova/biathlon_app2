@@ -128,6 +128,7 @@ id textTime
 id textTitle
 id textTue
 id textWed
+id text_athlete_first_name
 id text_athlete_gender
 id text_athlete_name
 id text_athlete_rank

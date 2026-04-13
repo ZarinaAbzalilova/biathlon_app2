@@ -40,7 +40,8 @@ class RaceProtocolAdapter(
         fun bind(result: RaceResultItem) {
             binding.textPlace.text = result.finishPlace?.toString() ?: "-"
             binding.textStartNumber.text = result.startNumber?.toString() ?: "-"
-            binding.textAthleteName.text = "${result.lastName} ${result.firstName}"
+            binding.textAthleteName.text = result.lastName
+            binding.textAthleteFirstName.text = result.firstName
             binding.textMissCount.text = result.missCount?.toString() ?: "-"
             binding.textFinishTime.text = result.finishTime ?: "-"
 

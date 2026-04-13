@@ -31,6 +31,7 @@ class RaceResultsAdapter(
             binding.textFinishPlace.text = "Место: ${result.finishPlace ?: "N/A"}"
             binding.textMissCount.text = "Промахи: ${result.missCount ?: "N/A"}"
             binding.textStartNumber.text = "Стартовый номер: ${result.startNumber ?: "N/A"}"
+
             itemView.setOnClickListener {
                 result.raceId?.let { onRaceClick(it) }
             }
@@ -44,6 +45,7 @@ class RaceResultsAdapter(
             } else {
                 binding.buttonDownloadPdf.visibility = android.view.View.GONE
             }
+
         }
     }
 

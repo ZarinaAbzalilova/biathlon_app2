@@ -75,8 +75,7 @@ class RaceEventsDialogFragment : BottomSheetDialogFragment() {
     private fun openRaceDetails(event: RaceEvent) {
         val intent = Intent(requireContext(), RaceProtocolActivity::class.java)
         intent.putExtra(RaceProtocolActivity.EXTRA_RACE_ID, event.id)
-        startActivity(intent)
-    }
+        startActivity(intent)}
 
     companion object {
         fun newInstance(day: CalendarDay): RaceEventsDialogFragment {

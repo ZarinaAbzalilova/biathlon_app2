@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.biathlonapp.data.local.FavoriteResult
 import com.biathlonapp.data.repository.FavoritesRepository
 import com.biathlonapp.databinding.ActivityAthleteStatsBinding
+import com.biathlonapp.ui.raceprotocol.RaceProtocolActivity
 import kotlinx.coroutines.launch
 
 class AthleteStatsActivity : AppCompatActivity() {
@@ -97,7 +98,12 @@ class AthleteStatsActivity : AppCompatActivity() {
             onPdfDownloadClick = { pdfUrl ->
                 openPdf(pdfUrl)
             },
-            onRaceClick = TODO()
+            onRaceClick = { raceId ->
+                // Открываем протокол гонки
+                val intent = Intent(this, RaceProtocolActivity::class.java)
+                intent.putExtra(RaceProtocolActivity.EXTRA_RACE_ID, raceId)
+                startActivity(intent)
+            }
         )
         binding.recyclerResults.apply {
             layoutManager = LinearLayoutManager(this@AthleteStatsActivity)

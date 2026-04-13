@@ -4,12 +4,12 @@
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\drawable\\ic_launcher_background.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-45:\\mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\mipmap-hdpi\\ic_launcher_round.webp"
-    },
-    {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-45:\\layout_fragment_search.xml.flat",
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\fragment_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-45:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\mipmap-hdpi\\ic_launcher_round.webp"
     },
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-45:\\mipmap-hdpi_ic_launcher_foreground.webp.flat",
@@ -116,8 +116,8 @@
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-45:/layout_item_race_protocol.xml.flat",
-        "source": "com.biathlonapp-main-47:/layout/item_race_protocol.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-45:\\layout_item_race_protocol.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_race_protocol.xml"
     },
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-45:\\layout_fragment_team_list.xml.flat",
@@ -222,6 +222,10 @@
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-45:\\drawable_ic_google_calendar.xml.flat",
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\drawable\\ic_google_calendar.xml"
+    },
+    {
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-45:\\layout_activity_race_protocol.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\activity_race_protocol.xml"
     },
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-45:\\layout_item_team_athlete.xml.flat",
