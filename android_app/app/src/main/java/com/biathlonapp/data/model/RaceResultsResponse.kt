@@ -29,16 +29,11 @@ data class RaceInfoFull(
     @SerializedName("place_race")
     val placeRace: String,
 
-    @SerializedName("pdf_urls")
-    val pdfUrls: List<PdfUrlInfo>? = null
-)
-
-data class PdfUrlInfo(
-    @SerializedName("pdf_url")
-    val pdfUrl: String,
-
     @SerializedName("gender")
-    val gender: String
+    val gender: String? = null,
+
+    @SerializedName("pdf_url")
+    val pdfUrl: String? = null
 )
 
 data class RaceResultItem(
@@ -67,8 +62,5 @@ data class RaceResultItem(
     val region: String?,
 
     @SerializedName("sports_rank")
-    val sportsRank: String?,
-
-    @SerializedName("athlete_gender")
-    val athleteGender: String?
+    val sportsRank: String?
 )

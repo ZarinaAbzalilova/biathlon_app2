@@ -4,18 +4,20 @@ import mysql.connector
 import json
 import os
 import pymysql
-from database import get_db_connection  
+from database import get_db_connection  # ← Это импорт из отдельного файла!
+# УДАЛИТЕ: from config import Config  # Больше не нужно здесь
 
 pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 CORS(app)
 
+# УДАЛИТЕ все строки с load_dotenv() и app.config
 
 # ========== ОСНОВНЫЕ ENDPOINTS ==========
 @app.route('/test_db')
 def test_db():
     try:
-        conn = get_db_connection()  
+        conn = get_db_connection()  # ← Используем новую функцию
         cursor = conn.cursor()
         cursor.execute('SELECT 1')
         result = cursor.fetchone()
@@ -275,15 +277,18 @@ def get_race_results(race_id):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         
-        # Получаем информацию о гонке (без gender и pdf_url, так как их может быть несколько)
+        # Получаем информацию о гонке
         cursor.execute("""
             SELECT 
                 r.race_id,
                 r.name_race,
                 r.discipline,
                 r.date,
-                r.place_race
+                r.place_race,
+                rpu.pdf_url,
+                rpu.gender
             FROM races r
+            LEFT JOIN race_pdf_urls rpu ON r.race_id = rpu.race_id
             WHERE r.race_id = %s
         """, (race_id,))
         
@@ -296,15 +301,6 @@ def get_race_results(race_id):
         if race_info['date']:
             race_info['date'] = race_info['date'].strftime('%Y-%m-%d')
         
-        # Получаем PDF URL (может быть несколько, берем первый или оба)
-        cursor.execute("""
-            SELECT pdf_url, gender
-            FROM race_pdf_urls
-            WHERE race_id = %s
-        """, (race_id,))
-        
-        pdf_urls = cursor.fetchall()
-        
         # Получаем результаты спортсменов с JOIN athlete
         cursor.execute("""
             SELECT 
@@ -316,8 +312,7 @@ def get_race_results(race_id):
                 a.last_name,
                 a.first_name,
                 a.region,
-                a.sports_rank,
-                a.gender as athlete_gender
+                a.sports_rank
             FROM results r
             JOIN athlete a ON r.athlete_id = a.athlete_id
             WHERE r.race_id = %s
@@ -335,7 +330,8 @@ def get_race_results(race_id):
                 "discipline": race_info['discipline'],
                 "date": race_info['date'],
                 "place_race": race_info['place_race'],
-                "pdf_urls": pdf_urls  # ← массив PDF для разных полов
+                "gender": race_info['gender'],
+                "pdf_url": race_info['pdf_url']
             },
             "results": results,
             "results_count": len(results)
@@ -344,7 +340,6 @@ def get_race_results(race_id):
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": str(e)}), 500
-    
 @app.route('/api/athletes/by-team', methods=['GET'])
 def get_athletes_by_team():
     """Получить спортсменов по команде"""
@@ -421,6 +416,8 @@ def get_races():
         return jsonify(races)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
 
 @app.route('/api/debug/check-pdf-coverage', methods=['GET'])
 def check_pdf_coverage():
