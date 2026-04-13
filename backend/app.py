@@ -277,18 +277,15 @@ def get_race_results(race_id):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         
-        # Получаем информацию о гонке
+        # Получаем информацию о гонке (без gender и pdf_url, так как их может быть несколько)
         cursor.execute("""
             SELECT 
                 r.race_id,
                 r.name_race,
                 r.discipline,
                 r.date,
-                r.place_race,
-                rpu.pdf_url,
-                rpu.gender
+                r.place_race
             FROM races r
-            LEFT JOIN race_pdf_urls rpu ON r.race_id = rpu.race_id
             WHERE r.race_id = %s
         """, (race_id,))
         
@@ -301,6 +298,15 @@ def get_race_results(race_id):
         if race_info['date']:
             race_info['date'] = race_info['date'].strftime('%Y-%m-%d')
         
+        # Получаем PDF URL (может быть несколько, берем первый или оба)
+        cursor.execute("""
+            SELECT pdf_url, gender
+            FROM race_pdf_urls
+            WHERE race_id = %s
+        """, (race_id,))
+        
+        pdf_urls = cursor.fetchall()
+        
         # Получаем результаты спортсменов с JOIN athlete
         cursor.execute("""
             SELECT 
@@ -312,7 +318,8 @@ def get_race_results(race_id):
                 a.last_name,
                 a.first_name,
                 a.region,
-                a.sports_rank
+                a.sports_rank,
+                a.gender as athlete_gender
             FROM results r
             JOIN athlete a ON r.athlete_id = a.athlete_id
             WHERE r.race_id = %s
@@ -330,8 +337,7 @@ def get_race_results(race_id):
                 "discipline": race_info['discipline'],
                 "date": race_info['date'],
                 "place_race": race_info['place_race'],
-                "gender": race_info['gender'],
-                "pdf_url": race_info['pdf_url']
+                "pdf_urls": pdf_urls  # ← массив PDF для разных полов
             },
             "results": results,
             "results_count": len(results)
