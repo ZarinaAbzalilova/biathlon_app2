@@ -23,7 +23,7 @@ class AthleteStatsActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_ATHLETE_ID = "athlete_id"
     }
-
+    private var athleteGender: String? = null
     private lateinit var binding: ActivityAthleteStatsBinding
     private lateinit var viewModel: AthleteStatsViewModel
     private lateinit var favoritesRepository: FavoritesRepository
@@ -99,9 +99,17 @@ class AthleteStatsActivity : AppCompatActivity() {
                 openPdf(pdfUrl)
             },
             onRaceClick = { raceId ->
-                // Открываем протокол гонки
+                // Добавляем пол спортсмена к raceId
+                val genderSuffix = when (athleteGender) {
+                    "М" -> "_М"
+                    "Ж" -> "_Ж"
+                    else -> ""
+                }
+                val fullRaceId = "$raceId$genderSuffix"
+                Log.d("StatsDebug", "Opening race protocol: $fullRaceId")
+
                 val intent = Intent(this, RaceProtocolActivity::class.java)
-                intent.putExtra(RaceProtocolActivity.EXTRA_RACE_ID, raceId)
+                intent.putExtra(RaceProtocolActivity.EXTRA_RACE_ID, fullRaceId)
                 startActivity(intent)
             }
         )
@@ -140,6 +148,10 @@ class AthleteStatsActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
+        viewModel.athleteGender.observe(this) { gender ->
+            athleteGender = gender
+            Log.d("StatsDebug", "Athlete gender: $gender")
+        }
         // Наблюдаем за отфильтрованными результатами
         viewModel.filteredResults.observe(this) { results ->
             Log.d("FilterDebug", "Results received: ${results.size}")

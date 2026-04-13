@@ -29,6 +29,9 @@ class AthleteStatsViewModel(application: Application) : AndroidViewModel(applica
     private val _isFromCache = MutableLiveData(false)
     val isFromCache: LiveData<Boolean> = _isFromCache
 
+    private val _athleteGender = MutableLiveData<String?>()
+    val athleteGender: LiveData<String?> = _athleteGender
+
     // Новые поля для фильтрации
     private val _availableDisciplines = MutableLiveData<List<String>>()
     val availableDisciplines: LiveData<List<String>> = _availableDisciplines
@@ -60,6 +63,7 @@ class AthleteStatsViewModel(application: Application) : AndroidViewModel(applica
             // Загружаем с сервера
             when (val result = repository.getAthleteResults(athleteId)) {
                 is Result.Success -> {
+                    _athleteGender.value = result.data.athlete.gender
                     _athleteResults.value = result.data
 
                     // Преобразуем в RaceResultDisplay для отображения
