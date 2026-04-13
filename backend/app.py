@@ -276,11 +276,69 @@ def get_race_results(race_id):
     try:
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM results WHERE race_id = %s LIMIT 5", (race_id,))
+        
+        # Получаем информацию о гонке
+        cursor.execute("""
+            SELECT 
+                r.race_id,
+                r.name_race,
+                r.discipline,
+                r.date,
+                r.place_race,
+                rpu.pdf_url,
+                rpu.gender
+            FROM races r
+            LEFT JOIN race_pdf_urls rpu ON r.race_id = rpu.race_id
+            WHERE r.race_id = %s
+        """, (race_id,))
+        
+        race_info = cursor.fetchone()
+        
+        if not race_info:
+            return jsonify({"error": "Гонка не найдена"}), 404
+        
+        # Преобразуем дату в строку
+        if race_info['date']:
+            race_info['date'] = race_info['date'].strftime('%Y-%m-%d')
+        
+        # Получаем результаты спортсменов с JOIN athlete
+        cursor.execute("""
+            SELECT 
+                r.start_number,
+                r.finish_place,
+                r.miss_count,
+                r.finish_time,
+                a.athlete_id,
+                a.last_name,
+                a.first_name,
+                a.region,
+                a.sports_rank
+            FROM results r
+            JOIN athlete a ON r.athlete_id = a.athlete_id
+            WHERE r.race_id = %s
+            ORDER BY r.finish_place ASC
+        """, (race_id,))
+        
         results = cursor.fetchall()
         conn.close()
-        return jsonify({"test": "ok", "count": len(results), "data": results})
+        
+        # Формируем правильный ответ
+        return jsonify({
+            "race_info": {
+                "race_id": race_info['race_id'],
+                "name_race": race_info['name_race'],
+                "discipline": race_info['discipline'],
+                "date": race_info['date'],
+                "place_race": race_info['place_race'],
+                "gender": race_info['gender'],
+                "pdf_url": race_info['pdf_url']
+            },
+            "results": results,
+            "results_count": len(results)
+        })
+        
     except Exception as e:
+        print(f"Error: {e}")
         return jsonify({"error": str(e)}), 500
 @app.route('/api/athletes/by-team', methods=['GET'])
 def get_athletes_by_team():
