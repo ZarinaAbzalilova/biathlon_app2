@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.biathlonapp.data.model.News
 import com.biathlonapp.databinding.FragmentNewsBinding
@@ -14,7 +13,7 @@ class NewsFragment : Fragment() {
 
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: NewsViewModel by viewModels()
+    private lateinit var viewModel: NewsViewModel  // ← исправлено
     private lateinit var adapter: NewsAdapter
 
     override fun onCreateView(
@@ -23,6 +22,7 @@ class NewsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
+        viewModel = NewsViewModel(requireContext())  // ← исправлено: создаем после inflate
         return binding.root
     }
 
@@ -32,13 +32,11 @@ class NewsFragment : Fragment() {
         setupRecyclerView()
         setupSwipeRefresh()
         observeViewModel()
-
         viewModel.loadNews()
     }
 
     private fun setupRecyclerView() {
         adapter = NewsAdapter { news ->
-            // Открываем детальную страницу новости
             openNewsDetail(news)
         }
 
@@ -50,7 +48,7 @@ class NewsFragment : Fragment() {
 
     private fun setupSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refresh()
+            viewModel.refreshNews()  // ← исправлено: refreshNews() вместо refresh()
         }
     }
 

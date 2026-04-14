@@ -1,16 +1,18 @@
 package com.biathlonapp.ui.news
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.biathlonapp.data.model.News
 import com.biathlonapp.data.repository.NewsRepository
+import com.biathlonapp.utils.Result
 import kotlinx.coroutines.launch
 
-class NewsViewModel : ViewModel() {
+class NewsViewModel(private val context: Context) : ViewModel() {
 
-    private val repository = NewsRepository()
+    private val repository = NewsRepository(context)
 
     private val _news = MutableLiveData<List<News>>()
     val news: LiveData<List<News>> = _news
@@ -26,27 +28,34 @@ class NewsViewModel : ViewModel() {
             _isLoading.value = true
             _error.value = null
 
-            try {
-                val result = repository.getAllNews()
-                result.fold(
-                    onSuccess = { newsList ->
-                        _news.value = newsList
-                        _isLoading.value = false
-                    },
-                    onFailure = { exception ->
-                        _error.value = "Ошибка загрузки новостей: ${exception.message}"
-                        _isLoading.value = false
-                    }
-                )
-            } catch (e: Exception) {
-                _error.value = "Ошибка: ${e.message}"
-                _isLoading.value = false
+            val result: Result<List<News>> = repository.getAllNews(forceRefresh = false)  // ← указали тип
+            when (result) {
+                is Result.Success<List<News>> -> {  // ← указали тип
+                    _news.value = result.data
+                    _isLoading.value = false
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.message ?: "Ошибка загрузки новостей"
+                    _isLoading.value = false
+                }
             }
         }
     }
 
-    fun refresh() {
-        loadNews()
+    fun refreshNews() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val result: Result<List<News>> = repository.getAllNews(forceRefresh = true)  // ← указали тип
+            when (result) {
+                is Result.Success<List<News>> -> {  // ← указали тип
+                    _news.value = result.data
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.message ?: "Ошибка обновления"
+                }
+            }
+            _isLoading.value = false
+        }
     }
 
     fun clearError() {

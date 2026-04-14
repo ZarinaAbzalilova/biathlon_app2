@@ -6,14 +6,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [FavoriteAthlete::class, FavoriteResult::class],  // Добавили FavoriteResult
-    version = 2,  // Увеличили версию БД
+    entities = [FavoriteAthlete::class, FavoriteResult::class, CachedNews::class],  // Добавили FavoriteResult
+    version = 3,  // Увеличили версию БД
     exportSchema = false
 )
 abstract class FavoriteDatabase : RoomDatabase() {
 
     abstract fun favoriteAthleteDao(): FavoriteAthleteDao
-    abstract fun favoriteResultDao(): FavoriteResultDao  // Добавили Dao для результатов
+    abstract fun favoriteResultDao(): FavoriteResultDao
+    abstract fun newsDao(): NewsDao
 
     companion object {
         @Volatile

@@ -1,19 +1,27 @@
 package com.biathlonapp.data.repository
 
+import android.content.Context
 import android.util.Log
 import com.biathlonapp.data.api.VkApiService
 import com.biathlonapp.data.api.VkPost
+import com.biathlonapp.data.local.CachedNews
+import com.biathlonapp.data.local.FavoriteDatabase
 import com.biathlonapp.data.model.News
 import com.biathlonapp.data.model.NewsSource
+import com.biathlonapp.utils.ErrorHandler
+import com.biathlonapp.utils.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.biathlonapp.utils.ErrorHandler
 import java.util.*
 
-class NewsRepository {
+class NewsRepository(private val context: Context) {
 
-    // Твои данные из кабинета VK
+    private val database = FavoriteDatabase.getInstance(context)
+    private val newsDao = database.newsDao()
+
     private val clientId = "54470422"
     private val clientSecret = "gOOa0qgwaAgBEsP5pQLB"
 
@@ -32,7 +40,6 @@ class NewsRepository {
                 chain.proceed(request)
             }
             .build()
-        // ...
 
         Retrofit.Builder()
             .baseUrl("https://api.vk.com/")
@@ -41,24 +48,67 @@ class NewsRepository {
             .build()
             .create(VkApiService::class.java)
     }
+
     private val communities = mapOf(
-        NewsSource.VK_SBR to "-636950"  // Союз биатлонистов России
-        // Добавь другие сообщества по мере необходимости
+        NewsSource.VK_SBR to "-636950"
     )
 
+    suspend fun getAllNews(forceRefresh: Boolean = false): Result<List<News>> = withContext(Dispatchers.IO) {
+        // 1. Сначала пробуем загрузить из кэша
+        if (!forceRefresh) {
+            val cachedNews = getCachedNews()
+            if (cachedNews.isNotEmpty()) {
+                Log.d("NewsRepository", "📦 Loaded ${cachedNews.size} news from cache")
+                refreshCacheInBackground()
+                return@withContext Result.Success(cachedNews)
+            }
+        }
 
-    suspend fun getNewsFromVk(
+        // 2. Если кэш пуст или forceRefresh=true, загружаем с сервера
+        try {
+            val allNews = mutableListOf<News>()
+            var lastError: Exception? = null
+
+            for ((source, ownerId) in communities) {
+                try {
+                    val result = getNewsFromVk(source, 20)
+                    when (result) {
+                        is Result.Success -> {
+                            allNews.addAll(result.data)
+                        }
+                        is Result.Error -> {
+                            lastError = result.exception
+                        }
+                    }
+                } catch (e: Exception) {
+                    lastError = e
+                }
+            }
+
+            if (allNews.isNotEmpty()) {
+                allNews.sortByDescending { it.date }
+                saveNewsToCache(allNews)
+                Result.Success(allNews)
+            } else if (lastError != null) {
+                Result.Error(lastError)
+            } else {
+                Result.Success(emptyList())
+            }
+        } catch (e: Exception) {
+            Log.e("NewsRepository", "Error loading news", e)
+            Result.Error(Exception(ErrorHandler.getErrorMessage(e)))
+        }
+    }
+
+    private suspend fun getNewsFromVk(
         source: NewsSource,
         count: Int = 20
     ): Result<List<News>> {
         return try {
             val ownerId = communities[source]
             if (ownerId == null) {
-                Log.e("NewsRepository", "No ownerId for source $source")
-                return Result.success(emptyList())
+                return Result.Success(emptyList())
             }
-
-            Log.d("NewsRepository", "Making API request to VK: ownerId=$ownerId, count=$count")
 
             val response = api.getWallPosts(
                 ownerId = ownerId,
@@ -67,97 +117,102 @@ class NewsRepository {
 
             if (response.error != null) {
                 val error = response.error
-                Log.e("NewsRepository", "VK API error: ${error.error_code} - ${error.error_msg}")
-                return Result.failure(Exception("VK API error: ${error.error_msg}"))
+                return Result.Error(Exception("VK API error: ${error.error_msg}"))
             }
 
             val responseData = response.response
             if (responseData == null) {
-                Log.e("NewsRepository", "VK API response is null")
-                return Result.failure(Exception("Empty response from VK API"))
+                return Result.Error(Exception("Empty response from VK API"))
             }
 
-            Log.d("NewsRepository", "VK API response received. Items count: ${responseData.items.size}")
-
-            val news = responseData.items.map { post ->
-                convertVkPostToNews(post, source)
+            val news = responseData.items
+                .filter { post -> post.text.isNotEmpty() }  // ← только с текстом
+                .map { post ->
+                    convertVkPostToNews(post, source)
             }
 
-            Result.success(news)
+            Result.Success(news)
         } catch (e: Exception) {
-            Log.e("NewsRepository", "Error loading news from $source", e)
-            // ← Добавляем понятное сообщение
-            Result.failure(Exception(ErrorHandler.getErrorMessage(e)))
+            Result.Error(Exception(ErrorHandler.getErrorMessage(e)))
         }
     }
 
-    // Временный метод для проверки ID
-    suspend fun checkCommunityId() {
+    private suspend fun getCachedNews(): List<News> {
+        return try {
+            val cached = newsDao.getAllNews()
+            cached.map { cachedNews ->
+                News(
+                    id = cachedNews.id,
+                    title = cachedNews.title,
+                    content = cachedNews.content,
+                    date = Date(cachedNews.date),
+                    imageUrl = cachedNews.imageUrl,
+                    source = NewsSource.valueOf(cachedNews.source),
+                    vkPostId = cachedNews.vkPostId,
+                    likesCount = cachedNews.likesCount,
+                    commentsCount = cachedNews.commentsCount,
+                    repostsCount = cachedNews.repostsCount
+                )
+            }
+        } catch (e: Exception) {
+            Log.e("NewsRepository", "Error reading cache", e)
+            emptyList()
+        }
+    }
+
+    private suspend fun saveNewsToCache(news: List<News>) {
         try {
-            val ownerId = communities[NewsSource.VK_SBR] ?: return
-            Log.d("NewsRepository", "Checking community with ownerId: $ownerId")
+            val cachedNewsList = news.map { newsItem ->
+                CachedNews(
+                    id = newsItem.id,
+                    title = newsItem.title,
+                    content = newsItem.content,
+                    date = newsItem.date.time,
+                    imageUrl = newsItem.imageUrl,
+                    source = newsItem.source.name,
+                    vkPostId = newsItem.vkPostId,
+                    likesCount = newsItem.likesCount,
+                    commentsCount = newsItem.commentsCount,
+                    repostsCount = newsItem.repostsCount
+                )
+            }
+            newsDao.insertAll(cachedNewsList)
+            Log.d("NewsRepository", "💾 Saved ${cachedNewsList.size} news to cache")
+        } catch (e: Exception) {
+            Log.e("NewsRepository", "Error saving to cache", e)
+        }
+    }
 
-            val response = api.getWallPosts(ownerId = ownerId, count = 1)
-
-            if (response.error != null) {
-                Log.e("NewsRepository", "Error: ${response.error.error_code} - ${response.error.error_msg}")
-            } else {
-                Log.d("NewsRepository", "Success! Community exists")
+    private suspend fun refreshCacheInBackground() {
+        try {
+            val allNews = mutableListOf<News>()
+            for ((source, ownerId) in communities) {
+                val result = getNewsFromVk(source, 20)
+                when (result) {
+                    is Result.Success -> {
+                        allNews.addAll(result.data)
+                    }
+                    else -> {}
+                }
+            }
+            if (allNews.isNotEmpty()) {
+                allNews.sortByDescending { it.date }
+                saveNewsToCache(allNews)
+                Log.d("NewsRepository", "🔄 Background cache refresh completed")
             }
         } catch (e: Exception) {
-            Log.e("NewsRepository", "Check failed", e)
+            Log.e("NewsRepository", "Background refresh failed", e)
         }
     }
-    suspend fun getAllNews(): Result<List<News>> {
-        val allNews = mutableListOf<News>()
-        var lastError: Exception? = null
 
-        Log.d("NewsRepository", "🟢 Starting to load news")
-        Log.d("NewsRepository", "Client ID: $clientId")
-        Log.d("NewsRepository", "Client Secret: ${clientSecret.take(3)}...")
-
-        communities.forEach { (source, ownerId) ->
-            Log.d("NewsRepository", "Loading from $source with ownerId=$ownerId")
-            try {
-                val result = getNewsFromVk(source, 10)
-                if (result.isSuccess) {
-                    val newsList = result.getOrNull()
-                    Log.d("NewsRepository", "✅ Loaded ${newsList?.size} news from $source")
-                    newsList?.let { allNews.addAll(it) }
-                } else {
-                    val error = result.exceptionOrNull()
-                    Log.e("NewsRepository", "❌ Failed to load from $source", error)
-                    lastError = error as? Exception ?: Exception("Unknown error")
-                }
-            } catch (e: Exception) {
-                Log.e("NewsRepository", "❌ Exception loading from $source", e)
-                lastError = e
-            }
-        }
-
-        Log.d("NewsRepository", "📊 Total news loaded: ${allNews.size}")
-
-        // Сортируем по дате (свежие сверху)
-        allNews.sortByDescending { it.date }
-
-        return if (allNews.isNotEmpty()) {
-            Result.success(allNews)
-        } else if (lastError != null) {
-            Result.failure(lastError!!)
-        } else {
-            Result.success(emptyList())
-        }
-    }
     private fun convertVkPostToNews(post: VkPost, source: NewsSource): News {
-        val date = Date(post.date * 1000) // VK timestamp в секундах
+        val date = Date(post.date * 1000)
 
-        // Получаем первое изображение, если есть
         var imageUrl: String? = null
         post.attachments?.firstOrNull { it.type == "photo" }?.let { attachment ->
             imageUrl = attachment.photo?.getMaxSizeUrl()
         }
 
-        // Обрезаем текст для заголовка (первые 100 символов)
         val title = if (post.text.isNotEmpty()) {
             post.text.take(100).trim() + if (post.text.length > 100) "..." else ""
         } else {
@@ -167,7 +222,7 @@ class NewsRepository {
         return News(
             id = "${source.name}_${post.id}",
             title = title,
-            content = post.text.ifEmpty() { "Новость без текста" },
+            content = post.text.ifEmpty { "Новость без текста" },
             date = date,
             imageUrl = imageUrl,
             source = source,

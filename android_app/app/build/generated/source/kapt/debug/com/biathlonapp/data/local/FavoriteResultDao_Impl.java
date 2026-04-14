@@ -102,8 +102,7 @@ public final class FavoriteResultDao_Impl implements FavoriteResultDao {
   }
 
   @Override
-  public Object insertResult(final FavoriteResult result,
-      final Continuation<? super Unit> $completion) {
+  public Object insertResult(final FavoriteResult result, final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -117,12 +116,12 @@ public final class FavoriteResultDao_Impl implements FavoriteResultDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
   public Object insertAllResults(final List<FavoriteResult> results,
-      final Continuation<? super Unit> $completion) {
+      final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -136,12 +135,12 @@ public final class FavoriteResultDao_Impl implements FavoriteResultDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
   public Object deleteResultsForAthlete(final String athleteId,
-      final Continuation<? super Unit> $completion) {
+      final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -166,12 +165,12 @@ public final class FavoriteResultDao_Impl implements FavoriteResultDao {
           __preparedStmtOfDeleteResultsForAthlete.release(_stmt);
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
   public Object getResultsForAthlete(final String athleteId,
-      final Continuation<? super List<FavoriteResult>> $completion) {
+      final Continuation<? super List<FavoriteResult>> arg1) {
     final String _sql = "SELECT * FROM favorite_results WHERE athleteId = ? ORDER BY date DESC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
@@ -261,12 +260,11 @@ public final class FavoriteResultDao_Impl implements FavoriteResultDao {
           _statement.release();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
-  public Object hasResults(final String athleteId,
-      final Continuation<? super Integer> $completion) {
+  public Object hasResults(final String athleteId, final Continuation<? super Integer> arg1) {
     final String _sql = "SELECT COUNT(*) FROM favorite_results WHERE athleteId = ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
@@ -300,7 +298,7 @@ public final class FavoriteResultDao_Impl implements FavoriteResultDao {
           _statement.release();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @NonNull

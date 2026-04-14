@@ -162,7 +162,7 @@ public final class FavoriteAthleteDao_Impl implements FavoriteAthleteDao {
 
   @Override
   public Object insertFavorite(final FavoriteAthlete athlete,
-      final Continuation<? super Unit> $completion) {
+      final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -176,12 +176,12 @@ public final class FavoriteAthleteDao_Impl implements FavoriteAthleteDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
   public Object deleteFavorite(final FavoriteAthlete athlete,
-      final Continuation<? super Unit> $completion) {
+      final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -195,12 +195,11 @@ public final class FavoriteAthleteDao_Impl implements FavoriteAthleteDao {
           __db.endTransaction();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
-  public Object deleteFavoriteById(final String athleteId,
-      final Continuation<? super Unit> $completion) {
+  public Object deleteFavoriteById(final String athleteId, final Continuation<? super Unit> arg1) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -225,12 +224,12 @@ public final class FavoriteAthleteDao_Impl implements FavoriteAthleteDao {
           __preparedStmtOfDeleteFavoriteById.release(_stmt);
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
   public Object updateLastUpdated(final String athleteId, final long timestamp,
-      final Continuation<? super Unit> $completion) {
+      final Continuation<? super Unit> arg2) {
     return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
       @Override
       @NonNull
@@ -257,11 +256,11 @@ public final class FavoriteAthleteDao_Impl implements FavoriteAthleteDao {
           __preparedStmtOfUpdateLastUpdated.release(_stmt);
         }
       }
-    }, $completion);
+    }, arg2);
   }
 
   @Override
-  public Object getAllFavorites(final Continuation<? super List<FavoriteAthlete>> $completion) {
+  public Object getAllFavorites(final Continuation<? super List<FavoriteAthlete>> arg0) {
     final String _sql = "SELECT * FROM favorite_athletes ORDER BY dateAdded DESC";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
@@ -385,12 +384,12 @@ public final class FavoriteAthleteDao_Impl implements FavoriteAthleteDao {
           _statement.release();
         }
       }
-    }, $completion);
+    }, arg0);
   }
 
   @Override
   public Object getFavoriteById(final String athleteId,
-      final Continuation<? super FavoriteAthlete> $completion) {
+      final Continuation<? super FavoriteAthlete> arg1) {
     final String _sql = "SELECT * FROM favorite_athletes WHERE athleteId = ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
@@ -520,12 +519,11 @@ public final class FavoriteAthleteDao_Impl implements FavoriteAthleteDao {
           _statement.release();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @Override
-  public Object isFavorite(final String athleteId,
-      final Continuation<? super Boolean> $completion) {
+  public Object isFavorite(final String athleteId, final Continuation<? super Boolean> arg1) {
     final String _sql = "SELECT EXISTS(SELECT 1 FROM favorite_athletes WHERE athleteId = ?)";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
@@ -559,7 +557,7 @@ public final class FavoriteAthleteDao_Impl implements FavoriteAthleteDao {
           _statement.release();
         }
       }
-    }, $completion);
+    }, arg1);
   }
 
   @NonNull
