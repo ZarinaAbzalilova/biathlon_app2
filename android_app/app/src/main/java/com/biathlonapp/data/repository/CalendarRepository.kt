@@ -6,6 +6,7 @@ import com.biathlonapp.data.model.RaceEvent
 import com.biathlonapp.utils.Result
 import java.text.SimpleDateFormat
 import java.util.*
+import com.biathlonapp.utils.ErrorHandler
 
 class CalendarRepository(
     private val apiService: BiathlonApiService
@@ -43,7 +44,7 @@ class CalendarRepository(
                 Result.Error(Exception("Ошибка загрузки: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.Error(e)
+            Result.Error(Exception(ErrorHandler.getErrorMessage(e)))
         }
     }
 

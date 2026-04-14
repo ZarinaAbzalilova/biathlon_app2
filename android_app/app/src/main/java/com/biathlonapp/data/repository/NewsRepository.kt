@@ -8,6 +8,7 @@ import com.biathlonapp.data.model.NewsSource
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.biathlonapp.utils.ErrorHandler
 import java.util.*
 
 class NewsRepository {
@@ -46,7 +47,6 @@ class NewsRepository {
     )
 
 
-
     suspend fun getNewsFromVk(
         source: NewsSource,
         count: Int = 20
@@ -65,20 +65,12 @@ class NewsRepository {
                 count = count
             )
 
-            // Проверяем, есть ли ошибка от API
             if (response.error != null) {
                 val error = response.error
                 Log.e("NewsRepository", "VK API error: ${error.error_code} - ${error.error_msg}")
-
-                // Логируем параметры запроса для отладки
-                error.request_params?.forEach { param ->
-                    Log.d("NewsRepository", "Request param: ${param.key}=${param.value}")
-                }
-
-                return Result.failure(Exception("VK API error ${error.error_code}: ${error.error_msg}"))
+                return Result.failure(Exception("VK API error: ${error.error_msg}"))
             }
 
-            // Проверяем, что response не null
             val responseData = response.response
             if (responseData == null) {
                 Log.e("NewsRepository", "VK API response is null")
@@ -94,9 +86,11 @@ class NewsRepository {
             Result.success(news)
         } catch (e: Exception) {
             Log.e("NewsRepository", "Error loading news from $source", e)
-            Result.failure(e)
+            // ← Добавляем понятное сообщение
+            Result.failure(Exception(ErrorHandler.getErrorMessage(e)))
         }
     }
+
     // Временный метод для проверки ID
     suspend fun checkCommunityId() {
         try {

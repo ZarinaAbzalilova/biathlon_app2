@@ -6,11 +6,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.biathlonapp.databinding.ItemRaceResultBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class RaceResultsAdapter(
-    private val onPdfDownloadClick: (String) -> Unit, // Принимает pdfUrl
+    private val onPdfDownloadClick: (String) -> Unit,
     private val onRaceClick: (String) -> Unit
 ) : ListAdapter<RaceResultDisplay, RaceResultsAdapter.ViewHolder>(DiffCallback) {
+
+    private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val outputDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale("ru"))
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRaceResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,11 +27,23 @@ class RaceResultsAdapter(
         holder.bind(result)
     }
 
+    private fun formatDate(dateString: String): String {
+        return try {
+            val date = inputDateFormat.parse(dateString)
+            date?.let { outputDateFormat.format(it) } ?: dateString
+        } catch (e: Exception) {
+            dateString
+        }
+    }
+
     inner class ViewHolder(private val binding: ItemRaceResultBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(result: RaceResultDisplay) {
             binding.textRaceName.text = result.nameRace.ifBlank { "Неизвестная гонка" }
             binding.textRacePlace.text = result.placeRace.ifBlank { "Место не указано" }
-            binding.textDateDiscipline.text = "${result.date} • ${result.discipline}"
+
+            // Преобразуем дату в формат ДД.ММ.ГГГГ
+            val formattedDate = formatDate(result.date)
+            binding.textDateDiscipline.text = formattedDate
 
             binding.textFinishPlace.text = "Место: ${result.finishPlace ?: "N/A"}"
             binding.textMissCount.text = "Промахи: ${result.missCount ?: "N/A"}"
@@ -45,7 +62,6 @@ class RaceResultsAdapter(
             } else {
                 binding.buttonDownloadPdf.visibility = android.view.View.GONE
             }
-
         }
     }
 

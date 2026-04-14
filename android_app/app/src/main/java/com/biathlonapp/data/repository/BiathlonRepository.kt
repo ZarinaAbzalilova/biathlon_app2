@@ -2,7 +2,8 @@ package com.biathlonapp.data.repository
 
 import com.biathlonapp.data.api.ApiClient
 import com.biathlonapp.data.model.Athlete
-import com.biathlonapp.utils.Result  // ← Импортируем свой Result
+import com.biathlonapp.utils.Result
+import com.biathlonapp.utils.ErrorHandler  // ← Добавить импорт
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.biathlonapp.data.model.AthleteResultsResponse
@@ -17,13 +18,14 @@ class BiathlonRepository {
             val response = apiService.getAthletes()
             if (response.isSuccessful) {
                 response.body()?.let { athletes ->
-                    Result.Success(athletes)  // ← используем свой Success
-                } ?: Result.Error(Exception("Пустой ответ от сервера"))  // ← используем свой Error
+                    Result.Success(athletes)
+                } ?: Result.Error(Exception("Пустой ответ от сервера"))
             } else {
-                Result.Error(Exception("Ошибка сервера: ${response.code()} ${response.message()}"))
+                Result.Error(Exception("Ошибка сервера: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.Error(e)
+            // ← Добавляем понятное сообщение
+            Result.Error(Exception(ErrorHandler.getErrorMessage(e)))
         }
     }
 
@@ -35,10 +37,10 @@ class BiathlonRepository {
                     Result.Success(athletes)
                 } ?: Result.Error(Exception("Пустой ответ от сервера"))
             } else {
-                Result.Error(Exception("Ошибка сервера: ${response.code()} ${response.message()}"))
+                Result.Error(Exception("Ошибка сервера: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.Error(e)
+            Result.Error(Exception(ErrorHandler.getErrorMessage(e)))
         }
     }
 
@@ -50,10 +52,10 @@ class BiathlonRepository {
                     Result.Success(results)
                 } ?: Result.Error(Exception("Пустой ответ от сервера"))
             } else {
-                Result.Error(Exception("Ошибка сервера: ${response.code()} ${response.message()}"))
+                Result.Error(Exception("Ошибка сервера: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.Error(e)
+            Result.Error(Exception(ErrorHandler.getErrorMessage(e)))
         }
     }
 

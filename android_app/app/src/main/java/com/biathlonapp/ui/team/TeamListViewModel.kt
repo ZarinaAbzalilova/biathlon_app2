@@ -30,7 +30,11 @@ class TeamListViewModel : ViewModel() {
 
             when (val result = repository.getTeamAthletes(teamType)) {
                 is Result.Success -> {
-                    _athletes.value = result.data
+                    if (result.data.isEmpty()) {
+                        _error.value = "В этой команде пока нет спортсменов"
+                    } else {
+                        _athletes.value = result.data
+                    }
                     _isLoading.value = false
                 }
                 is Result.Error -> {

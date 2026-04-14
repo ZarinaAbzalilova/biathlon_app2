@@ -4,7 +4,7 @@ import com.biathlonapp.data.api.ApiClient
 import com.biathlonapp.data.model.Athlete
 import com.biathlonapp.data.model.TeamType
 import com.biathlonapp.utils.Result
-
+import com.biathlonapp.utils.ErrorHandler
 class TeamRepository {
 
     private val apiService = ApiClient.apiService
@@ -25,7 +25,7 @@ class TeamRepository {
                 Result.Error(Exception("Ошибка загрузки: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.Error(e)
+            Result.Error(Exception(ErrorHandler.getErrorMessage(e)))
         }
     }
 }
