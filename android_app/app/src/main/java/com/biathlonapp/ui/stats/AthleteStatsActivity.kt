@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +23,7 @@ class AthleteStatsActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_ATHLETE_ID = "athlete_id"
+        const val EXTRA_ATHLETE_GENDER = "athlete_gender"
     }
     private var athleteGender: String? = null
     private lateinit var binding: ActivityAthleteStatsBinding
@@ -36,7 +38,10 @@ class AthleteStatsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         athleteId = intent.getStringExtra(EXTRA_ATHLETE_ID)
-        if (athleteId == null) {
+        athleteGender = intent.getStringExtra(EXTRA_ATHLETE_GENDER)
+
+        if (athleteId.isNullOrEmpty()) {
+            Toast.makeText(this, "Ошибка: ID спортсмена не найден", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -47,9 +52,6 @@ class AthleteStatsActivity : AppCompatActivity() {
         setupToolbar()
         setupRecyclerView()
         setupFilterSpinner()
-
-        // Сначала показываем кэш (если есть)
-        loadCachedResults()
 
         // Потом загружаем с сервера
         viewModel.loadAthleteResults(athleteId!!)
@@ -76,6 +78,7 @@ class AthleteStatsActivity : AppCompatActivity() {
                 startNumber = result.startNumber,
                 finishPlace = result.finishPlace,
                 missCount = result.missCount,
+                athleteGender = null,
                 pdfUrl = null,
                 raceId = null
             )
@@ -98,18 +101,11 @@ class AthleteStatsActivity : AppCompatActivity() {
             onPdfDownloadClick = { pdfUrl ->
                 openPdf(pdfUrl)
             },
-            onRaceClick = { raceId ->
-                // Добавляем пол спортсмена к raceId
-                val genderSuffix = when (athleteGender) {
-                    "М" -> "_М"
-                    "Ж" -> "_Ж"
-                    else -> ""
+            onRaceClick = { raceId, gender ->
+                val intent = Intent(this, RaceProtocolActivity::class.java).apply {
+                    putExtra(RaceProtocolActivity.EXTRA_RACE_ID, raceId)
+                    putExtra(RaceProtocolActivity.EXTRA_GENDER, gender ?: athleteGender)  // ← используем gender из результата или из activity
                 }
-                val fullRaceId = "$raceId$genderSuffix"
-                Log.d("StatsDebug", "Opening race protocol: $fullRaceId")
-
-                val intent = Intent(this, RaceProtocolActivity::class.java)
-                intent.putExtra(RaceProtocolActivity.EXTRA_RACE_ID, fullRaceId)
                 startActivity(intent)
             }
         )
@@ -148,13 +144,14 @@ class AthleteStatsActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.athleteGender.observe(this) { gender ->
-            athleteGender = gender
-            Log.d("StatsDebug", "Athlete gender: $gender")
-        }
+
         // Наблюдаем за отфильтрованными результатами
         viewModel.filteredResults.observe(this) { results ->
-            Log.d("FilterDebug", "Results received: ${results.size}")
+            android.util.Log.d("FilterDebug", "Results received in UI: ${results.size}")
+            if (results.isNotEmpty()) {
+                android.util.Log.d("FilterDebug", "First result: ${results[0].nameRace}")
+            }
+            adapter.submitList(results)
             adapter.submitList(results)
 
             if (results.isEmpty()) {

@@ -12,12 +12,11 @@ import kotlinx.coroutines.flow.flow
 class FavoritesRepository(private val context: Context) {
 
     private val db = FavoriteDatabase.getInstance(context)
-    private val favoriteAthleteDao = db.favoriteAthleteDao()  // Переименовал
-    private val favoriteResultDao = db.favoriteResultDao()    // Переименовал
+    private val favoriteAthleteDao = db.favoriteAthleteDao()
+    private val favoriteResultDao = db.favoriteResultDao()
 
     // ===== МЕТОДЫ ДЛЯ СПОРТСМЕНОВ =====
 
-    // Получить всех избранных
     suspend fun getAllFavorites(): List<FavoriteAthlete> {
         return try {
             favoriteAthleteDao.getAllFavorites()
@@ -27,12 +26,10 @@ class FavoritesRepository(private val context: Context) {
         }
     }
 
-    // Получить избранных как Flow (для LiveData)
     fun getAllFavoritesFlow(): Flow<List<FavoriteAthlete>> = flow {
         emit(favoriteAthleteDao.getAllFavorites())
     }
 
-    // Добавить в избранное
     suspend fun addToFavorites(athlete: Athlete): Boolean {
         return try {
             favoriteAthleteDao.insertFavorite(athlete.toFavoriteAthlete())
@@ -43,7 +40,6 @@ class FavoritesRepository(private val context: Context) {
         }
     }
 
-    // Добавить в избранное (из локальной модели)
     suspend fun addToFavorites(favoriteAthlete: FavoriteAthlete): Boolean {
         return try {
             favoriteAthleteDao.insertFavorite(favoriteAthlete)
@@ -54,11 +50,10 @@ class FavoritesRepository(private val context: Context) {
         }
     }
 
-    // Удалить из избранного
     suspend fun removeFromFavorites(athleteId: String): Boolean {
         return try {
             favoriteAthleteDao.deleteFavoriteById(athleteId)
-            favoriteResultDao.deleteResultsForAthlete(athleteId)
+            deleteResultsForAthlete(athleteId) // Автоматически удаляем результаты
             true
         } catch (e: Exception) {
             e.printStackTrace()
@@ -66,7 +61,6 @@ class FavoritesRepository(private val context: Context) {
         }
     }
 
-    // Проверить, в избранном ли
     suspend fun isFavorite(athleteId: String): Boolean {
         return try {
             favoriteAthleteDao.isFavorite(athleteId)
@@ -75,7 +69,6 @@ class FavoritesRepository(private val context: Context) {
         }
     }
 
-    // Обновить данные спортсмена в избранном
     suspend fun updateFavoriteAthlete(athlete: Athlete): Boolean {
         return try {
             val existing = favoriteAthleteDao.getFavoriteById(athlete.athleteId ?: return false)
@@ -103,7 +96,6 @@ class FavoritesRepository(private val context: Context) {
         }
     }
 
-    // Получить одного избранного
     suspend fun getFavoriteAthleteById(athleteId: String): FavoriteAthlete? {
         return try {
             favoriteAthleteDao.getFavoriteById(athleteId)
@@ -114,14 +106,23 @@ class FavoritesRepository(private val context: Context) {
 
     // ===== МЕТОДЫ ДЛЯ РЕЗУЛЬТАТОВ =====
 
-    // Сохранить все результаты спортсмена
-    suspend fun saveAthleteResults(athleteId: String, results: List<RaceResult>) {
+    suspend fun saveAthleteResults(athleteId: String, races: List<RaceResult>) {
         try {
-            // Сначала удаляем старые результаты
+            android.util.Log.d("CacheDebug", "Saving ${races.size} results for $athleteId")
+
+            // Проверяем, существует ли спортсмен в избранном
+            val athleteExists = favoriteAthleteDao.isFavorite(athleteId)
+
+            if (!athleteExists) {
+                android.util.Log.d("CacheDebug", "⚠️ Athlete $athleteId not in favorites, skipping save")
+                return
+            }
+
+            // Удаляем старые результаты
             favoriteResultDao.deleteResultsForAthlete(athleteId)
 
-            // Сохраняем новые
-            val favoriteResults = results.mapNotNull { race ->
+            // Конвертируем новые результаты
+            val favoriteResults = races.mapNotNull { race ->
                 race.athletePerformance?.let { performance ->
                     FavoriteResult(
                         athleteId = athleteId,
@@ -135,38 +136,50 @@ class FavoritesRepository(private val context: Context) {
                     )
                 }
             }
+
             if (favoriteResults.isNotEmpty()) {
                 favoriteResultDao.insertAllResults(favoriteResults)
+                android.util.Log.d("CacheDebug", "✅ Saved ${favoriteResults.size} results")
+            } else {
+                android.util.Log.d("CacheDebug", "⚠️ No results to save")
             }
         } catch (e: Exception) {
+            android.util.Log.e("CacheDebug", "❌ Error saving results: ${e.message}", e)
             e.printStackTrace()
         }
     }
 
-    // Получить результаты из кэша
     suspend fun getCachedResults(athleteId: String): List<FavoriteResult> {
         return try {
+            val athleteExists = favoriteAthleteDao.isFavorite(athleteId)
+            if (!athleteExists) {
+                android.util.Log.d("CacheDebug", "⚠️ Athlete $athleteId not in favorites, returning empty results")
+                return emptyList()
+            }
             favoriteResultDao.getResultsForAthlete(athleteId)
         } catch (e: Exception) {
+            android.util.Log.e("CacheDebug", "Error getting cached results: ${e.message}")
             e.printStackTrace()
             emptyList()
         }
     }
 
-    // Проверить, есть ли кэшированные результаты
     suspend fun hasCachedResults(athleteId: String): Boolean {
         return try {
-            favoriteResultDao.getResultsForAthlete(athleteId).isNotEmpty()
+            val athleteExists = favoriteAthleteDao.isFavorite(athleteId)
+            athleteExists && favoriteResultDao.getResultsForAthlete(athleteId).isNotEmpty()
         } catch (e: Exception) {
             false
         }
     }
 
-    // Удалить результаты при удалении спортсмена из избранного
+    // ✅ ДОБАВЛЯЕМ ЭТОТ МЕТОД
     suspend fun deleteResultsForAthlete(athleteId: String) {
         try {
             favoriteResultDao.deleteResultsForAthlete(athleteId)
+            android.util.Log.d("CacheDebug", "🗑️ Deleted results for athlete $athleteId")
         } catch (e: Exception) {
+            android.util.Log.e("CacheDebug", "Error deleting results: ${e.message}")
             e.printStackTrace()
         }
     }

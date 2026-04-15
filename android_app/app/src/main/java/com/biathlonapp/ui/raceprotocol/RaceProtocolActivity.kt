@@ -1,6 +1,7 @@
 package com.biathlonapp.ui.raceprotocol
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ class RaceProtocolActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_RACE_ID = "race_id"
+        const val EXTRA_GENDER = "gender"
     }
 
     private lateinit var binding: ActivityRaceProtocolBinding
@@ -24,20 +26,31 @@ class RaceProtocolActivity : AppCompatActivity() {
         binding = ActivityRaceProtocolBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        raceId = intent.getStringExtra(EXTRA_RACE_ID)
-        if (raceId == null) {
-            finish()
-            return
+        val raceId = intent.getStringExtra(EXTRA_RACE_ID) ?: ""
+        val gender = intent.getStringExtra(EXTRA_GENDER)
+        val fullRaceId = if (!gender.isNullOrEmpty()) {
+            "$raceId${getGenderSuffix(gender)}"
+        } else {
+            raceId
         }
+
+        Log.d("RaceProtocol", "Original raceId: $raceId, Gender: $gender, Full: $fullRaceId")
 
         setupViewModel()
         setupToolbar()
         setupRecyclerView()
         setupObservers()
 
-        viewModel.loadRaceResults(raceId!!)
+        // Передаем полный raceId с суффиксом
+        viewModel.loadRaceResults(fullRaceId)
     }
-
+    private fun getGenderSuffix(gender: String): String {
+        return when (gender) {
+            "М", "мужской", "male", "Мужчины" -> "_М"
+            "Ж", "женский", "female", "Женщины" -> "_Ж"
+            else -> ""
+        }
+    }
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this)[RaceProtocolViewModel::class.java]
     }

@@ -4,6 +4,8 @@ package com.biathlonapp.ui.stats;
 public final class AthleteStatsActivity extends androidx.appcompat.app.AppCompatActivity {
     @org.jetbrains.annotations.NotNull()
     public static final java.lang.String EXTRA_ATHLETE_ID = "athlete_id";
+    @org.jetbrains.annotations.NotNull()
+    public static final java.lang.String EXTRA_ATHLETE_GENDER = "athlete_gender";
     @org.jetbrains.annotations.Nullable()
     private java.lang.String athleteGender;
     private com.biathlonapp.databinding.ActivityAthleteStatsBinding binding;
@@ -50,7 +52,7 @@ public final class AthleteStatsActivity extends androidx.appcompat.app.AppCompat
         return false;
     }
     
-    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0000\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002R\u000e\u0010\u0003\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000\u00a8\u0006\u0005"}, d2 = {"Lcom/biathlonapp/ui/stats/AthleteStatsActivity$Companion;", "", "()V", "EXTRA_ATHLETE_ID", "", "app_debug"})
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u0014\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0002\b\u0002\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002R\u000e\u0010\u0003\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000\u00a8\u0006\u0006"}, d2 = {"Lcom/biathlonapp/ui/stats/AthleteStatsActivity$Companion;", "", "()V", "EXTRA_ATHLETE_GENDER", "", "EXTRA_ATHLETE_ID", "app_debug"})
     public static final class Companion {
         
         private Companion() {

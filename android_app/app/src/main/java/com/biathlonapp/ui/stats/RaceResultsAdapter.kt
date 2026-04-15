@@ -11,7 +11,7 @@ import java.util.*
 
 class RaceResultsAdapter(
     private val onPdfDownloadClick: (String) -> Unit,
-    private val onRaceClick: (String) -> Unit
+    private val onRaceClick: (String,String?) -> Unit
 ) : ListAdapter<RaceResultDisplay, RaceResultsAdapter.ViewHolder>(DiffCallback) {
 
     private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -38,6 +38,7 @@ class RaceResultsAdapter(
 
     inner class ViewHolder(private val binding: ItemRaceResultBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(result: RaceResultDisplay) {
+            android.util.Log.d("AdapterDebug", "Binding result: ${result.nameRace}, items count: ${result.startNumber}")
             binding.textRaceName.text = result.nameRace.ifBlank { "Неизвестная гонка" }
             binding.textRacePlace.text = result.placeRace.ifBlank { "Место не указано" }
 
@@ -49,8 +50,8 @@ class RaceResultsAdapter(
             binding.textMissCount.text = "Промахи: ${result.missCount ?: "N/A"}"
             binding.textStartNumber.text = "Стартовый номер: ${result.startNumber ?: "N/A"}"
 
-            itemView.setOnClickListener {
-                result.raceId?.let { onRaceClick(it) }
+            binding.root.setOnClickListener {
+                onRaceClick(result.raceId ?: "", result.athleteGender)
             }
 
             // Показываем кнопку PDF если есть ссылка

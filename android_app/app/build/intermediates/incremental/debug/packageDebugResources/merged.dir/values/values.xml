@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <string-array name="month_names">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
+    <color name="accent">#FF4081</color>
+    <color name="background">#FAFAFA</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="category_card_bg">#F5F5F5</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="error">#D32F2F</color>
+    <color name="favorite_button">#FFC107</color>
+    <color name="ic_launcher_background">#1976D2</color>
+    <color name="primary">#1976D2</color>
+    <color name="primary_dark">#1565C0</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="stats_button">#669DF7</color>
+    <color name="success">#388E3C</color>
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="app_name">SBR</string>
+    <string name="athlete_info">Информация о спортсмене</string>
+    <string name="athlete_photo">Фото спортсмена</string>
+    <string name="athlete_stats">Статистика спортсмена</string>
+    <string name="birth_date">Дата рождения</string>
+    <string name="category_subtitle_placeholder">Подзаголовок</string>
+    <string name="category_title_placeholder">Заголовок</string>
+    <string name="close">Закрыть</string>
+    <string name="club">Клуб</string>
+    <string name="date">Дата</string>
+    <string name="discipline">Дисциплина</string>
+    <string name="error_loading">Ошибка загрузки данных</string>
+    <string name="female">Женский</string>
+    <string name="female_main">Женская основная</string>
+    <string name="female_reserve">Женская резервная</string>
+    <string name="first_name_label">Имя</string>
+    <string name="full_name">ФИО</string>
+    <string name="gender">Пол</string>
+    <string name="icon_arrow">Стрелка перехода</string>
+    <string name="icon_calendar">Иконка календаря</string>
+    <string name="icon_category">Иконка категории</string>
+    <string name="last_name_label">Фамилия</string>
+    <string name="license">Лицензия</string>
+    <string name="loading">Загрузка...</string>
+    <string name="main_team">Основной состав</string>
+    <string name="male">Мужской</string>
+    <string name="male_main">Мужская основная</string>
+    <string name="male_reserve">Мужская резервная</string>
+    <string name="misses">Промахи</string>
+    <string name="news_image">Изображение новости</string>
+    <string name="no_athletes">Спортсмены не найдены</string>
+    <string name="no_data">Нет данных</string>
+    <string name="no_events_today">В этот день нет гонок</string>
+    <string name="no_internet">Нет подключения к интернету</string>
+    <string name="no_stats">Нет статистики</string>
+    <string name="place">Место</string>
+    <string name="race_id">ID гонки</string>
+    <string name="region">Регион</string>
+    <string name="region_code">Код региона</string>
+    <string name="remove_from_favorites">Удалить из избранного</string>
+    <string name="reserve_team">Резервный состав</string>
+    <string name="retry">Повторить</string>
+    <string name="search_hint">Поиск спортсменов...</string>
+    <string name="sports_rank">Спортивный разряд</string>
+    <string name="start_number">Стартовый номер</string>
+    <string name="stats_button">Статистика</string>
+    <string name="team_subtitle">Выберите категорию спортсменов</string>
+    <string name="team_title">Сборная команда</string>
+    <style name="Theme.BiathlonApp" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSecondaryVariant">@color/accent</item>
+        <item name="colorOnSecondary">@android:color/white</item>
+        
+        <item name="android:statusBarColor" ns1:targetApi="l">?attr/colorPrimaryVariant</item>
+        
+    </style>
+</resources>

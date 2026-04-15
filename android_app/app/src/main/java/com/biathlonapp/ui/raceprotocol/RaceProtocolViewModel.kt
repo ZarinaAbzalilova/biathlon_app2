@@ -21,17 +21,15 @@ class RaceProtocolViewModel : ViewModel() {
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
-    fun loadRaceResults(raceId: String) {
+    fun loadRaceResults(raceId: String, gender: String? = null) {
         viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
 
             try {
-                // Временно для теста - полный URL
-                val url = "https://biathlon-app2.onrender.com/api/race/$raceId/results"
-                android.util.Log.d("RaceProtocol", "Loading: $url")
+                // Используем один метод с query параметром
+                val response = apiService.getRaceResults(raceId, gender)
 
-                val response = apiService.getRaceResults(raceId)
                 android.util.Log.d("RaceProtocol", "Response code: ${response.code()}")
 
                 if (response.isSuccessful && response.body() != null) {

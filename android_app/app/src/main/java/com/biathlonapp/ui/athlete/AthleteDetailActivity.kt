@@ -52,6 +52,9 @@ class AthleteDetailActivity : AppCompatActivity() {
             return
         }
 
+        // ✅ КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: настраиваем кнопку ДО загрузки данных
+        setupStatsButton(currentId, selectedAthlete?.gender)
+
         // Сначала загружаем из кэша
         loadFromCache(currentId)
 
@@ -60,9 +63,6 @@ class AthleteDetailActivity : AppCompatActivity() {
 
         // Загружаем полные данные с сервера
         loadAthleteData(currentId)
-
-        // Настраиваем кнопку статистики
-        setupStatsButton(currentId)
 
         // Настраиваем кнопку избранного
         setupFavoriteButton()
@@ -78,7 +78,6 @@ class AthleteDetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val cachedAthlete = favoritesRepository.getFavoriteAthleteById(athleteId)
             if (cachedAthlete != null) {
-                // Создаем Athlete из FavoriteAthlete
                 val athlete = Athlete(
                     athleteId = cachedAthlete.athleteId,
                     lastName = cachedAthlete.lastName ?: cachedAthlete.surname,
@@ -121,12 +120,19 @@ class AthleteDetailActivity : AppCompatActivity() {
         viewModel.loadAthleteResults(athleteId)
     }
 
-    private fun setupStatsButton(athleteId: String) {
+    // ✅ ОБНОВЛЕННЫЙ МЕТОД - всегда работает, даже без интернета
+    private fun setupStatsButton(athleteId: String, athleteGender: String?) {
         binding.buttonStats.setOnClickListener {
-            val intent = Intent(this, AthleteStatsActivity::class.java).apply {
-                putExtra(AthleteStatsActivity.EXTRA_ATHLETE_ID, athleteId)
+            android.util.Log.d("StatsDebug", "Stats button clicked for athlete: $athleteId")
+            if (athleteId.isNotEmpty()) {
+                val intent = Intent(this, AthleteStatsActivity::class.java).apply {
+                    putExtra(AthleteStatsActivity.EXTRA_ATHLETE_ID, athleteId)
+                    putExtra(AthleteStatsActivity.EXTRA_ATHLETE_GENDER, athleteGender)
+                }
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Ошибка: ID спортсмена не найден", Toast.LENGTH_SHORT).show()
             }
-            startActivity(intent)
         }
     }
 
@@ -141,21 +147,25 @@ class AthleteDetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val currentId = athleteId ?: return@launch
             if (isFavorite) {
+                // Удаляем из избранного
                 val success = favoritesRepository.removeFromFavorites(currentId)
                 if (success) {
                     showMessage("Удалено из избранного")
                     isFavorite = false
-                } else {
-                    showMessage("Не удалось удалить из избранного")
+                    android.util.Log.d("FavoriteDebug", "Removed from favorites: $currentId")
                 }
             } else {
+                // Добавляем в избранное
                 val athlete = selectedAthlete ?: createMinimalAthlete(currentId)
                 val success = favoritesRepository.addToFavorites(athlete)
                 if (success) {
                     showMessage("Добавлено в избранное")
                     isFavorite = true
-                } else {
-                    showMessage("Не удалось добавить в избранное")
+                    android.util.Log.d("FavoriteDebug", "Added to favorites: $currentId, loading results...")
+
+                    // ✅ КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: После добавления в избранное,
+                    // загружаем и сохраняем результаты
+                    viewModel.loadAthleteResults(currentId)
                 }
             }
             updateFavoriteButton()
@@ -198,6 +208,7 @@ class AthleteDetailActivity : AppCompatActivity() {
             selectedAthlete = response.athlete
             displayAthleteInfo(response.athlete)
 
+            // Обновляем гендер для кнопки (если он изменился)
             if (isFavorite) {
                 updateFavoriteAthleteData(response.athlete)
             }

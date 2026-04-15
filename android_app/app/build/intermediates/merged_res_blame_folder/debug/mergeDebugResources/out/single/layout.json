@@ -1,102 +1,98 @@
 [
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\fragment_team_categories.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\fragment_team_categories.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/fragment_team_list.xml",
+        "source": "com.biathlonapp-main-47:/layout/fragment_team_list.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\item_team_category.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_team_category.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/fragment_team_categories.xml",
+        "source": "com.biathlonapp-main-47:/layout/fragment_team_categories.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\item_athlete.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_athlete.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_athlete.xml",
+        "source": "com.biathlonapp-main-47:/layout/item_athlete.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\fragment_search.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\fragment_search.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/activity_athlete_detail.xml",
+        "source": "com.biathlonapp-main-47:/layout/activity_athlete_detail.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\item_news.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_news.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/fragment_calendar.xml",
+        "source": "com.biathlonapp-main-47:/layout/fragment_calendar.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\item_race_result.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_race_result.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/activity_athlete_stats.xml",
+        "source": "com.biathlonapp-main-47:/layout/activity_athlete_stats.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\dialog_race_events.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\dialog_race_events.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/activity_team_list.xml",
+        "source": "com.biathlonapp-main-47:/layout/activity_team_list.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\activity_news_detail.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\activity_news_detail.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/activity_main.xml",
+        "source": "com.biathlonapp-main-47:/layout/activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\fragment_team_list.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\fragment_team_list.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/activity_news_detail.xml",
+        "source": "com.biathlonapp-main-47:/layout/activity_news_detail.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\fragment_athletes.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\fragment_athletes.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/fragment_favorites.xml",
+        "source": "com.biathlonapp-main-47:/layout/fragment_favorites.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\fragment_calendar.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\fragment_calendar.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/fragment_news.xml",
+        "source": "com.biathlonapp-main-47:/layout/fragment_news.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\item_team_athlete.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_team_athlete.xml"
-    },
-    {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\activity_team_list.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\activity_team_list.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/activity_race_protocol.xml",
+        "source": "com.biathlonapp-main-47:/layout/activity_race_protocol.xml"
     },
     {
         "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_race_result.xml",
         "source": "com.biathlonapp-main-47:/layout/item_race_result.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\item_favorite_athlete.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_favorite_athlete.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_team_category.xml",
+        "source": "com.biathlonapp-main-47:/layout/item_team_category.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\item_race_protocol.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_race_protocol.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_race_event.xml",
+        "source": "com.biathlonapp-main-47:/layout/item_race_event.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\item_calendar_day.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_calendar_day.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/fragment_search.xml",
+        "source": "com.biathlonapp-main-47:/layout/fragment_search.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\activity_main.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\activity_main.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_news.xml",
+        "source": "com.biathlonapp-main-47:/layout/item_news.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\fragment_favorites.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\fragment_favorites.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_team_athlete.xml",
+        "source": "com.biathlonapp-main-47:/layout/item_team_athlete.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\item_team_header.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_team_header.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/fragment_athletes.xml",
+        "source": "com.biathlonapp-main-47:/layout/fragment_athletes.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\fragment_news.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\fragment_news.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_calendar_day.xml",
+        "source": "com.biathlonapp-main-47:/layout/item_calendar_day.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\activity_athlete_stats.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\activity_athlete_stats.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_favorite_athlete.xml",
+        "source": "com.biathlonapp-main-47:/layout/item_favorite_athlete.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\activity_athlete_detail.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\activity_athlete_detail.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_team_header.xml",
+        "source": "com.biathlonapp-main-47:/layout/item_team_header.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\item_race_event.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\item_race_event.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/item_race_protocol.xml",
+        "source": "com.biathlonapp-main-47:/layout/item_race_protocol.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-mergeDebugResources-44:\\layout\\activity_race_protocol.xml",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-47:\\layout\\activity_race_protocol.xml"
+        "merged": "com.biathlonapp-mergeDebugResources-44:/layout/dialog_race_events.xml",
+        "source": "com.biathlonapp-main-47:/layout/dialog_race_events.xml"
     }
 ]

@@ -70,16 +70,20 @@ interface BiathlonApiService {
     suspend fun getRacesByDate(
         @Query("date") date: String
     ): Response<List<CalendarRaceResponse>>
+
     @GET("api/race/{raceId}/results")
     suspend fun getRaceResults(
-        @Path("raceId") raceId: String
+        @Path("raceId") raceId: String,
+        @Query("gender") gender: String? = null
     ): Response<RaceResultsResponse>
 
+    // ← ИСПРАВЛЕНО: возвращает RaceResultsResponse
     @GET("api/race/{raceId}/{gender}")
-    suspend fun getRaceDetails(
+    suspend fun getRaceResultsByGender(
         @Path("raceId") raceId: String,
         @Path("gender") gender: String
-    ): Response<CalendarRaceResponse>
+    ): Response<RaceResultsResponse>
+
     companion object {
         const val BASE_URL = "https://biathlon-app2.onrender.com"
         fun create(): BiathlonApiService {
