@@ -5,7 +5,7 @@ import json
 import os
 import pymysql
 from database import get_db_connection  
-
+import secrets
 import bcrypt
 import jwt
 from datetime import datetime, timedelta
@@ -778,24 +778,157 @@ def get_current_user():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# ========== СБРОС ПАРОЛЯ ==========
+
+@app.route('/api/auth/forgot-password', methods=['POST'])
+def forgot_password():
+    """Запрос на сброс пароля"""
+    try:
+        data = request.get_json()
+        email = data.get('email', '').strip().lower()
+        
+        if not email:
+            return jsonify({'error': 'Email обязателен'}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Проверяем, существует ли пользователь
+        cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
+        user = cursor.fetchone()
+        
+        if not user:
+            conn.close()
+            # Не показываем, что email не найден (безопасность)
+            return jsonify({
+                'success': True,
+                'message': 'Если пользователь существует, инструкция отправлена на email'
+            })
+        
+        # Генерируем уникальный токен
+        reset_token = secrets.token_urlsafe(32)
+        expires_at = datetime.now() + timedelta(hours=1)
+        
+        # Сохраняем токен в БД
+        cursor.execute("""
+            INSERT INTO password_resets (email, token, expires_at)
+            VALUES (%s, %s, %s)
+        """, (email, reset_token, expires_at))
+        conn.commit()
+        
+        # Отправляем email
+        email_sent = send_reset_email(email, reset_token)
+        
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Инструкция по сбросу пароля отправлена на email'
+        })
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/auth/reset-password', methods=['POST'])
 def reset_password():
-    """Сброс пароля (отправка email с ссылкой)"""
-    # TODO: Реализовать отправку email
-    # Пока просто заглушка
-    data = request.get_json()
-    email = data.get('email', '').strip().lower()
-    
-    if not email:
-        return jsonify({'error': 'Email обязателен'}), 400
-    
-    # Здесь нужно отправить email с ссылкой для сброса
-    # Для начала можно вернуть успех, если email существует
-    
-    return jsonify({
-        'success': True,
-        'message': 'Если пользователь существует, инструкция по сбросу пароля отправлена на email'
-    })
+    """Установка нового пароля по токену"""
+    try:
+        data = request.get_json()
+        token = data.get('token', '')
+        new_password = data.get('new_password', '')
+        
+        if not token or not new_password:
+            return jsonify({'error': 'Токен и новый пароль обязательны'}), 400
+        
+        if len(new_password) < 6:
+            return jsonify({'error': 'Пароль должен быть не менее 6 символов'}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Проверяем токен
+        cursor.execute("""
+            SELECT email, expires_at, used
+            FROM password_resets
+            WHERE token = %s
+        """, (token,))
+        
+        reset_record = cursor.fetchone()
+        
+        if not reset_record:
+            conn.close()
+            return jsonify({'error': 'Недействительный токен'}), 400
+        
+        if reset_record['used']:
+            conn.close()
+            return jsonify({'error': 'Токен уже использован'}), 400
+        
+        if datetime.now() > reset_record['expires_at']:
+            conn.close()
+            return jsonify({'error': 'Токен истек'}), 400
+        
+        # Обновляем пароль пользователя
+        new_password_hash = hash_password(new_password)
+        cursor.execute("""
+            UPDATE users
+            SET password_hash = %s
+            WHERE email = %s
+        """, (new_password_hash, reset_record['email']))
+        
+        # Отмечаем токен как использованный
+        cursor.execute("""
+            UPDATE password_resets
+            SET used = TRUE
+            WHERE token = %s
+        """, (token,))
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Пароль успешно изменен'
+        })
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/auth/verify-reset-token', methods=['GET'])
+def verify_reset_token():
+    """Проверка валидности токена сброса"""
+    try:
+        token = request.args.get('token', '')
+        
+        if not token:
+            return jsonify({'valid': False, 'error': 'Токен отсутствует'}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("""
+            SELECT expires_at, used
+            FROM password_resets
+            WHERE token = %s
+        """, (token,))
+        
+        record = cursor.fetchone()
+        conn.close()
+        
+        if not record:
+            return jsonify({'valid': False, 'error': 'Токен не найден'}), 404
+        
+        if record['used']:
+            return jsonify({'valid': False, 'error': 'Токен уже использован'}), 400
+        
+        if datetime.now() > record['expires_at']:
+            return jsonify({'valid': False, 'error': 'Токен истек'}), 400
+        
+        return jsonify({'valid': True})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # ========== ИЗБРАННОЕ (с привязкой к пользователю) ==========
 
