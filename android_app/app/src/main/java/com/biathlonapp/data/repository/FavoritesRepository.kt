@@ -1,6 +1,8 @@
 package com.biathlonapp.data.repository
 
 import android.content.Context
+import android.util.Log
+import com.biathlonapp.data.api.BiathlonApiService
 import com.biathlonapp.data.local.FavoriteAthlete
 import com.biathlonapp.data.local.FavoriteDatabase
 import com.biathlonapp.data.local.FavoriteResult
@@ -9,7 +11,10 @@ import com.biathlonapp.data.model.RaceResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class FavoritesRepository(private val context: Context) {
+class FavoritesRepository(
+    private val context: Context,
+    private val apiService: BiathlonApiService  // ← ДОБАВЛЯЕМ apiService
+) {
 
     private val db = FavoriteDatabase.getInstance(context)
     private val favoriteAthleteDao = db.favoriteAthleteDao()
@@ -53,7 +58,7 @@ class FavoritesRepository(private val context: Context) {
     suspend fun removeFromFavorites(athleteId: String): Boolean {
         return try {
             favoriteAthleteDao.deleteFavoriteById(athleteId)
-            deleteResultsForAthlete(athleteId) // Автоматически удаляем результаты
+            deleteResultsForAthlete(athleteId)
             true
         } catch (e: Exception) {
             e.printStackTrace()
@@ -110,7 +115,6 @@ class FavoritesRepository(private val context: Context) {
         try {
             android.util.Log.d("CacheDebug", "Saving ${races.size} results for $athleteId")
 
-            // Проверяем, существует ли спортсмен в избранном
             val athleteExists = favoriteAthleteDao.isFavorite(athleteId)
 
             if (!athleteExists) {
@@ -118,10 +122,8 @@ class FavoritesRepository(private val context: Context) {
                 return
             }
 
-            // Удаляем старые результаты
             favoriteResultDao.deleteResultsForAthlete(athleteId)
 
-            // Конвертируем новые результаты
             val favoriteResults = races.mapNotNull { race ->
                 race.athletePerformance?.let { performance ->
                     FavoriteResult(
@@ -173,7 +175,43 @@ class FavoritesRepository(private val context: Context) {
         }
     }
 
-    // ✅ ДОБАВЛЯЕМ ЭТОТ МЕТОД
+    // ← ИСПРАВЛЕННЫЙ МЕТОД СИНХРОНИЗАЦИИ
+    suspend fun syncFavoritesWithServer(token: String) {
+        try {
+            Log.d("Sync", "Starting sync favorites with server")
+
+            // 1. Загружаем список избранного с сервера
+            val response = apiService.getFavorites("Bearer $token")
+
+            if (response.isSuccessful && response.body() != null) {
+                val serverFavorites = response.body() ?: emptyList()
+                Log.d("Sync", "Received ${serverFavorites.size} favorites from server")
+
+                // 2. Очищаем локальную БД
+                favoriteAthleteDao.deleteAll()
+
+                // 3. Сохраняем полученный список в локальную БД
+                serverFavorites.forEach { athlete ->
+                    addToFavorites(athlete)
+                }
+
+                Log.d("Sync", "✅ Favorites synced from server: ${serverFavorites.size} athletes")
+            } else {
+                Log.e("Sync", "Failed to get favorites: ${response.code()}")
+            }
+        } catch (e: Exception) {
+            Log.e("Sync", "Error syncing favorites", e)
+        }
+    }
+    suspend fun clearAllFavorites() {
+        try {
+            favoriteAthleteDao.deleteAll()
+            favoriteResultDao.deleteAllResults()
+            android.util.Log.d("CacheDebug", "🗑️ Cleared all favorites and results")
+        } catch (e: Exception) {
+            android.util.Log.e("CacheDebug", "Error clearing favorites: ${e.message}")
+        }
+    }
     suspend fun deleteResultsForAthlete(athleteId: String) {
         try {
             favoriteResultDao.deleteResultsForAthlete(athleteId)

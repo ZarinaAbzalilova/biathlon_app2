@@ -1,5 +1,9 @@
 [
     {
+        "merged": "com.biathlonapp-debug-45:/layout_activity_register.xml.flat",
+        "source": "com.biathlonapp-main-47:/layout/activity_register.xml"
+    },
+    {
         "merged": "com.biathlonapp-debug-45:/layout_activity_athlete_detail.xml.flat",
         "source": "com.biathlonapp-main-47:/layout/activity_athlete_detail.xml"
     },
@@ -12,12 +16,12 @@
         "source": "com.biathlonapp-main-47:/layout/fragment_athletes.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-45:/drawable_ic_search.xml.flat",
-        "source": "com.biathlonapp-main-47:/drawable/ic_search.xml"
-    },
-    {
         "merged": "com.biathlonapp-debug-45:/drawable_circle_cyan.xml.flat",
         "source": "com.biathlonapp-main-47:/drawable/circle_cyan.xml"
+    },
+    {
+        "merged": "com.biathlonapp-debug-45:/drawable_ic_search.xml.flat",
+        "source": "com.biathlonapp-main-47:/drawable/ic_search.xml"
     },
     {
         "merged": "com.biathlonapp-debug-45:/mipmap-xhdpi_ic_launcher_round.webp.flat",
@@ -26,6 +30,10 @@
     {
         "merged": "com.biathlonapp-debug-45:/layout_item_team_category.xml.flat",
         "source": "com.biathlonapp-main-47:/layout/item_team_category.xml"
+    },
+    {
+        "merged": "com.biathlonapp-debug-45:/layout_activity_login.xml.flat",
+        "source": "com.biathlonapp-main-47:/layout/activity_login.xml"
     },
     {
         "merged": "com.biathlonapp-debug-45:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
@@ -64,6 +72,10 @@
         "source": "com.biathlonapp-main-47:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
+        "merged": "com.biathlonapp-debug-45:/menu_toolbar_menu.xml.flat",
+        "source": "com.biathlonapp-main-47:/menu/toolbar_menu.xml"
+    },
+    {
         "merged": "com.biathlonapp-debug-45:/drawable_ic_arrow_back.xml.flat",
         "source": "com.biathlonapp-main-47:/drawable/ic_arrow_back.xml"
     },
@@ -86,6 +98,10 @@
     {
         "merged": "com.biathlonapp-debug-45:/layout_fragment_team_list.xml.flat",
         "source": "com.biathlonapp-main-47:/layout/fragment_team_list.xml"
+    },
+    {
+        "merged": "com.biathlonapp-debug-45:/drawable_ic_settings.xml.flat",
+        "source": "com.biathlonapp-main-47:/drawable/ic_settings.xml"
     },
     {
         "merged": "com.biathlonapp-debug-45:/mipmap-xxxhdpi_ic_launcher.webp.flat",
@@ -118,6 +134,10 @@
     {
         "merged": "com.biathlonapp-debug-45:/drawable_ic_athletes.xml.flat",
         "source": "com.biathlonapp-main-47:/drawable/ic_athletes.xml"
+    },
+    {
+        "merged": "com.biathlonapp-debug-45:/layout_activity_settings.xml.flat",
+        "source": "com.biathlonapp-main-47:/layout/activity_settings.xml"
     },
     {
         "merged": "com.biathlonapp-debug-45:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
@@ -278,6 +298,10 @@
     {
         "merged": "com.biathlonapp-debug-45:/drawable_ic_star_border.xml.flat",
         "source": "com.biathlonapp-main-47:/drawable/ic_star_border.xml"
+    },
+    {
+        "merged": "com.biathlonapp-debug-45:/layout_fragment_settings.xml.flat",
+        "source": "com.biathlonapp-main-47:/layout/fragment_settings.xml"
     },
     {
         "merged": "com.biathlonapp-debug-45:/mipmap-hdpi_ic_launcher.webp.flat",

@@ -5,13 +5,17 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.biathlonapp.data.api.BiathlonApiService
 import com.biathlonapp.data.local.FavoriteAthlete
 import com.biathlonapp.data.repository.FavoritesRepository
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = FavoritesRepository(application.applicationContext)
+    private val favoritesRepository = FavoritesRepository(
+        application.applicationContext,
+        BiathlonApiService.create()
+    )
 
     private val _favorites = MutableLiveData<List<FavoriteAthlete>>()
     val favorites: LiveData<List<FavoriteAthlete>> = _favorites
@@ -30,7 +34,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val list = repository.getAllFavorites()
+                val list = favoritesRepository.getAllFavorites()
                 _favorites.value = list
                 _error.value = null
             } catch (e: Exception) {
@@ -44,7 +48,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun removeFromFavorites(athleteId: String) {
         viewModelScope.launch {
-            val success = repository.removeFromFavorites(athleteId)
+            val success = favoritesRepository.removeFromFavorites(athleteId)
             if (success) {
                 loadFavorites() // Перезагружаем список
             } else {

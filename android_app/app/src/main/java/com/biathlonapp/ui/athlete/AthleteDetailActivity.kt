@@ -9,7 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.biathlonapp.R
+import com.biathlonapp.data.api.ApiClient
+import com.biathlonapp.data.api.BiathlonApiService
 import com.biathlonapp.data.model.Athlete
+import com.biathlonapp.data.repository.AuthRepository
 import com.biathlonapp.data.repository.FavoritesRepository
 import com.biathlonapp.databinding.ActivityAthleteDetailBinding
 import com.biathlonapp.ui.stats.AthleteStatsActivity
@@ -28,6 +31,8 @@ class AthleteDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAthleteDetailBinding
     private val viewModel: AthleteStatsViewModel by viewModels()
     private lateinit var favoritesRepository: FavoritesRepository
+    private lateinit var authRepository: AuthRepository
+    private lateinit var apiService: BiathlonApiService
     private var selectedAthlete: Athlete? = null
     private var athleteId: String? = null
     private var isFavorite = false
@@ -37,7 +42,10 @@ class AthleteDetailActivity : AppCompatActivity() {
         binding = ActivityAthleteDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        favoritesRepository = FavoritesRepository(this)
+        // Инициализируем все зависимости
+        apiService = ApiClient.apiService
+        authRepository = AuthRepository(this)  // ← ВАЖНО!
+        favoritesRepository = FavoritesRepository(this, apiService)
 
         setupToolbar()
 
@@ -52,25 +60,12 @@ class AthleteDetailActivity : AppCompatActivity() {
             return
         }
 
-        // ✅ КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: настраиваем кнопку ДО загрузки данных
         setupStatsButton(currentId, selectedAthlete?.gender)
-
-        // Сначала загружаем из кэша
         loadFromCache(currentId)
-
-        // Отображаем информацию, если спортсмен передан через EXTRA_ATHLETE
         selectedAthlete?.let { displayAthleteInfo(it) }
-
-        // Загружаем полные данные с сервера
         loadAthleteData(currentId)
-
-        // Настраиваем кнопку избранного
         setupFavoriteButton()
-
-        // Проверяем, в избранном ли спортсмен
         checkIfFavorite(currentId)
-
-        // Наблюдаем за изменениями в ViewModel
         observeViewModel()
     }
 
@@ -120,10 +115,8 @@ class AthleteDetailActivity : AppCompatActivity() {
         viewModel.loadAthleteResults(athleteId)
     }
 
-    // ✅ ОБНОВЛЕННЫЙ МЕТОД - всегда работает, даже без интернета
     private fun setupStatsButton(athleteId: String, athleteGender: String?) {
         binding.buttonStats.setOnClickListener {
-            android.util.Log.d("StatsDebug", "Stats button clicked for athlete: $athleteId")
             if (athleteId.isNotEmpty()) {
                 val intent = Intent(this, AthleteStatsActivity::class.java).apply {
                     putExtra(AthleteStatsActivity.EXTRA_ATHLETE_ID, athleteId)
@@ -146,26 +139,42 @@ class AthleteDetailActivity : AppCompatActivity() {
     private fun toggleFavorite() {
         lifecycleScope.launch {
             val currentId = athleteId ?: return@launch
+            val token = authRepository.getToken()
+
+            if (token == null) {
+                showMessage("Авторизуйтесь, чтобы добавлять в избранное")
+                return@launch
+            }
+
             if (isFavorite) {
-                // Удаляем из избранного
-                val success = favoritesRepository.removeFromFavorites(currentId)
-                if (success) {
-                    showMessage("Удалено из избранного")
-                    isFavorite = false
-                    android.util.Log.d("FavoriteDebug", "Removed from favorites: $currentId")
+                // Удаляем с сервера
+                try {
+                    val response = apiService.removeFavorite("Bearer $token", currentId.toLong())
+                    if (response.isSuccessful) {
+                        favoritesRepository.removeFromFavorites(currentId)
+                        showMessage("Удалено из избранного")
+                        isFavorite = false
+                    } else {
+                        showMessage("Ошибка при удалении")
+                    }
+                } catch (e: Exception) {
+                    showMessage("Ошибка: ${e.message}")
                 }
             } else {
-                // Добавляем в избранное
-                val athlete = selectedAthlete ?: createMinimalAthlete(currentId)
-                val success = favoritesRepository.addToFavorites(athlete)
-                if (success) {
-                    showMessage("Добавлено в избранное")
-                    isFavorite = true
-                    android.util.Log.d("FavoriteDebug", "Added to favorites: $currentId, loading results...")
-
-                    // ✅ КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: После добавления в избранное,
-                    // загружаем и сохраняем результаты
-                    viewModel.loadAthleteResults(currentId)
+                // Добавляем на сервер
+                try {
+                    val response = apiService.addFavorite("Bearer $token", mapOf("athlete_id" to currentId.toLong()))
+                    if (response.isSuccessful) {
+                        val athlete = selectedAthlete ?: createMinimalAthlete(currentId)
+                        favoritesRepository.addToFavorites(athlete)
+                        showMessage("Добавлено в избранное")
+                        isFavorite = true
+                        viewModel.loadAthleteResults(currentId)
+                    } else {
+                        showMessage("Ошибка при добавлении")
+                    }
+                } catch (e: Exception) {
+                    showMessage("Ошибка: ${e.message}")
                 }
             }
             updateFavoriteButton()
@@ -208,7 +217,6 @@ class AthleteDetailActivity : AppCompatActivity() {
             selectedAthlete = response.athlete
             displayAthleteInfo(response.athlete)
 
-            // Обновляем гендер для кнопки (если он изменился)
             if (isFavorite) {
                 updateFavoriteAthleteData(response.athlete)
             }

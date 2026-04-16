@@ -25,4 +25,6 @@ interface FavoriteAthleteDao {
 
     @Query("UPDATE favorite_athletes SET lastUpdated = :timestamp WHERE athleteId = :athleteId")
     suspend fun updateLastUpdated(athleteId: String, timestamp: Long)
+    @Query("DELETE FROM favorite_athletes") suspend fun deleteAll()
+
 }

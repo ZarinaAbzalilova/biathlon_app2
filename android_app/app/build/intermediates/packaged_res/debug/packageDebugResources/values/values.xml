@@ -77,7 +77,7 @@
     <string name="stats_button">Статистика</string>
     <string name="team_subtitle">Выберите категорию спортсменов</string>
     <string name="team_title">Сборная команда</string>
-    <style name="Theme.BiathlonApp" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.BiathlonApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>

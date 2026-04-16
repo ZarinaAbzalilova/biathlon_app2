@@ -1,4 +1,4 @@
-#Wed Apr 15 23:57:30 YEKT 2026
+#Thu Apr 16 18:13:40 YEKT 2026
 base.0=C\:\\biathlon_app2\\android_app\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\biathlon_app2\\android_app\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 base.10=C\:\\biathlon_app2\\android_app\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\6\\classes.dex

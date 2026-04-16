@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.biathlonapp.data.api.BiathlonApiService
 import com.biathlonapp.data.repository.BiathlonRepository
 import com.biathlonapp.data.repository.FavoritesRepository
 import com.biathlonapp.utils.Result
@@ -15,7 +16,10 @@ import kotlinx.coroutines.launch
 class AthleteStatsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = BiathlonRepository()
-    private val favoritesRepository = FavoritesRepository(application.applicationContext)
+    private val favoritesRepository = FavoritesRepository(
+        application.applicationContext,
+        BiathlonApiService.create()
+    )
 
     private val _athleteResults = MutableLiveData<AthleteResultsResponse>()
     val athleteResults: LiveData<AthleteResultsResponse> = _athleteResults

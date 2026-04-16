@@ -6448,7 +6448,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="Theme.BiathlonApp" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.BiathlonApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>

@@ -9,8 +9,16 @@ import com.biathlonapp.data.model.PdfUrlResponse
 import com.biathlonapp.data.model.RaceEvent
 import retrofit2.Retrofit
 import com.biathlonapp.data.model.AthleteResultsResponse
+import com.biathlonapp.data.model.AuthResponse
 import com.biathlonapp.data.model.RaceResultsResponse
+import com.biathlonapp.data.model.User
+import okhttp3.RequestBody
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.Header
+import retrofit2.http.Headers
+import retrofit2.http.POST
 
 data class CalendarRaceResponse(
     val id: String,
@@ -77,13 +85,45 @@ interface BiathlonApiService {
         @Query("gender") gender: String? = null
     ): Response<RaceResultsResponse>
 
-    // ← ИСПРАВЛЕНО: возвращает RaceResultsResponse
     @GET("api/race/{raceId}/{gender}")
     suspend fun getRaceResultsByGender(
         @Path("raceId") raceId: String,
         @Path("gender") gender: String
     ): Response<RaceResultsResponse>
+    // ========== АВТОРИЗАЦИЯ ==========
+    @POST("api/auth/register")
+    suspend fun register(@Body body: Map<String, String>): Response<AuthResponse>
 
+    @POST("api/auth/login")
+    suspend fun login(@Body body: Map<String, String>): Response<AuthResponse>
+
+    @GET("api/auth/me")
+    suspend fun getCurrentUser(@Header("Authorization") token: String): Response<User>
+
+    // ========== ИЗБРАННОЕ ==========
+    @GET("api/favorites")
+    suspend fun getFavorites(@Header("Authorization") token: String): Response<List<Athlete>>
+
+    @POST("api/favorites")
+    suspend fun addFavorite(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, Long>
+    ): Response<Unit>
+
+    @DELETE("api/favorites/{athleteId}")
+    suspend fun removeFavorite(
+        @Header("Authorization") token: String,
+        @Path("athleteId") athleteId: Long
+    ): Response<Unit>
+
+    @GET("api/favorites/check/{athleteId}")
+    suspend fun checkFavorite(
+        @Header("Authorization") token: String,
+        @Path("athleteId") athleteId: Long
+    ): Response<FavoriteCheckResponse>
+
+    @GET("api/favorites/check/{athleteId}")
+    suspend fun checkFavorite(@Path("athleteId") athleteId: Long): Response<FavoriteCheckResponse>
     companion object {
         const val BASE_URL = "https://biathlon-app2.onrender.com"
         fun create(): BiathlonApiService {
@@ -103,3 +143,4 @@ interface BiathlonApiService {
         val data: List<T>
     )
 }
+data class FavoriteCheckResponse(val is_favorite: Boolean)

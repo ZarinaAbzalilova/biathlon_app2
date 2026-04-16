@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.biathlonapp.data.api.ApiClient
 import com.biathlonapp.data.local.FavoriteResult
 import com.biathlonapp.data.repository.FavoritesRepository
 import com.biathlonapp.databinding.ActivityAthleteStatsBinding
@@ -46,7 +47,8 @@ class AthleteStatsActivity : AppCompatActivity() {
             return
         }
 
-        favoritesRepository = FavoritesRepository(this)
+        val apiService = ApiClient.apiService
+        favoritesRepository = FavoritesRepository(this, apiService)
         viewModel = ViewModelProvider(this)[AthleteStatsViewModel::class.java]
 
         setupToolbar()

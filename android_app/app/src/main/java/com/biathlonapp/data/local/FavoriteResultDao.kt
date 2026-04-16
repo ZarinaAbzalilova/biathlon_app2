@@ -19,7 +19,8 @@ interface FavoriteResultDao {
 
     @Query("DELETE FROM favorite_results WHERE athleteId = :athleteId")
     suspend fun deleteResultsForAthlete(athleteId: String)
-
+    @Query("DELETE FROM favorite_results")
+    suspend fun deleteAllResults()
     @Query("SELECT COUNT(*) FROM favorite_results WHERE athleteId = :athleteId")
     suspend fun hasResults(athleteId: String): Int
 }

@@ -19,11 +19,18 @@
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true">
-
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ui.athlete.AthleteDetailActivity"
             android:exported="false" />
-
+        <activity android:name=".ui.auth.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.BiathlonApp" />
+        <activity android:name=".ui.auth.RegisterActivity"
+            android:theme="@style/Theme.BiathlonApp" />
         <activity
             android:name=".ui.stats.AthleteStatsActivity"
             android:exported="false" />

@@ -34,8 +34,19 @@
         android:theme="@style/Theme.BiathlonApp"
         android:usesCleartextTraffic="true" >
         <activity
+            android:name="com.biathlonapp.ui.settings.SettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
             android:name="com.biathlonapp.ui.athlete.AthleteDetailActivity"
             android:exported="false" />
+        <activity
+            android:name="com.biathlonapp.ui.auth.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.BiathlonApp" />
+        <activity
+            android:name="com.biathlonapp.ui.auth.RegisterActivity"
+            android:theme="@style/Theme.BiathlonApp" />
         <activity
             android:name="com.biathlonapp.ui.stats.AthleteStatsActivity"
             android:exported="false" />

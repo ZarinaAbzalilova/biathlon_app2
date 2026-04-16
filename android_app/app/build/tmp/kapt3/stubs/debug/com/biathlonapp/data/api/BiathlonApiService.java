@@ -1,6 +1,6 @@
 package com.biathlonapp.data.api;
 
-@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000V\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010 \n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0006\bf\u0018\u0000 %2\u00020\u0001:\u0002%&J\u001e\u0010\u0002\u001a\b\u0012\u0004\u0012\u00020\u00040\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0007J\u001a\u0010\b\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\n0\t0\u0003H\u00a7@\u00a2\u0006\u0002\u0010\u000bJ$\u0010\f\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\n0\t0\u00032\b\b\u0001\u0010\r\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0007J.\u0010\u000e\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\n0\u000f0\u00032\b\b\u0003\u0010\u0010\u001a\u00020\u00112\b\b\u0003\u0010\u0012\u001a\u00020\u0011H\u00a7@\u00a2\u0006\u0002\u0010\u0013J.\u0010\u0014\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00150\t0\u00032\b\b\u0001\u0010\u0016\u001a\u00020\u00112\b\b\u0001\u0010\u0017\u001a\u00020\u0011H\u00a7@\u00a2\u0006\u0002\u0010\u0013J(\u0010\u0018\u001a\b\u0012\u0004\u0012\u00020\u00190\u00032\b\b\u0001\u0010\u001a\u001a\u00020\u00062\b\b\u0001\u0010\u0005\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001bJ*\u0010\u001c\u001a\b\u0012\u0004\u0012\u00020\u001d0\u00032\b\b\u0001\u0010\u001a\u001a\u00020\u00062\n\b\u0003\u0010\u001e\u001a\u0004\u0018\u00010\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001bJ(\u0010\u001f\u001a\b\u0012\u0004\u0012\u00020\u001d0\u00032\b\b\u0001\u0010\u001a\u001a\u00020\u00062\b\b\u0001\u0010\u001e\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u001bJ$\u0010 \u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020!0\t0\u00032\b\b\u0001\u0010\"\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0007J$\u0010#\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\n0\t0\u00032\b\b\u0001\u0010$\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0007\u00a8\u0006\'"}, d2 = {"Lcom/biathlonapp/data/api/BiathlonApiService;", "", "getAthleteResults", "Lretrofit2/Response;", "Lcom/biathlonapp/data/model/AthleteResultsResponse;", "athleteId", "", "(Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getAthletes", "", "Lcom/biathlonapp/data/model/Athlete;", "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getAthletesByTeam", "team", "getAthletesPaginated", "Lcom/biathlonapp/data/api/BiathlonApiService$PaginatedResponse;", "page", "", "perPage", "(IILkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getCalendarRaces", "Lcom/biathlonapp/data/api/DayEventsResponse;", "year", "month", "getRacePdfUrl", "Lcom/biathlonapp/data/model/PdfUrlResponse;", "raceId", "(Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getRaceResults", "Lcom/biathlonapp/data/model/RaceResultsResponse;", "gender", "getRaceResultsByGender", "getRacesByDate", "Lcom/biathlonapp/data/api/CalendarRaceResponse;", "date", "searchAthletes", "query", "Companion", "PaginatedResponse", "app_debug"})
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u0080\u0001\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010$\n\u0002\u0010\t\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010 \n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\b\bf\u0018\u0000 82\u00020\u0001:\u000289J4\u0010\u0002\u001a\b\u0012\u0004\u0012\u00020\u00040\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u00062\u0014\b\u0001\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\t0\bH\u00a7@\u00a2\u0006\u0002\u0010\nJ\u001e\u0010\u000b\u001a\b\u0012\u0004\u0012\u00020\f0\u00032\b\b\u0001\u0010\r\u001a\u00020\tH\u00a7@\u00a2\u0006\u0002\u0010\u000eJ(\u0010\u000b\u001a\b\u0012\u0004\u0012\u00020\f0\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u00062\b\b\u0001\u0010\r\u001a\u00020\tH\u00a7@\u00a2\u0006\u0002\u0010\u000fJ\u001e\u0010\u0010\u001a\b\u0012\u0004\u0012\u00020\u00110\u00032\b\b\u0001\u0010\r\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0012J\u001a\u0010\u0013\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00150\u00140\u0003H\u00a7@\u00a2\u0006\u0002\u0010\u0016J$\u0010\u0017\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00150\u00140\u00032\b\b\u0001\u0010\u0018\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0012J.\u0010\u0019\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00150\u001a0\u00032\b\b\u0003\u0010\u001b\u001a\u00020\u001c2\b\b\u0003\u0010\u001d\u001a\u00020\u001cH\u00a7@\u00a2\u0006\u0002\u0010\u001eJ.\u0010\u001f\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020 0\u00140\u00032\b\b\u0001\u0010!\u001a\u00020\u001c2\b\b\u0001\u0010\"\u001a\u00020\u001cH\u00a7@\u00a2\u0006\u0002\u0010\u001eJ\u001e\u0010#\u001a\b\u0012\u0004\u0012\u00020$0\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0012J$\u0010%\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00150\u00140\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0012J(\u0010&\u001a\b\u0012\u0004\u0012\u00020\'0\u00032\b\b\u0001\u0010(\u001a\u00020\u00062\b\b\u0001\u0010\r\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010)J*\u0010*\u001a\b\u0012\u0004\u0012\u00020+0\u00032\b\b\u0001\u0010(\u001a\u00020\u00062\n\b\u0003\u0010,\u001a\u0004\u0018\u00010\u0006H\u00a7@\u00a2\u0006\u0002\u0010)J(\u0010-\u001a\b\u0012\u0004\u0012\u00020+0\u00032\b\b\u0001\u0010(\u001a\u00020\u00062\b\b\u0001\u0010,\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010)J$\u0010.\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020/0\u00140\u00032\b\b\u0001\u00100\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0012J*\u00101\u001a\b\u0012\u0004\u0012\u0002020\u00032\u0014\b\u0001\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\u00060\bH\u00a7@\u00a2\u0006\u0002\u00103J*\u00104\u001a\b\u0012\u0004\u0012\u0002020\u00032\u0014\b\u0001\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\u00060\bH\u00a7@\u00a2\u0006\u0002\u00103J(\u00105\u001a\b\u0012\u0004\u0012\u00020\u00040\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u00062\b\b\u0001\u0010\r\u001a\u00020\tH\u00a7@\u00a2\u0006\u0002\u0010\u000fJ$\u00106\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00150\u00140\u00032\b\b\u0001\u00107\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0012\u00a8\u0006:"}, d2 = {"Lcom/biathlonapp/data/api/BiathlonApiService;", "", "addFavorite", "Lretrofit2/Response;", "", "token", "", "body", "", "", "(Ljava/lang/String;Ljava/util/Map;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "checkFavorite", "Lcom/biathlonapp/data/api/FavoriteCheckResponse;", "athleteId", "(JLkotlin/coroutines/Continuation;)Ljava/lang/Object;", "(Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getAthleteResults", "Lcom/biathlonapp/data/model/AthleteResultsResponse;", "(Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getAthletes", "", "Lcom/biathlonapp/data/model/Athlete;", "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getAthletesByTeam", "team", "getAthletesPaginated", "Lcom/biathlonapp/data/api/BiathlonApiService$PaginatedResponse;", "page", "", "perPage", "(IILkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getCalendarRaces", "Lcom/biathlonapp/data/api/DayEventsResponse;", "year", "month", "getCurrentUser", "Lcom/biathlonapp/data/model/User;", "getFavorites", "getRacePdfUrl", "Lcom/biathlonapp/data/model/PdfUrlResponse;", "raceId", "(Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getRaceResults", "Lcom/biathlonapp/data/model/RaceResultsResponse;", "gender", "getRaceResultsByGender", "getRacesByDate", "Lcom/biathlonapp/data/api/CalendarRaceResponse;", "date", "login", "Lcom/biathlonapp/data/model/AuthResponse;", "(Ljava/util/Map;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "register", "removeFavorite", "searchAthletes", "query", "Companion", "PaginatedResponse", "app_debug"})
 public abstract interface BiathlonApiService {
     @org.jetbrains.annotations.NotNull()
     public static final java.lang.String BASE_URL = "https://biathlon-app2.onrender.com";
@@ -80,6 +80,65 @@ public abstract interface BiathlonApiService {
     @org.jetbrains.annotations.NotNull()
     java.lang.String gender, @org.jetbrains.annotations.NotNull()
     kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.RaceResultsResponse>> $completion);
+    
+    @retrofit2.http.POST(value = "api/auth/register")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object register(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    java.util.Map<java.lang.String, java.lang.String> body, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.AuthResponse>> $completion);
+    
+    @retrofit2.http.POST(value = "api/auth/login")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object login(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    java.util.Map<java.lang.String, java.lang.String> body, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.AuthResponse>> $completion);
+    
+    @retrofit2.http.GET(value = "api/auth/me")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getCurrentUser(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.User>> $completion);
+    
+    @retrofit2.http.GET(value = "api/favorites")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getFavorites(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<java.util.List<com.biathlonapp.data.model.Athlete>>> $completion);
+    
+    @retrofit2.http.POST(value = "api/favorites")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object addFavorite(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    java.util.Map<java.lang.String, java.lang.Long> body, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<kotlin.Unit>> $completion);
+    
+    @retrofit2.http.DELETE(value = "api/favorites/{athleteId}")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object removeFavorite(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @retrofit2.http.Path(value = "athleteId")
+    long athleteId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<kotlin.Unit>> $completion);
+    
+    @retrofit2.http.GET(value = "api/favorites/check/{athleteId}")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object checkFavorite(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @retrofit2.http.Path(value = "athleteId")
+    long athleteId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.api.FavoriteCheckResponse>> $completion);
+    
+    @retrofit2.http.GET(value = "api/favorites/check/{athleteId}")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object checkFavorite(@retrofit2.http.Path(value = "athleteId")
+    long athleteId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.api.FavoriteCheckResponse>> $completion);
     
     @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0000\n\u0002\u0018\u0002\n\u0000\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002J\u0006\u0010\u0005\u001a\u00020\u0006R\u000e\u0010\u0003\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000\u00a8\u0006\u0007"}, d2 = {"Lcom/biathlonapp/data/api/BiathlonApiService$Companion;", "", "()V", "BASE_URL", "", "create", "Lcom/biathlonapp/data/api/BiathlonApiService;", "app_debug"})
     public static final class Companion {

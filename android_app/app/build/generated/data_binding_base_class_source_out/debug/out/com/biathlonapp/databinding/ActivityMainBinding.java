@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import androidx.viewpager2.widget.ViewPager2;
@@ -24,12 +26,21 @@ public final class ActivityMainBinding implements ViewBinding {
   public final BottomNavigationView bottomNavigation;
 
   @NonNull
+  public final TextView buttonSettings;
+
+  @NonNull
+  public final Toolbar toolbar;
+
+  @NonNull
   public final ViewPager2 viewPager;
 
   private ActivityMainBinding(@NonNull LinearLayout rootView,
-      @NonNull BottomNavigationView bottomNavigation, @NonNull ViewPager2 viewPager) {
+      @NonNull BottomNavigationView bottomNavigation, @NonNull TextView buttonSettings,
+      @NonNull Toolbar toolbar, @NonNull ViewPager2 viewPager) {
     this.rootView = rootView;
     this.bottomNavigation = bottomNavigation;
+    this.buttonSettings = buttonSettings;
+    this.toolbar = toolbar;
     this.viewPager = viewPager;
   }
 
@@ -66,13 +77,26 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.buttonSettings;
+      TextView buttonSettings = ViewBindings.findChildViewById(rootView, id);
+      if (buttonSettings == null) {
+        break missingId;
+      }
+
+      id = R.id.toolbar;
+      Toolbar toolbar = ViewBindings.findChildViewById(rootView, id);
+      if (toolbar == null) {
+        break missingId;
+      }
+
       id = R.id.viewPager;
       ViewPager2 viewPager = ViewBindings.findChildViewById(rootView, id);
       if (viewPager == null) {
         break missingId;
       }
 
-      return new ActivityMainBinding((LinearLayout) rootView, bottomNavigation, viewPager);
+      return new ActivityMainBinding((LinearLayout) rootView, bottomNavigation, buttonSettings,
+          toolbar, viewPager);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

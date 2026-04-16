@@ -35,6 +35,8 @@ public final class FavoriteResultDao_Impl implements FavoriteResultDao {
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteResultsForAthlete;
 
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAllResults;
+
   public FavoriteResultDao_Impl(@NonNull final RoomDatabase __db) {
     this.__db = __db;
     this.__insertionAdapterOfFavoriteResult = new EntityInsertionAdapter<FavoriteResult>(__db) {
@@ -96,6 +98,14 @@ public final class FavoriteResultDao_Impl implements FavoriteResultDao {
       @NonNull
       public String createQuery() {
         final String _query = "DELETE FROM favorite_results WHERE athleteId = ?";
+        return _query;
+      }
+    };
+    this.__preparedStmtOfDeleteAllResults = new SharedSQLiteStatement(__db) {
+      @Override
+      @NonNull
+      public String createQuery() {
+        final String _query = "DELETE FROM favorite_results";
         return _query;
       }
     };
@@ -164,6 +174,29 @@ public final class FavoriteResultDao_Impl implements FavoriteResultDao {
           }
         } finally {
           __preparedStmtOfDeleteResultsForAthlete.release(_stmt);
+        }
+      }
+    }, $completion);
+  }
+
+  @Override
+  public Object deleteAllResults(final Continuation<? super Unit> $completion) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      @NonNull
+      public Unit call() throws Exception {
+        final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAllResults.acquire();
+        try {
+          __db.beginTransaction();
+          try {
+            _stmt.executeUpdateDelete();
+            __db.setTransactionSuccessful();
+            return Unit.INSTANCE;
+          } finally {
+            __db.endTransaction();
+          }
+        } finally {
+          __preparedStmtOfDeleteAllResults.release(_stmt);
         }
       }
     }, $completion);

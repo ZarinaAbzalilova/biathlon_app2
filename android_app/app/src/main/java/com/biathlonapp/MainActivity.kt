@@ -1,10 +1,15 @@
 package com.biathlonapp
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.biathlonapp.data.repository.AuthRepository
 import com.biathlonapp.databinding.ActivityMainBinding
 import com.biathlonapp.ui.adapters.ViewPagerAdapter
+import com.biathlonapp.ui.auth.LoginActivity
+import com.biathlonapp.ui.settings.SettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 
@@ -12,21 +17,54 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private lateinit var authRepository: AuthRepository
+
+    companion object {
+        fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        authRepository = AuthRepository(this)
+
+        // Проверяем авторизацию
+        if (!authRepository.isLoggedIn()) {
+            startActivity(LoginActivity.newIntent(this))
+            finish()
+            return
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        binding.buttonSettings.setOnClickListener {
+            startActivity(SettingsActivity.newIntent(this))
+        }
+        setupToolbar()
         setupViewPager()
         setupBottomNavigation()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
+        supportActionBar?.title = "Биатлон"
+
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_settings -> {
+                    startActivity(SettingsActivity.newIntent(this))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setupViewPager() {
         viewPagerAdapter = ViewPagerAdapter(this)
         binding.viewPager.apply {
             adapter = viewPagerAdapter
-            // Отключаем свайп между страницами, чтобы навигация была только через нижнее меню
             isUserInputEnabled = false
         }
     }
@@ -54,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                     binding.viewPager.currentItem = 4
                     true
                 }
-                    else -> false
+                else -> false
             }
         }
     }
