@@ -4,14 +4,83 @@ import mysql.connector
 import json
 import os
 import pymysql
-from database import get_db_connection  # ← Это импорт из отдельного файла!
-# УДАЛИТЕ: from config import Config  # Больше не нужно здесь
+from database import get_db_connection  
 
+import bcrypt
+import jwt
+from datetime import datetime, timedelta
+from functools import wraps
+import re
+
+# JWT настройки
+JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-change-in-production')
+JWT_EXPIRATION_HOURS = 24 * 30  # 30 дней
+
+# Вспомогательные функции
+def hash_password(password):
+    """Хеширование пароля"""
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
+
+def verify_password(password, password_hash):
+    """Проверка пароля"""
+    return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
+
+def generate_token(user_id, email):
+    """Генерация JWT токена"""
+    payload = {
+        'user_id': user_id,
+        'email': email,
+        'exp': datetime.utcnow() + timedelta(hours=JWT_EXPIRATION_HOURS),
+        'iat': datetime.utcnow()
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm='HS256')
+
+def decode_token(token):
+    """Декодирование JWT токена"""
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
+        return payload
+    except jwt.ExpiredSignatureError:
+        return None
+    except jwt.InvalidTokenError:
+        return None
+
+def token_required(f):
+    """Декоратор для проверки токена"""
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        
+        if not token:
+            return jsonify({'error': 'Токен отсутствует'}), 401
+        
+        # Убираем 'Bearer ' если есть
+        if token.startswith('Bearer '):
+            token = token[7:]
+        
+        payload = decode_token(token)
+        if not payload:
+            return jsonify({'error': 'Недействительный или просроченный токен'}), 401
+        
+        request.user_id = payload['user_id']
+        request.user_email = payload['email']
+        
+        return f(*args, **kwargs)
+    return decorated
+
+def validate_email(email):
+    """Валидация email"""
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email) is not None
+
+def validate_password(password):
+    """Валидация пароля (минимум 6 символов)"""
+    return len(password) >= 6
 pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 CORS(app)
 
-# УДАЛИТЕ все строки с load_dotenv() и app.config
 
 # ========== ОСНОВНЫЕ ENDPOINTS ==========
 @app.route('/test_db')
@@ -455,8 +524,6 @@ def get_races():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-
 @app.route('/api/debug/check-pdf-coverage', methods=['GET'])
 def check_pdf_coverage():
     """Проверить покрытие PDF URLs для гонок спортсмена"""
@@ -504,6 +571,263 @@ def check_pdf_coverage():
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# ========== АВТОРИЗАЦИЯ ==========
+
+@app.route('/api/auth/register', methods=['POST'])
+def register():
+    """Регистрация нового пользователя"""
+    try:
+        data = request.get_json()
+        email = data.get('email', '').strip().lower()
+        password = data.get('password', '')
+        
+        # Валидация
+        if not email or not password:
+            return jsonify({'error': 'Email и пароль обязательны'}), 400
+        
+        if not validate_email(email):
+            return jsonify({'error': 'Некорректный email'}), 400
+        
+        if not validate_password(password):
+            return jsonify({'error': 'Пароль должен быть не менее 6 символов'}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Проверяем, существует ли пользователь
+        cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
+        if cursor.fetchone():
+            conn.close()
+            return jsonify({'error': 'Пользователь с таким email уже существует'}), 400
+        
+        # Создаем пользователя
+        password_hash = hash_password(password)
+        cursor.execute("""
+            INSERT INTO users (email, password_hash, created_at)
+            VALUES (%s, %s, NOW())
+        """, (email, password_hash))
+        conn.commit()
+        
+        user_id = cursor.lastrowid
+        token = generate_token(user_id, email)
+        
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'token': token,
+            'user': {
+                'id': user_id,
+                'email': email
+            }
+        }), 201
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/auth/login', methods=['POST'])
+def login():
+    """Вход пользователя"""
+    try:
+        data = request.get_json()
+        email = data.get('email', '').strip().lower()
+        password = data.get('password', '')
+        
+        if not email or not password:
+            return jsonify({'error': 'Email и пароль обязательны'}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("SELECT id, email, password_hash FROM users WHERE email = %s", (email,))
+        user = cursor.fetchone()
+        
+        if not user or not verify_password(password, user['password_hash']):
+            conn.close()
+            return jsonify({'error': 'Неверный email или пароль'}), 401
+        
+        # Обновляем время последнего входа
+        cursor.execute("UPDATE users SET last_login = NOW() WHERE id = %s", (user['id'],))
+        conn.commit()
+        
+        token = generate_token(user['id'], user['email'])
+        
+        conn.close()
+        
+        return jsonify({
+            'success': True,
+            'token': token,
+            'user': {
+                'id': user['id'],
+                'email': user['email']
+            }
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/auth/logout', methods=['POST'])
+@token_required
+def logout():
+    """Выход пользователя (просто удаляем токен на клиенте)"""
+    return jsonify({'success': True})
+
+@app.route('/api/auth/me', methods=['GET'])
+@token_required
+def get_current_user():
+    """Получить информацию о текущем пользователе"""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("""
+            SELECT id, email, created_at, last_login
+            FROM users WHERE id = %s
+        """, (request.user_id,))
+        user = cursor.fetchone()
+        
+        conn.close()
+        
+        if user:
+            # Преобразуем даты в строки
+            if user['created_at']:
+                user['created_at'] = user['created_at'].strftime('%Y-%m-%d %H:%M:%S')
+            if user['last_login']:
+                user['last_login'] = user['last_login'].strftime('%Y-%m-%d %H:%M:%S')
+            
+            return jsonify({'user': user})
+        else:
+            return jsonify({'error': 'Пользователь не найден'}), 404
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/auth/reset-password', methods=['POST'])
+def reset_password():
+    """Сброс пароля (отправка email с ссылкой)"""
+    # TODO: Реализовать отправку email
+    # Пока просто заглушка
+    data = request.get_json()
+    email = data.get('email', '').strip().lower()
+    
+    if not email:
+        return jsonify({'error': 'Email обязателен'}), 400
+    
+    # Здесь нужно отправить email с ссылкой для сброса
+    # Для начала можно вернуть успех, если email существует
+    
+    return jsonify({
+        'success': True,
+        'message': 'Если пользователь существует, инструкция по сбросу пароля отправлена на email'
+    })
+
+# ========== ИЗБРАННОЕ (с привязкой к пользователю) ==========
+
+@app.route('/api/favorites', methods=['GET'])
+@token_required
+def get_favorites():
+    """Получить всех избранных спортсменов текущего пользователя"""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("""
+            SELECT a.*
+            FROM user_favorites uf
+            JOIN athlete a ON uf.athlete_id = a.athlete_id
+            WHERE uf.user_id = %s
+            ORDER BY a.last_name, a.first_name
+        """, (request.user_id,))
+        
+        favorites = cursor.fetchall()
+        conn.close()
+        
+        # Преобразуем даты
+        for fav in favorites:
+            if fav['birth_date']:
+                fav['birth_date'] = fav['birth_date'].strftime('%Y-%m-%d')
+        
+        return jsonify(favorites)
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/favorites', methods=['POST'])
+@token_required
+def add_favorite():
+    """Добавить спортсмена в избранное"""
+    try:
+        data = request.get_json()
+        athlete_id = data.get('athlete_id')
+        
+        if not athlete_id:
+            return jsonify({'error': 'athlete_id обязателен'}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Проверяем, существует ли спортсмен
+        cursor.execute("SELECT athlete_id FROM athlete WHERE athlete_id = %s", (athlete_id,))
+        if not cursor.fetchone():
+            conn.close()
+            return jsonify({'error': 'Спортсмен не найден'}), 404
+        
+        # Добавляем в избранное
+        cursor.execute("""
+            INSERT IGNORE INTO user_favorites (user_id, athlete_id)
+            VALUES (%s, %s)
+        """, (request.user_id, athlete_id))
+        conn.commit()
+        
+        conn.close()
+        
+        return jsonify({'success': True, 'message': 'Спортсмен добавлен в избранное'})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/favorites/<athlete_id>', methods=['DELETE'])
+@token_required
+def remove_favorite(athlete_id):
+    """Удалить спортсмена из избранного"""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("""
+            DELETE FROM user_favorites
+            WHERE user_id = %s AND athlete_id = %s
+        """, (request.user_id, athlete_id))
+        conn.commit()
+        
+        conn.close()
+        
+        return jsonify({'success': True, 'message': 'Спортсмен удален из избранного'})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/favorites/check/<athlete_id>', methods=['GET'])
+@token_required
+def check_favorite(athlete_id):
+    """Проверить, находится ли спортсмен в избранном"""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("""
+            SELECT 1 FROM user_favorites
+            WHERE user_id = %s AND athlete_id = %s
+        """, (request.user_id, athlete_id))
+        
+        is_favorite = cursor.fetchone() is not None
+        conn.close()
+        
+        return jsonify({'is_favorite': is_favorite})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 # ========== ДИАГНОСТИЧЕСКИЕ ENDPOINTS ==========
 
 @app.route('/api/debug/detailed-join-analysis', methods=['GET'])
