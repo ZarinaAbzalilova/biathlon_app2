@@ -11,7 +11,82 @@ import jwt
 from datetime import datetime, timedelta
 from functools import wraps
 import re
+import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
+# Email настройки для Mail.ru
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.mail.ru')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_USER = os.environ.get('EMAIL_USER', '')
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD', '')
+APP_URL = os.environ.get('APP_URL', 'https://biathlon-app2.onrender.com')
+
+def send_reset_email(to_email, reset_token):
+    """Отправка email для сброса пароля через Mail.ru"""
+    try:
+        reset_link = f"{APP_URL}/reset-password?token={reset_token}"
+        
+        # Создаем письмо
+        subject = "Сброс пароля - Биатлон Приложение"
+        html_content = f"""
+        <html>
+        <head>
+            <style>
+                body {{ font-family: Arial, sans-serif; }}
+                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                .button {{
+                    background-color: #4CAF50;
+                    border: none;
+                    color: white;
+                    padding: 12px 24px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 20px 0;
+                    border-radius: 4px;
+                }}
+                .footer {{ margin-top: 30px; font-size: 12px; color: #666; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2>Сброс пароля</h2>
+                <p>Вы запросили сброс пароля для аккаунта <strong>{to_email}</strong>.</p>
+                <p>Нажмите на кнопку ниже, чтобы установить новый пароль:</p>
+                <a href="{reset_link}" class="button">Сбросить пароль</a>
+                <p>Или скопируйте ссылку в браузер:</p>
+                <p><code>{reset_link}</code></p>
+                <p>Ссылка действительна в течение 1 часа.</p>
+                <p>Если вы не запрашивали сброс пароля, просто проигнорируйте это письмо.</p>
+                <div class="footer">
+                    <p>© 2024 Биатлон Приложение</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        msg = MIMEMultipart()
+        msg['From'] = EMAIL_USER
+        msg['To'] = to_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(html_content, 'html'))
+        
+        # Отправка через Mail.ru
+        server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
+        server.starttls()
+        server.login(EMAIL_USER, EMAIL_PASSWORD)
+        server.send_message(msg)
+        server.quit()
+        
+        print(f"✅ Reset email sent to {to_email}")
+        return True
+    except Exception as e:
+        print(f"❌ Failed to send email: {e}")
+        return False
 # JWT настройки
 JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-change-in-production')
 JWT_EXPIRATION_HOURS = 24 * 30  # 30 дней

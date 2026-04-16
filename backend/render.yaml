@@ -42,6 +42,10 @@ services:
       # Эти переменные НУЖНО установить вручную в панели Render:
       - key: MYSQL_PASSWORD
         sync: false  # ← Установите пароль вручную!
-        
+
+      - key: EMAIL_USER
+        value: biathlon.noreply@mail.ru  # Замените на ваш email
+      - key: EMAIL_PASSWORD
+        value: KF3GbeDeYAbbPsrHf7F1
       - key: PYTHON_VERSION
         value: 3.11.0
