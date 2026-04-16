@@ -1,7 +1,7 @@
 import subprocess
 import sys
 
-packages = ['flask', 'flask-cors', 'mysql-connector-python', 'python-dotenv']
+packages = ['flask', 'flask-cors', 'mysql-connector-python', 'python-dotenv','bcrypt']
 
 print("Устанавливаем необходимые пакеты...")
 
