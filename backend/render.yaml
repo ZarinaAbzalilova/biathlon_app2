@@ -42,7 +42,10 @@ services:
       # Эти переменные НУЖНО установить вручную в панели Render:
       - key: MYSQL_PASSWORD
         sync: false  # ← Установите пароль вручную!
-
+      - key: EMAIL_HOST
+        value: smtp.mail.ru
+      - key: EMAIL_PORT
+        value: 587
       - key: EMAIL_USER
         value: biathlon.noreply@mail.ru  # Замените на ваш email
       - key: EMAIL_PASSWORD
