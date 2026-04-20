@@ -43,12 +43,12 @@ services:
       - key: MYSQL_PASSWORD
         sync: false  # ← Установите пароль вручную!
       - key: EMAIL_HOST
-        value: smtp.mail.ru
+        value: smtp.yandex.ru
       - key: EMAIL_PORT
         value: 587
       - key: EMAIL_USER
-        value: biathlon.noreply@mail.ru  # Замените на ваш email
+        value: biathlon.noreply@yandex.ru
       - key: EMAIL_PASSWORD
-        value: p7wxMOLYuXzsHIT7kbA9
+        value: tncwwzlstwmctqvx
       - key: PYTHON_VERSION
         value: 3.11.0
