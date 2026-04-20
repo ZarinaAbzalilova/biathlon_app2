@@ -254,12 +254,14 @@ def update_fcm_token():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         
-        # Добавляем колонку если нет
-        cursor.execute("""
-            ALTER TABLE users 
-            ADD COLUMN IF NOT EXISTS fcm_token VARCHAR(500) NULL
-        """)
+        # Проверяем существование колонки и добавляем если нет
+        cursor.execute("SHOW COLUMNS FROM users LIKE 'fcm_token'")
+        column_exists = cursor.fetchone()
         
+        if not column_exists:
+            cursor.execute("ALTER TABLE users ADD COLUMN fcm_token VARCHAR(500) NULL")
+        
+        # Обновляем токен
         cursor.execute("""
             UPDATE users 
             SET fcm_token = %s
@@ -272,6 +274,7 @@ def update_fcm_token():
         return jsonify({'success': True, 'message': 'FCM token обновлен'})
         
     except Exception as e:
+        print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/notifications/settings', methods=['POST'])
@@ -285,11 +288,12 @@ def update_notification_settings():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         
-        # Добавляем колонку если нет
-        cursor.execute("""
-            ALTER TABLE users 
-            ADD COLUMN IF NOT EXISTS notifications_enabled BOOLEAN DEFAULT TRUE
-        """)
+        # Проверяем существование колонки и добавляем если нет
+        cursor.execute("SHOW COLUMNS FROM users LIKE 'notifications_enabled'")
+        column_exists = cursor.fetchone()
+        
+        if not column_exists:
+            cursor.execute("ALTER TABLE users ADD COLUMN notifications_enabled BOOLEAN DEFAULT TRUE")
         
         cursor.execute("""
             UPDATE users 
@@ -303,6 +307,7 @@ def update_notification_settings():
         return jsonify({'success': True, 'message': 'Настройки уведомлений обновлены'})
         
     except Exception as e:
+        print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
 @app.route('/api/notifications/send-race-reminder', methods=['POST'])
 @token_required
