@@ -123,7 +123,16 @@ class LoginActivity : AppCompatActivity() {
             android.util.Log.e("Sync", "Error syncing favorites: ${e.message}")
         }
     }
-
+    private suspend fun sendFcmTokenToServer(token: String, userToken: String) {
+        try {
+            val response = apiService.updateFcmToken("Bearer $userToken", mapOf("fcm_token" to token))
+            if (!response.isSuccessful) {
+                android.util.Log.e("FCM", "Failed to send token")
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("FCM", "Error sending token: ${e.message}")
+        }
+    }
     private fun startMainActivity() {
         val intent = MainActivity.newIntent(this)
         startActivity(intent)

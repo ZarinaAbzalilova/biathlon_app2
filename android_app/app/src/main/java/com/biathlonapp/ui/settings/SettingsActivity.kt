@@ -81,8 +81,23 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit().putBoolean("notifications_enabled", isChecked).apply()
+            // Отправляем настройку на сервер
+            updateNotificationSettingsOnServer(isChecked)
             val message = if (isChecked) "Уведомления включены" else "Уведомления выключены"
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun updateNotificationSettingsOnServer(enabled: Boolean) {
+        lifecycleScope.launch {
+            val token = authRepository.getToken()
+            if (token != null) {
+                try {
+                    apiService.updateNotificationSettings("Bearer $token", mapOf("enabled" to enabled))
+                } catch (e: Exception) {
+                    // Ошибка, но локально сохранили
+                }
+            }
         }
     }
 

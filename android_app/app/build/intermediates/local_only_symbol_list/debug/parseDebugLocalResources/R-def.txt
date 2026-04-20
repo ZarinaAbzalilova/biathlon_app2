@@ -34,6 +34,7 @@ drawable ic_launcher_foreground
 drawable ic_like
 drawable ic_male
 drawable ic_news
+drawable ic_notification
 drawable ic_repost
 drawable ic_search
 drawable ic_settings
@@ -222,7 +223,12 @@ string female_main
 string female_reserve
 string first_name_label
 string full_name
+string gcm_defaultSenderId
 string gender
+string google_api_key
+string google_app_id
+string google_crash_reporting_api_key
+string google_storage_bucket
 string icon_arrow
 string icon_calendar
 string icon_category
@@ -241,6 +247,7 @@ string no_events_today
 string no_internet
 string no_stats
 string place
+string project_id
 string race_id
 string region
 string region_code

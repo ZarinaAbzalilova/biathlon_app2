@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.biathlonapp-mergeDebugResources-43:/values-ldrtl-v17/values-ldrtl-v17.xml",
+            "outputFile": "com.biathlonapp-mergeDebugResources-55:/values-ldrtl-v17/values-ldrtl-v17.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\abzal\\.gradle\\caches\\8.11.1\\transforms\\b4f6a3a2d2b0f4a8346638fccb3358fb\\transformed\\material-1.12.0\\res\\values-ldrtl-v17\\values-ldrtl-v17.xml",
+                    "source": "C:\\Users\\abzal\\.gradle\\caches\\8.11.1\\transforms\\25d835a4d0d5b961a380f76b22ea8b7f\\transformed\\material-1.12.0\\res\\values-ldrtl-v17\\values-ldrtl-v17.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

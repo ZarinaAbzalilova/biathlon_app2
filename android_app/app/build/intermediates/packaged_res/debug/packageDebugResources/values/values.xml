@@ -46,7 +46,12 @@
     <string name="female_reserve">Женская резервная</string>
     <string name="first_name_label">Имя</string>
     <string name="full_name">ФИО</string>
+    <string name="gcm_defaultSenderId" translatable="false">385905452920</string>
     <string name="gender">Пол</string>
+    <string name="google_api_key" translatable="false">AIzaSyB7nECEJ8TTg2jJ1CVTBT0izfIjcG2CnTE</string>
+    <string name="google_app_id" translatable="false">1:385905452920:android:3c1c90000327430db60a8d</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyB7nECEJ8TTg2jJ1CVTBT0izfIjcG2CnTE</string>
+    <string name="google_storage_bucket" translatable="false">biathlonapp-84d7a.firebasestorage.app</string>
     <string name="icon_arrow">Стрелка перехода</string>
     <string name="icon_calendar">Иконка календаря</string>
     <string name="icon_category">Иконка категории</string>
@@ -65,6 +70,7 @@
     <string name="no_internet">Нет подключения к интернету</string>
     <string name="no_stats">Нет статистики</string>
     <string name="place">Место</string>
+    <string name="project_id" translatable="false">biathlonapp-84d7a</string>
     <string name="race_id">ID гонки</string>
     <string name="region">Регион</string>
     <string name="region_code">Код региона</string>

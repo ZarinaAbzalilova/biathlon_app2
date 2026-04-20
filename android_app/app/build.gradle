@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'  // Добавь эту строку
+    id 'com.google.gms.google-services'  // ← Добавьте эту строку
 }
 
 android {
@@ -11,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.biathlonapp"
-        minSdk 21
+        minSdk 23
         targetSdk 34  // Синхронизируем с compileSdk
         versionCode 1
         versionName "1.0"
@@ -79,7 +80,8 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
 
     // Fragment KTX
-    implementation 'androidx.fragment:fragment-ktx:1.8.4'  // Вместо 1.8.9
+    implementation 'androidx.fragment:fragment-ktx:1.8.4'
+    implementation 'com.google.firebase:firebase-messaging:25.0.1'// Вместо 1.8.9
 
     // Тесты
     testImplementation 'junit:junit:4.13.2'
@@ -102,4 +104,9 @@ dependencies {
 
     // Для работы с корутинами
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:33.7.0')
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }

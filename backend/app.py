@@ -11,10 +11,16 @@ import jwt
 from datetime import datetime, timedelta
 from functools import wraps
 import re
-import os
 import smtplib
+import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import google.auth
+from google.auth.transport.requests import Request
+from google.oauth2 import service_account
+
+SCOPES = ['https://www.googleapis.com/auth/firebase.messaging']
+PROJECT_ID = os.environ.get('FCM_PROJECT_ID', 'biathlonapp-84d7a')
 
 # Email настройки для Yandex (замените старые настройки)
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.yandex.ru')
@@ -22,6 +28,79 @@ EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
 EMAIL_USER = os.environ.get('EMAIL_USER', '')
 EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD', '')
 APP_URL = os.environ.get('APP_URL', 'https://biathlon-app2.onrender.com')
+def get_firebase_access_token():
+    """Получение OAuth 2.0 токена для Firebase"""
+    try:
+        # Пытаемся получить credentials из переменной окружения (Render)
+        creds_json = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS_JSON')
+        if creds_json:
+            creds_dict = json.loads(creds_json)
+            credentials = service_account.Credentials.from_service_account_info(
+                creds_dict, scopes=SCOPES
+            )
+        else:
+            # Если нет, пробуем через файл
+            credentials = service_account.Credentials.from_service_account_file(
+                'service-account.json', scopes=SCOPES
+            )
+        
+        credentials.refresh(Request())
+        return credentials.token
+    except Exception as e:
+        print(f"❌ Ошибка получения токена: {e}")
+        return None
+    
+def send_fcm_notification_v1(fcm_token, title, body, race_id=None):
+    """Отправка уведомления через FCM HTTP v1 API"""
+    try:
+        access_token = get_firebase_access_token()
+        if not access_token:
+            return False
+        
+        # URL для v1 API
+        url = f"https://fcm.googleapis.com/v1/projects/{PROJECT_ID}/messages:send"
+        
+        headers = {
+            'Authorization': f'Bearer {access_token}',
+            'Content-Type': 'application/json'
+        }
+        
+        # Формируем payload для v1 API [citation:3]
+        payload = {
+            "message": {
+                "token": fcm_token,
+                "notification": {
+                    "title": title,
+                    "body": body
+                },
+                "data": {
+                    "race_id": race_id or "",
+                    "click_action": "OPEN_RACE_ACTIVITY"
+                },
+                "android": {
+                    "priority": "high",
+                    "notification": {
+                        "click_action": "OPEN_RACE_ACTIVITY"
+                    }
+                }
+            }
+        }
+        
+        response = requests.post(url, headers=headers, json=payload)
+        
+        if response.status_code == 200:
+            print(f"✅ Уведомление отправлено на {fcm_token[:10]}...")
+            return True
+        else:
+            print(f"❌ Ошибка: {response.status_code} - {response.text}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Исключение при отправке: {e}")
+        return False
+
+
+
 
 def send_reset_email(to_email, reset_token):
     """Отправка email для сброса пароля через Yandex"""
@@ -156,7 +235,111 @@ app = Flask(__name__)
 CORS(app)
 
 
+
 # ========== ОСНОВНЫЕ ENDPOINTS ==========
+
+# Добавьте после импортов, перед основными эндпоинтами:
+
+@app.route('/api/auth/update-fcm-token', methods=['POST'])
+@token_required
+def update_fcm_token():
+    """Обновление FCM токена пользователя"""
+    try:
+        data = request.get_json()
+        fcm_token = data.get('fcm_token', '')
+        
+        if not fcm_token:
+            return jsonify({'error': 'FCM token обязателен'}), 400
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Добавляем колонку если нет
+        cursor.execute("""
+            ALTER TABLE users 
+            ADD COLUMN IF NOT EXISTS fcm_token VARCHAR(500) NULL
+        """)
+        
+        cursor.execute("""
+            UPDATE users 
+            SET fcm_token = %s
+            WHERE id = %s
+        """, (fcm_token, request.user_id))
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({'success': True, 'message': 'FCM token обновлен'})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/notifications/settings', methods=['POST'])
+@token_required
+def update_notification_settings():
+    """Обновление настроек уведомлений пользователя"""
+    try:
+        data = request.get_json()
+        enabled = data.get('enabled', True)
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Добавляем колонку если нет
+        cursor.execute("""
+            ALTER TABLE users 
+            ADD COLUMN IF NOT EXISTS notifications_enabled BOOLEAN DEFAULT TRUE
+        """)
+        
+        cursor.execute("""
+            UPDATE users 
+            SET notifications_enabled = %s
+            WHERE id = %s
+        """, (enabled, request.user_id))
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({'success': True, 'message': 'Настройки уведомлений обновлены'})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+@app.route('/api/notifications/send-race-reminder', methods=['POST'])
+@token_required
+def send_race_reminder():
+    """Отправка напоминания о гонке"""
+    try:
+        data = request.get_json()
+        title = data.get('title', 'Новая гонка')
+        body = data.get('body', '')
+        race_id = data.get('race_id')
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Получаем токены пользователей, у которых включены уведомления
+        cursor.execute("""
+            SELECT fcm_token FROM users 
+            WHERE fcm_token IS NOT NULL AND notifications_enabled = 1
+        """)
+        
+        tokens = cursor.fetchall()
+        conn.close()
+        
+        success_count = 0
+        for token_data in tokens:
+            token = token_data['fcm_token']
+            if send_fcm_notification_v1(token, title, body, race_id):
+                success_count += 1
+        
+        return jsonify({
+            'success': True,
+            'sent': success_count,
+            'total': len(tokens)
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 @app.route('/test_db')
 def test_db():
     try:

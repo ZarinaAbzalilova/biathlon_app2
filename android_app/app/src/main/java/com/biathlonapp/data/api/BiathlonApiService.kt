@@ -134,7 +134,17 @@ interface BiathlonApiService {
                 .create(BiathlonApiService::class.java)
         }
     }
+    @POST("api/auth/update-fcm-token")
+    suspend fun updateFcmToken(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, String>
+    ): Response<Unit>
 
+    @POST("api/notifications/settings")
+    suspend fun updateNotificationSettings(
+        @Header("Authorization") token: String,
+        @Body body: Map<String, Boolean>
+    ): Response<Unit>
     data class PaginatedResponse<T>(
         val page: Int,
         val per_page: Int,

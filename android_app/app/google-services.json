@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "385905452920",
+    "project_id": "biathlonapp-84d7a",
+    "storage_bucket": "biathlonapp-84d7a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:385905452920:android:3c1c90000327430db60a8d",
+        "android_client_info": {
+          "package_name": "com.biathlonapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7nECEJ8TTg2jJ1CVTBT0izfIjcG2CnTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

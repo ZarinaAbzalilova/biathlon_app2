@@ -9,7 +9,6 @@ import com.biathlonapp.databinding.ItemRaceProtocolBinding
 class RaceProtocolAdapter(
     private val onAthleteClick: (String) -> Unit
 ) : RecyclerView.Adapter<RaceProtocolAdapter.ViewHolder>() {
-
     private var results: List<RaceResultItem> = emptyList()
 
     fun submitList(newResults: List<RaceResultItem>) {
@@ -25,7 +24,6 @@ class RaceProtocolAdapter(
         )
         return ViewHolder(binding, onAthleteClick)
     }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(results[position])
     }
@@ -44,9 +42,6 @@ class RaceProtocolAdapter(
             binding.textAthleteFirstName.text = result.firstName
             binding.textMissCount.text = result.missCount?.toString() ?: "-"
             binding.textFinishTime.text = result.finishTime ?: "-"
-
-            binding.textRegion.text = result.region ?: ""
-            binding.textSportsRank.text = result.sportsRank ?: ""
 
             itemView.setOnClickListener {
                 onAthleteClick(result.athleteId)

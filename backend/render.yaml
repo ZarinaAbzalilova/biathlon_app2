@@ -38,7 +38,11 @@ services:
         
       - key: MYSQL_USER
         value: adminZarina
-        
+      - key: FCM_PROJECT_ID
+        value: biathlonapp-84d7a
+        key: GOOGLE_APPLICATION_CREDENTIALS_JSON
+        sync: false
+
       # Эти переменные НУЖНО установить вручную в панели Render:
       - key: MYSQL_PASSWORD
         sync: false  # ← Установите пароль вручную!
