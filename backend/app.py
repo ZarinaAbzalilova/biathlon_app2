@@ -16,19 +16,18 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# Email настройки для Mail.ru
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.mail.ru')
+# Email настройки для Yandex (замените старые настройки)
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.yandex.ru')
 EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
 EMAIL_USER = os.environ.get('EMAIL_USER', '')
 EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD', '')
 APP_URL = os.environ.get('APP_URL', 'https://biathlon-app2.onrender.com')
 
 def send_reset_email(to_email, reset_token):
-    """Отправка email для сброса пароля через Mail.ru"""
+    """Отправка email для сброса пароля через Yandex"""
     try:
         reset_link = f"{APP_URL}/reset-password?token={reset_token}"
         
-        # Создаем письмо
         subject = "Сброс пароля - Биатлон Приложение"
         html_content = f"""
         <html>
@@ -75,7 +74,7 @@ def send_reset_email(to_email, reset_token):
         msg['Subject'] = subject
         msg.attach(MIMEText(html_content, 'html'))
         
-        # Отправка через Mail.ru
+        # Отправка через Yandex
         server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
         server.starttls()
         server.login(EMAIL_USER, EMAIL_PASSWORD)
