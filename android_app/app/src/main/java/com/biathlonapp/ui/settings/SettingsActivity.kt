@@ -13,6 +13,7 @@ import com.biathlonapp.data.repository.AuthRepository
 import com.biathlonapp.data.repository.FavoritesRepository
 import com.biathlonapp.databinding.ActivitySettingsBinding
 import com.biathlonapp.ui.auth.LoginActivity
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
 class SettingsActivity : AppCompatActivity() {
@@ -20,13 +21,13 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var authRepository: AuthRepository
     private lateinit var favoritesRepository: FavoritesRepository
-    private lateinit var apiService: BiathlonApiService  // ← ДОБАВЛЯЕМ
+    private lateinit var apiService: BiathlonApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Инициализируем зависимости
-        apiService = ApiClient.apiService  // ← ВАЖНО!
+        apiService = ApiClient.apiService
         authRepository = AuthRepository(this)
         favoritesRepository = FavoritesRepository(this, apiService)
 
@@ -41,11 +42,14 @@ class SettingsActivity : AppCompatActivity() {
         setupClickListeners()
         setupNotificationSwitch()
         setupThemeSelector()
+
+        // ← ВЫЗЫВАЕМ МЕТОД ВНУТРИ onCreate
+        showFcmToken()
     }
 
     private fun applyTheme() {
         val prefs = getSharedPreferences("settings", MODE_PRIVATE)
-        val themeMode = prefs.getInt("theme_mode", 0) // 0=системная, 1=светлая, 2=темная
+        val themeMode = prefs.getInt("theme_mode", 0)
 
         when (themeMode) {
             0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
@@ -81,10 +85,34 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit().putBoolean("notifications_enabled", isChecked).apply()
-            // Отправляем настройку на сервер
             updateNotificationSettingsOnServer(isChecked)
             val message = if (isChecked) "Уведомления включены" else "Уведомления выключены"
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showFcmToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                android.util.Log.d("FCM_TOKEN", "======================================")
+                android.util.Log.d("FCM_TOKEN", "Ваш FCM токен:")
+                android.util.Log.d("FCM_TOKEN", token)
+                android.util.Log.d("FCM_TOKEN", "======================================")
+
+                Toast.makeText(
+                    this@SettingsActivity,
+                    "Токен скопирован в логи",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                // Сохраняем токен в SharedPreferences
+                getSharedPreferences("fcm", MODE_PRIVATE).edit()
+                    .putString("fcm_token", token).apply()
+            } else {
+                android.util.Log.e("FCM_TOKEN", "Ошибка: ${task.exception?.message}")
+                Toast.makeText(this@SettingsActivity, "Ошибка получения токена", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -105,7 +133,6 @@ class SettingsActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("settings", MODE_PRIVATE)
         val themeMode = prefs.getInt("theme_mode", 0)
 
-        // Устанавливаем выбранный вариант
         when (themeMode) {
             0 -> binding.radioSystem.isChecked = true
             1 -> binding.radioLight.isChecked = true
@@ -121,7 +148,6 @@ class SettingsActivity : AppCompatActivity() {
 
             prefs.edit().putInt("theme_mode", newThemeMode).apply()
 
-            // Применяем тему
             when (newThemeMode) {
                 0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
                 1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -146,15 +172,11 @@ class SettingsActivity : AppCompatActivity() {
     private fun performLogout() {
         lifecycleScope.launch {
             try {
-                // Очищаем локальное избранное
                 favoritesRepository.clearAllFavorites()
-
-                // Очищаем данные авторизации
                 authRepository.clear()
 
                 Toast.makeText(this@SettingsActivity, "Вы вышли из системы", Toast.LENGTH_SHORT).show()
 
-                // Переходим на экран логина
                 val intent = LoginActivity.newIntent(this@SettingsActivity)
                 intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
