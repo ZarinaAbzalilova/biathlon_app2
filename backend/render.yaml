@@ -46,6 +46,6 @@ services:
       - key: EMAIL_USER
         value: biathlon.noreply@mail.ru  # Замените на ваш email
       - key: EMAIL_PASSWORD
-        value: GVFWqeesco3wSHP9nR1c
+        value: p7wxMOLYuXzsHIT7kbA9
       - key: PYTHON_VERSION
         value: 3.11.0
