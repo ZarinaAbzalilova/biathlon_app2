@@ -24,6 +24,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 import ssl
 
+
+
 SCOPES = ['https://www.googleapis.com/auth/firebase.messaging']
 PROJECT_ID = os.environ.get('FCM_PROJECT_ID', 'biathlonapp-84d7a')
 
@@ -33,6 +35,13 @@ EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
 EMAIL_USER = os.environ.get('EMAIL_USER', '')
 EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD', '')
 APP_URL = os.environ.get('APP_URL', 'https://biathlon-app2.onrender.com')
+
+
+
+#проверка
+
+
+
 def get_firebase_access_token():
     """Получение OAuth 2.0 токена для Firebase"""
     try:
@@ -155,17 +164,15 @@ def send_reset_email(to_email, reset_token):
         msg['Subject'] = subject
         msg.attach(MIMEText(html_content, 'html'))
         
-        # ПРИНУДИТЕЛЬНО используем порт 465 для Яндекс
-        import ssl
+        # ДЕБАГ: выводим длину пароля (не сам пароль!)
+        print(f"📧 EMAIL_USER: {EMAIL_USER}")
+        print(f"📧 EMAIL_PASSWORD length: {len(EMAIL_PASSWORD) if EMAIL_PASSWORD else 0}")
         
-        # Создаём контекст БЕЗ проверки сертификата (только для дебага!)
-        # В продакшене лучше использовать ssl.create_default_context()
         context = ssl.create_default_context()
+        print(f"📧 Connecting to smtp.yandex.ru:465")
         
-        print(f"📧 Connecting to {EMAIL_HOST}:465")
-        
-        # Всегда подключаемся напрямую к Яндексу на порт 465
         with smtplib.SMTP_SSL("smtp.yandex.ru", 465, context=context) as server:
+            server.set_debuglevel(2)  # Включаем подробный лог SMTP
             server.login(EMAIL_USER, EMAIL_PASSWORD)
             server.send_message(msg)
         
