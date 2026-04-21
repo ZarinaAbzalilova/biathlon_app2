@@ -365,7 +365,134 @@ def manual_check_races():
     check_and_send_race_notifications()
     return jsonify({'success': True, 'message': 'Проверка гонок выполнена'})
 
-# Добавляем эндпоинт для добавления тестовой гонки (для разработки)
+# Для сброса пароля
+@app.route('/reset-password', methods=['GET'])
+def reset_password_page():
+    """Страница-заглушка, которая перенаправляет на приложение"""
+    token = request.args.get('token', '')
+    if token:
+        # Перенаправляем на deep link приложения
+        return f'''
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Сброс пароля - Биатлон</title>
+            <meta http-equiv="refresh" content="2; URL=biathlonapp://reset-password?token={token}">
+            <style>
+                body {{
+                    font-family: Arial, sans-serif;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                }}
+                .container {{
+                    text-align: center;
+                    background: white;
+                    padding: 40px;
+                    border-radius: 20px;
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+                }}
+                .logo {{
+                    font-size: 48px;
+                    margin-bottom: 20px;
+                }}
+                h1 {{
+                    color: #333;
+                    margin-bottom: 10px;
+                }}
+                p {{
+                    color: #666;
+                    margin-bottom: 20px;
+                }}
+                .button {{
+                    background-color: #4CAF50;
+                    border: none;
+                    color: white;
+                    padding: 12px 24px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 10px 0;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }}
+                .loading {{
+                    display: inline-block;
+                    width: 20px;
+                    height: 20px;
+                    border: 3px solid #f3f3f3;
+                    border-top: 3px solid #4CAF50;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }}
+                @keyframes spin {{
+                    0% {{ transform: rotate(0deg); }}
+                    100% {{ transform: rotate(360deg); }}
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="logo">🏆</div>
+                <h1>Биатлон Приложение</h1>
+                <p>Перенаправление в приложение для сброса пароля...</p>
+                <div class="loading"></div>
+                <p style="margin-top: 20px; font-size: 14px;">
+                    Если перенаправление не произошло, 
+                    <a href="biathlonapp://reset-password?token={token}" style="color:#4CAF50;">нажмите здесь</a>
+                </p>
+                <p style="margin-top: 10px; font-size: 12px; color: #999;">
+                    Или установите приложение Биатлон из Google Play
+                </p>
+            </div>
+            <script>
+                // Автоматический редирект на приложение
+                setTimeout(function() {{
+                    window.location.href = "biathlonapp://reset-password?token={token}";
+                }}, 2000);
+                
+                // Проверяем, открылось ли приложение
+                var timeout = setTimeout(function() {{
+                    document.querySelector('.loading').style.display = 'none';
+                    document.querySelector('p').innerHTML = 'Приложение не установлено. <a href="#" onclick="redirectToPlay()">Скачать из Google Play</a>';
+                }}, 3000);
+                
+                window.addEventListener("blur", function() {{
+                    clearTimeout(timeout);
+                }});
+                
+                function redirectToPlay() {{
+                    window.location.href = "https://play.google.com/store/apps/details?id=com.biathlonapp";
+                }}
+            </script>
+        </body>
+        </html>
+        '''
+    else:
+        return '''
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Сброс пароля - Биатлон</title>
+            <style>
+                body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+                .error { color: red; }
+            </style>
+        </head>
+        <body>
+            <h1>🏆 Биатлон Приложение</h1>
+            <p class="error">Недействительная ссылка для сброса пароля</p>
+            <p>Пожалуйста, запросите сброс пароля заново в приложении.</p>
+        </body>
+        </html>
+        '''
+
+
 @app.route('/api/notifications/add-test-race', methods=['POST'])
 @token_required
 def add_test_race():

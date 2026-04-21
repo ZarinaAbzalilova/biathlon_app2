@@ -86,18 +86,18 @@ class MainActivity : AppCompatActivity() {
     private fun handleDeepLink(intent: Intent?) {
         val data = intent?.data
         if (data != null) {
-            // Обработка HTTPS ссылки
-            if (data.scheme == "https" && data.host == "biathlon-app2.onrender.com" && data.path == "/reset-password") {
+            android.util.Log.d("DEEPLINK", "Scheme: ${data.scheme}")
+            android.util.Log.d("DEEPLINK", "Host: ${data.host}")
+            android.util.Log.d("DEEPLINK", "Path: ${data.path}")
+            android.util.Log.d("DEEPLINK", "Query: ${data.queryParameterNames}")
+
+            // Обработка кастомной схемы
+            if (data.scheme == "biathlonapp" && data.host == "reset-password") {
                 val token = data.getQueryParameter("token")
+                android.util.Log.d("DEEPLINK", "Token: $token")
                 if (!token.isNullOrEmpty()) {
                     startActivity(ResetPasswordActivity.newIntent(this, token))
-                }
-            }
-            // Обработка кастомной схемы (для обратной совместимости)
-            else if (data.scheme == "biathlonapp" && data.host == "reset-password") {
-                val token = data.getQueryParameter("token")
-                if (!token.isNullOrEmpty()) {
-                    startActivity(ResetPasswordActivity.newIntent(this, token))
+                    finish()  // Закрываем MainActivity, чтобы не оставалось в фоне
                 }
             }
         }
