@@ -116,7 +116,8 @@ def send_fcm_notification_v1(fcm_token, title, body, race_id=None):
 def send_reset_email(to_email, reset_token):
     """Отправка email для сброса пароля через Yandex"""
     try:
-        reset_link = f"biathlonapp://reset-password?token={reset_token}"
+        # Используем HTTPS ссылку вместо biathlonapp://
+        reset_link = f"https://biathlon-app2.onrender.com/reset-password?token={reset_token}"
         
         subject = "Сброс пароля - Биатлон Приложение"
         html_content = f"""
@@ -145,13 +146,13 @@ def send_reset_email(to_email, reset_token):
                 <h2>Сброс пароля</h2>
                 <p>Вы запросили сброс пароля для аккаунта <strong>{to_email}</strong>.</p>
                 <p>Нажмите на кнопку ниже, чтобы установить новый пароль:</p>
-                <a href="{reset_link}" class="button">Сбросить пароль</a>
+                <a href="{reset_link}" class="button" style="background-color:#4CAF50;border:none;color:white;padding:12px 24px;text-align:center;text-decoration:none;display:inline-block;font-size:16px;margin:20px 0;border-radius:4px;">Сбросить пароль</a>
                 <p>Или скопируйте ссылку в браузер:</p>
-                <p><code>{reset_link}</code></p>
+                <p><a href="{reset_link}">{reset_link}</a></p>
                 <p>Ссылка действительна в течение 1 часа.</p>
                 <p>Если вы не запрашивали сброс пароля, просто проигнорируйте это письмо.</p>
                 <div class="footer">
-                    <p>© 2024 Биатлон Приложение</p>
+                    <p>© 2026 Биатлон Приложение</p>
                 </div>
             </div>
         </body>
@@ -164,15 +165,9 @@ def send_reset_email(to_email, reset_token):
         msg['Subject'] = subject
         msg.attach(MIMEText(html_content, 'html'))
         
-        # ДЕБАГ: выводим длину пароля (не сам пароль!)
-        print(f"📧 EMAIL_USER: {EMAIL_USER}")
-        print(f"📧 EMAIL_PASSWORD length: {len(EMAIL_PASSWORD) if EMAIL_PASSWORD else 0}")
-        
+        # Отправка через Yandex с SSL
         context = ssl.create_default_context()
-        print(f"📧 Connecting to smtp.yandex.ru:465")
-        
         with smtplib.SMTP_SSL("smtp.yandex.ru", 465, context=context) as server:
-            server.set_debuglevel(2)  # Включаем подробный лог SMTP
             server.login(EMAIL_USER, EMAIL_PASSWORD)
             server.send_message(msg)
         

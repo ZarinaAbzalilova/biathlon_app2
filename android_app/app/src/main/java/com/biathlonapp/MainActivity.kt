@@ -85,10 +85,20 @@ class MainActivity : AppCompatActivity() {
     }
     private fun handleDeepLink(intent: Intent?) {
         val data = intent?.data
-        if (data != null && data.scheme == "biathlonapp" && data.host == "reset-password") {
-            val token = data.getQueryParameter("token")
-            if (!token.isNullOrEmpty()) {
-                startActivity(ResetPasswordActivity.newIntent(this, token))
+        if (data != null) {
+            // Обработка HTTPS ссылки
+            if (data.scheme == "https" && data.host == "biathlon-app2.onrender.com" && data.path == "/reset-password") {
+                val token = data.getQueryParameter("token")
+                if (!token.isNullOrEmpty()) {
+                    startActivity(ResetPasswordActivity.newIntent(this, token))
+                }
+            }
+            // Обработка кастомной схемы (для обратной совместимости)
+            else if (data.scheme == "biathlonapp" && data.host == "reset-password") {
+                val token = data.getQueryParameter("token")
+                if (!token.isNullOrEmpty()) {
+                    startActivity(ResetPasswordActivity.newIntent(this, token))
+                }
             }
         }
     }
