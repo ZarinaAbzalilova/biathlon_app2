@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.biathlonapp-mergeDebugResources-55:/values-zh-rTW/values-zh-rTW.xml",
+            "outputFile": "com.biathlonapp-mergeDebugResources-56:/values-zh-rTW/values-zh-rTW.xml",
             "map": [
                 {
                     "source": "C:\\Users\\abzal\\.gradle\\caches\\8.11.1\\transforms\\87e8c1a532edc6de75f5c244cee02335\\transformed\\appcompat-1.7.1\\res\\values-zh-rTW\\values-zh-rTW.xml",

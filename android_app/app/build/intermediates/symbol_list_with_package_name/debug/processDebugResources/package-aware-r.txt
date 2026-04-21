@@ -604,8 +604,10 @@ attr forceApplySystemWindowInsetTop
 attr forceDefaultNavigationOnClickListener
 attr foregroundInsidePadding
 attr framePosition
+attr freezesAnimation
 attr gapBetweenBars
 attr gestureInsetBottomIgnored
+attr gifSource
 attr goIcon
 attr grid_columnWeights
 attr grid_columns
@@ -673,6 +675,7 @@ attr isLightTheme
 attr isMaterial3DynamicColorApplied
 attr isMaterial3Theme
 attr isMaterialTheme
+attr isOpaque
 attr itemActiveIndicatorStyle
 attr itemBackground
 attr itemFillColor
@@ -812,6 +815,7 @@ attr logo
 attr logoAdjustViewBounds
 attr logoDescription
 attr logoScaleType
+attr loopCount
 attr marginHorizontal
 attr marginLeftSystemWindowInsets
 attr marginRightSystemWindowInsets
@@ -2122,6 +2126,7 @@ color primary
 color primary_dark
 color primary_dark_material_dark
 color primary_dark_material_light
+color primary_green
 color primary_material_dark
 color primary_material_light
 color primary_text
@@ -3066,6 +3071,9 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable dialog_background
+drawable dot_active
+drawable dot_inactive
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
 drawable ic_arrow_back
@@ -3074,6 +3082,7 @@ drawable ic_arrow_forward
 drawable ic_arrow_left
 drawable ic_arrow_right
 drawable ic_athletes
+drawable ic_biathlon_logo
 drawable ic_calendar
 drawable ic_call_answer
 drawable ic_call_answer_low
@@ -3101,6 +3110,9 @@ drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_news
 drawable ic_notification
+drawable ic_onboarding_notification
+drawable ic_onboarding_search
+drawable ic_onboarding_stats
 drawable ic_repost
 drawable ic_search
 drawable ic_search_black_24
@@ -3291,10 +3303,12 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id buttonAuth
 id buttonClose
+id buttonContinue
 id buttonDownloadPdf
 id buttonLogin
-id buttonLogout
+id buttonNext
 id buttonNextMonth
 id buttonOpenVk
 id buttonPanel
@@ -3303,6 +3317,7 @@ id buttonRegister
 id buttonRemove
 id buttonRetry
 id buttonSettings
+id buttonSkip
 id button_favorite
 id button_retry
 id button_stats
@@ -3374,6 +3389,7 @@ id disableIntraAutoTransition
 id disablePostScroll
 id disableScroll
 id disjoint
+id dotsContainer
 id dragAnticlockwise
 id dragClockwise
 id dragDown
@@ -3430,6 +3446,7 @@ id fullscreen_header
 id genderBadge
 id ghost_view
 id ghost_view_holder
+id gifImage
 id glide_custom_view_target_tag
 id gone
 id graph
@@ -3453,6 +3470,7 @@ id ignore
 id ignoreRequest
 id image
 id imageAthlete
+id imageIcon
 id imageNews
 id immediateStop
 id included
@@ -3717,6 +3735,7 @@ id textContent
 id textDate
 id textDateDiscipline
 id textDay
+id textDescription
 id textDiscipline
 id textEmpty
 id textEnd
@@ -3948,6 +3967,7 @@ layout activity_athlete_stats
 layout activity_login
 layout activity_main
 layout activity_news_detail
+layout activity_onboarding
 layout activity_race_protocol
 layout activity_register
 layout activity_settings
@@ -3968,6 +3988,7 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout dialog_auth_choice
 layout dialog_race_events
 layout fragment_athletes
 layout fragment_calendar
@@ -4046,6 +4067,7 @@ layout notification_template_custom_big
 layout notification_template_icon_group
 layout notification_template_part_chronometer
 layout notification_template_part_time
+layout onboarding_item
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
@@ -4058,6 +4080,7 @@ mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
 raw firebase_common_keep
+raw onboarding_welcome
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description
@@ -5484,6 +5507,8 @@ styleable FontFamilyFont android_font android_fontWeight android_fontStyle andro
 styleable ForegroundLinearLayout android_foreground android_foregroundGravity foregroundInsidePadding
 styleable Fragment android_name android_id android_tag
 styleable FragmentContainerView android_name android_tag
+styleable GifTextureView gifSource isOpaque
+styleable GifView freezesAnimation loopCount
 styleable GradientColor android_startColor android_endColor android_type android_centerX android_centerY android_gradientRadius android_tileMode android_centerColor android_startX android_startY android_endX android_endY
 styleable GradientColorItem android_color android_offset
 styleable Grid grid_columnWeights grid_columns grid_horizontalGaps grid_orientation grid_rowWeights grid_rows grid_skips grid_spans grid_useRtl grid_validateInputs grid_verticalGaps

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.biathlonapp-mergeDebugResources-55:/values-uk/values-uk.xml",
+            "outputFile": "com.biathlonapp-mergeDebugResources-56:/values-uk/values-uk.xml",
             "map": [
                 {
                     "source": "C:\\Users\\abzal\\.gradle\\caches\\8.11.1\\transforms\\a7765361479028f6d674983a99807cfa\\transformed\\play-services-basement-18.4.0\\res\\values-uk\\values.xml",

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.biathlonapp-mergeDebugResources-55:/values-zh-rHK/values-zh-rHK.xml",
+            "outputFile": "com.biathlonapp-mergeDebugResources-56:/values-zh-rHK/values-zh-rHK.xml",
             "map": [
                 {
                     "source": "C:\\Users\\abzal\\.gradle\\caches\\8.11.1\\transforms\\11c0a5dcc6a1a84c2892ca0c7558d7d4\\transformed\\play-services-base-18.5.0\\res\\values-zh-rHK\\values.xml",

@@ -14,6 +14,7 @@ import com.biathlonapp.data.repository.AuthRepository
 import com.biathlonapp.databinding.ActivityMainBinding
 import com.biathlonapp.ui.adapters.ViewPagerAdapter
 import com.biathlonapp.ui.auth.LoginActivity
+import com.biathlonapp.ui.onboarding.OnboardingActivity
 import com.biathlonapp.ui.settings.SettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -28,12 +29,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var apiService: BiathlonApiService
 
     companion object {
-        fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
+        fun newIntent(context: Context): Intent {
+            return Intent(context, MainActivity::class.java)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Проверяем, нужно ли показать онбординг
+        val prefs = getSharedPreferences("onboarding_prefs", Context.MODE_PRIVATE)
+        val onboardingCompleted = prefs.getBoolean("onboarding_completed", false)
 
+        if (!onboardingCompleted) {
+            startActivity(OnboardingActivity.newIntent(this))
+            finish()
+            return
+        }
         // Запрос разрешения на уведомления для Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
@@ -42,12 +53,6 @@ class MainActivity : AppCompatActivity() {
         authRepository = AuthRepository(this)
         apiService = ApiClient.apiService
 
-        // Проверяем авторизацию
-        if (!authRepository.isLoggedIn()) {
-            startActivity(LoginActivity.newIntent(this))
-            finish()
-            return
-        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
