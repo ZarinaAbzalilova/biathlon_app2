@@ -25,7 +25,7 @@ public final class ActivitySettingsBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
-  public final Button buttonLogout;
+  public final Button buttonAuth;
 
   @NonNull
   public final RadioButton radioDark;
@@ -48,13 +48,13 @@ public final class ActivitySettingsBinding implements ViewBinding {
   @NonNull
   public final Toolbar toolbar;
 
-  private ActivitySettingsBinding(@NonNull LinearLayout rootView, @NonNull Button buttonLogout,
+  private ActivitySettingsBinding(@NonNull LinearLayout rootView, @NonNull Button buttonAuth,
       @NonNull RadioButton radioDark, @NonNull RadioButton radioLight,
       @NonNull RadioButton radioSystem, @NonNull SwitchCompat switchNotifications,
       @NonNull TextView textUserEmail, @NonNull RadioGroup themeRadioGroup,
       @NonNull Toolbar toolbar) {
     this.rootView = rootView;
-    this.buttonLogout = buttonLogout;
+    this.buttonAuth = buttonAuth;
     this.radioDark = radioDark;
     this.radioLight = radioLight;
     this.radioSystem = radioSystem;
@@ -91,9 +91,9 @@ public final class ActivitySettingsBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.buttonLogout;
-      Button buttonLogout = ViewBindings.findChildViewById(rootView, id);
-      if (buttonLogout == null) {
+      id = R.id.buttonAuth;
+      Button buttonAuth = ViewBindings.findChildViewById(rootView, id);
+      if (buttonAuth == null) {
         break missingId;
       }
 
@@ -139,8 +139,8 @@ public final class ActivitySettingsBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivitySettingsBinding((LinearLayout) rootView, buttonLogout, radioDark,
-          radioLight, radioSystem, switchNotifications, textUserEmail, themeRadioGroup, toolbar);
+      return new ActivitySettingsBinding((LinearLayout) rootView, buttonAuth, radioDark, radioLight,
+          radioSystem, switchNotifications, textUserEmail, themeRadioGroup, toolbar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

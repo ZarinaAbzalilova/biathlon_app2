@@ -14,9 +14,7 @@ import com.biathlonapp.data.repository.AuthRepository
 import com.biathlonapp.data.repository.FavoritesRepository
 import com.biathlonapp.databinding.ActivitySettingsBinding
 import com.biathlonapp.ui.auth.LoginActivity
-import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
-import androidx.lifecycle.lifecycleScope
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -44,9 +42,6 @@ class SettingsActivity : AppCompatActivity() {
         setupClickListeners()
         setupNotificationSwitch()
         setupThemeSelector()
-
-        // ← ВЫЗЫВАЕМ МЕТОД ВНУТРИ onCreate
-        showFcmToken()
     }
 
     private fun applyTheme() {
@@ -71,12 +66,32 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun loadUserInfo() {
         val email = authRepository.getUserEmail()
-        binding.textUserEmail.text = email ?: "Не авторизован"
+        val isLoggedIn = authRepository.isLoggedIn()
+
+        if (isLoggedIn) {
+            binding.textUserEmail.text = email ?: "Не авторизован"
+            binding.buttonAuth.text = "Выйти"
+            binding.buttonAuth.backgroundTintList = androidx.core.content.ContextCompat.getColorStateList(
+                this, android.R.color.holo_red_dark
+            )
+        } else {
+            binding.textUserEmail.text = "Вы не авторизованы"
+            binding.buttonAuth.text = "Войти"
+            binding.buttonAuth.backgroundTintList = androidx.core.content.ContextCompat.getColorStateList(
+                this, R.color.primary_green
+            )
+        }
     }
 
     private fun setupClickListeners() {
-        binding.buttonLogout.setOnClickListener {
-            showLogoutDialog()
+        binding.buttonAuth.setOnClickListener {
+            if (authRepository.isLoggedIn()) {
+                showLogoutDialog()
+            } else {
+                // Переход на экран логина
+                startActivity(LoginActivity.newIntent(this))
+                finish()
+            }
         }
     }
 
@@ -87,35 +102,14 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit().putBoolean("notifications_enabled", isChecked).apply()
-            updateNotificationSettingsOnServer(isChecked)
+
+            // Отправляем настройку на сервер только если пользователь авторизован
+            if (authRepository.isLoggedIn()) {
+                updateNotificationSettingsOnServer(isChecked)
+            }
+
             val message = if (isChecked) "Уведомления включены" else "Уведомления выключены"
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun showFcmToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val token = task.result
-                android.util.Log.d("FCM_TOKEN", "======================================")
-                android.util.Log.d("FCM_TOKEN", "Полный FCM токен:")
-                android.util.Log.d("FCM_TOKEN", token)
-                android.util.Log.d("FCM_TOKEN", "Длина токена: ${token.length} символов")
-                android.util.Log.d("FCM_TOKEN", "======================================")
-
-                // Скопировать в буфер обмена для удобства
-                val clipboard = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
-                val clip = android.content.ClipData.newPlainText("FCM Token", token)
-                clipboard.setPrimaryClip(clip)
-
-                Toast.makeText(
-                    this@SettingsActivity,
-                    "Токен скопирован в буфер обмена! Длина: ${token.length}",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
-                android.util.Log.e("FCM_TOKEN", "Ошибка: ${task.exception?.message}")
-            }
         }
     }
 
@@ -171,22 +165,7 @@ class SettingsActivity : AppCompatActivity() {
             .setNegativeButton("Отмена", null)
             .show()
     }
-    // В методе sendTokenToServer используйте lifecycleScope
-    private fun sendTokenToServer(fcmToken: String) {
-        lifecycleScope.launch {  // ← lifecycleScope доступен в AppCompatActivity
-            val jwtToken = authRepository.getToken()
-            if (jwtToken != null) {
-                try {
-                    val response = apiService.updateFcmToken("Bearer $jwtToken", mapOf("fcm_token" to fcmToken))
-                    if (response.isSuccessful) {
-                        Log.d("FCM_TOKEN", "✅ Токен отправлен на сервер")
-                    }
-                } catch (e: Exception) {
-                    Log.e("FCM_TOKEN", "Ошибка: ${e.message}")
-                }
-            }
-        }
-    }
+
     private fun performLogout() {
         lifecycleScope.launch {
             try {
@@ -195,10 +174,8 @@ class SettingsActivity : AppCompatActivity() {
 
                 Toast.makeText(this@SettingsActivity, "Вы вышли из системы", Toast.LENGTH_SHORT).show()
 
-                val intent = LoginActivity.newIntent(this@SettingsActivity)
-                intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
+                // Перезапускаем SettingsActivity, чтобы обновить UI
+                recreate()
             } catch (e: Exception) {
                 Toast.makeText(this@SettingsActivity, "Ошибка при выходе: ${e.message}", Toast.LENGTH_SHORT).show()
             }

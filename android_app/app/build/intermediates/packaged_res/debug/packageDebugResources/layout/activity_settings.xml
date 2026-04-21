@@ -51,15 +51,13 @@
                         android:text="email@example.com"
                         android:textSize="14sp" />
 
-
-
                     <Button
-                        android:id="@+id/buttonLogout"
+                        android:id="@+id/buttonAuth"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_marginTop="16dp"
-                        android:text="Выйти"
-                        android:backgroundTint="@android:color/holo_red_dark" />
+                        android:text="Выйти" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

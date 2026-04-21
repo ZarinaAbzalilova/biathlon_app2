@@ -22,6 +22,7 @@ from datetime import datetime, timedelta
 import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
+import ssl
 
 SCOPES = ['https://www.googleapis.com/auth/firebase.messaging']
 PROJECT_ID = os.environ.get('FCM_PROJECT_ID', 'biathlonapp-84d7a')
@@ -154,12 +155,13 @@ def send_reset_email(to_email, reset_token):
         msg['Subject'] = subject
         msg.attach(MIMEText(html_content, 'html'))
         
-        # Отправка через Yandex
-        server = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
-        server.starttls()
-        server.login(EMAIL_USER, EMAIL_PASSWORD)
-        server.send_message(msg)
-        server.quit()
+        # --- ИЗМЕНЕННЫЙ БЛОК ОТПРАВКИ ---
+        import ssl
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT, context=context) as server:
+            server.login(EMAIL_USER, EMAIL_PASSWORD)
+            server.send_message(msg)
+        # -----------------------------
         
         print(f"✅ Reset email sent to {to_email}")
         return True
