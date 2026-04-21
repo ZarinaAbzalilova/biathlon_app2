@@ -53,7 +53,7 @@ services:
       - key: EMAIL_USER
         value: biathlon.noreply@yandex.ru
       - key: EMAIL_PASSWORD
-        value: tncwwzlstwmctqvx
+        sync: false
       - key: APP_URL
         value: https://biathlon-app2.onrender.com
       - key: PYTHON_VERSION

@@ -103,9 +103,6 @@ def send_fcm_notification_v1(fcm_token, title, body, race_id=None):
         print(f"❌ Исключение при отправке: {e}")
         return False
 
-
-
-
 def send_reset_email(to_email, reset_token):
     """Отправка email для сброса пароля через Yandex"""
     try:
@@ -406,70 +403,7 @@ def add_test_race():
         return jsonify({'error': str(e)}), 500
 
 # ========== ОСНОВНЫЕ ENDPOINTS ==========
-
-# Добавьте после импортов, перед основными эндпоинтами:
-@app.route('/api/races/add', methods=['POST'])
-@token_required
-def add_new_race():
-    """Добавление новой гонки (для админа)"""
-    try:
-        data = request.get_json()
-        race_id = data.get('race_id')
-        discipline = data.get('discipline')
-        date = data.get('date')
-        name_race = data.get('name_race')
-        place_race = data.get('place_race')
-        
-        if not race_id or not discipline or not date:
-            return jsonify({'error': 'race_id, discipline, date обязательны'}), 400
-        
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        
-        cursor.execute("""
-            INSERT INTO races (race_id, discipline, date, name_race, place_race)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (race_id, discipline, date, name_race, place_race))
-        
-        conn.commit()
-        conn.close()
-        
-        # Отправляем уведомление о новой гонке
-        send_notification_about_new_race(name_race or discipline, date)
-        
-        return jsonify({'success': True, 'message': 'Гонка добавлена, уведомления отправлены'})
-        
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-def send_notification_about_new_race(race_name, race_date):
-    """Отправка уведомления о новой гонке всем пользователям"""
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        
-        cursor.execute("""
-            SELECT fcm_token FROM users 
-            WHERE fcm_token IS NOT NULL AND (notifications_enabled = 1 OR notifications_enabled IS NULL)
-        """)
-        
-        tokens = cursor.fetchall()
-        conn.close()
-        
-        title = "🏆 Новая гонка в календаре!"
-        body = f"{race_name} - {race_date}"
-        
-        success_count = 0
-        for token_data in tokens:
-            if send_fcm_notification_v1(token_data['fcm_token'], title, body, None):
-                success_count += 1
-        
-        print(f"✅ Уведомления отправлены {success_count} пользователям")
-        
-    except Exception as e:
-        print(f"❌ Ошибка отправки уведомлений: {e}")
-
-        
+     
 @app.route('/api/auth/update-fcm-token', methods=['POST'])
 @token_required
 def update_fcm_token():
@@ -1779,10 +1713,9 @@ def get_stats():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Создаем планировщик
+# Для отправки пуш уведомлений
 scheduler = BackgroundScheduler()
 
-# Запускаем проверку каждый день в 8:30 утра
 scheduler.add_job(
     func=check_and_send_race_notifications,
     trigger="cron",
@@ -1792,13 +1725,9 @@ scheduler.add_job(
     replace_existing=True
 )
 
-# Запускаем планировщик
 scheduler.start()
 
-# Останавливаем планировщик при завершении приложения
 atexit.register(lambda: scheduler.shutdown())
-
-
 
 if __name__ == '__main__':
     # Для продакшена используем порт из переменной окружения
