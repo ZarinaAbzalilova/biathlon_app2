@@ -64,6 +64,7 @@ id buttonOpenVk
 id buttonPrevMonth
 id buttonRegister
 id buttonRemove
+id buttonReset
 id buttonRetry
 id buttonSettings
 id buttonSkip
@@ -82,6 +83,7 @@ id cardTheme
 id dotsContainer
 id editConfirmPassword
 id editEmail
+id editNewPassword
 id editPassword
 id edit_birth_date
 id edit_first_name
@@ -137,6 +139,7 @@ id textDiscipline
 id textEmpty
 id textError
 id textFinishPlace
+id textForgotPassword
 id textFri
 id textGender
 id textHeader
@@ -194,9 +197,11 @@ layout activity_news_detail
 layout activity_onboarding
 layout activity_race_protocol
 layout activity_register
+layout activity_reset_password
 layout activity_settings
 layout activity_team_list
 layout dialog_auth_choice
+layout dialog_forgot_password
 layout dialog_race_events
 layout fragment_athletes
 layout fragment_calendar

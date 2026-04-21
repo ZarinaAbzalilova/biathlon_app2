@@ -139,7 +139,29 @@ interface BiathlonApiService {
         @Header("Authorization") token: String,
         @Body body: Map<String, String>
     ): Response<Unit>
+    @POST("api/auth/forgot-password")
+    suspend fun forgotPassword(@Body body: Map<String, String>): Response<ForgotPasswordResponse>
 
+    @POST("api/auth/reset-password")
+    suspend fun resetPassword(@Body body: Map<String, String>): Response<ResetPasswordResponse>
+
+    @GET("api/auth/verify-reset-token")
+    suspend fun verifyResetToken(@Query("token") token: String): Response<VerifyTokenResponse>
+
+    // Data classes
+    data class ForgotPasswordResponse(
+        val success: Boolean,
+        val message: String
+    )
+
+    data class ResetPasswordResponse(
+        val success: Boolean,
+        val message: String
+    )
+
+    data class VerifyTokenResponse(
+        val valid: Boolean
+    )
     @POST("api/notifications/settings")
     suspend fun updateNotificationSettings(
         @Header("Authorization") token: String,

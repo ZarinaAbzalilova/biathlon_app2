@@ -116,7 +116,7 @@ def send_fcm_notification_v1(fcm_token, title, body, race_id=None):
 def send_reset_email(to_email, reset_token):
     """Отправка email для сброса пароля через Yandex"""
     try:
-        reset_link = f"{APP_URL}/reset-password?token={reset_token}"
+        reset_link = f"biathlonapp://reset-password?token={reset_token}"
         
         subject = "Сброс пароля - Биатлон Приложение"
         html_content = f"""

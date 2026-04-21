@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.biathlonapp.MainActivity
+import com.biathlonapp.R
 import com.biathlonapp.data.api.BiathlonApiService
 import com.biathlonapp.data.repository.AuthRepository
 import com.biathlonapp.data.repository.FavoritesRepository
@@ -47,8 +48,46 @@ class LoginActivity : AppCompatActivity() {
         binding.textRegister.setOnClickListener {
             startActivity(RegisterActivity.newIntent(this))
         }
+        binding.textForgotPassword.setOnClickListener {
+            showForgotPasswordDialog()
+        }
     }
+    private fun showForgotPasswordDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_forgot_password, null)
+        val editEmail = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.editEmail)
 
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Сброс пароля")
+            .setView(dialogView)
+            .setPositiveButton("Отправить") { _, _ ->
+                val email = editEmail.text.toString().trim()
+                if (email.isNotEmpty()) {
+                    requestPasswordReset(email)
+                } else {
+                    Toast.makeText(this, "Введите email", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
+    }
+    private fun requestPasswordReset(email: String) {
+        lifecycleScope.launch {
+            try {
+                val response = apiService.forgotPassword(mapOf("email" to email))
+                if (response.isSuccessful && response.body()?.success == true) {
+                    Toast.makeText(
+                        this@LoginActivity,
+                        response.body()?.message ?: "Инструкция отправлена на email",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(this@LoginActivity, "Ошибка отправки", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@LoginActivity, "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     private fun validateInput(email: String, password: String): Boolean {
         if (email.isEmpty()) {
             binding.editEmail.error = "Введите email"

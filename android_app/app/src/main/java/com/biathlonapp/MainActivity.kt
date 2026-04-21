@@ -14,6 +14,7 @@ import com.biathlonapp.data.repository.AuthRepository
 import com.biathlonapp.databinding.ActivityMainBinding
 import com.biathlonapp.ui.adapters.ViewPagerAdapter
 import com.biathlonapp.ui.auth.LoginActivity
+import com.biathlonapp.ui.auth.ResetPasswordActivity
 import com.biathlonapp.ui.onboarding.OnboardingActivity
 import com.biathlonapp.ui.settings.SettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -70,6 +71,9 @@ class MainActivity : AppCompatActivity() {
         if (intent?.getBooleanExtra("open_race", false) == true) {
             handleNotificationIntent(intent)
         }
+
+        // Обработка Deep Link (сброс пароля)
+        handleDeepLink(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -77,8 +81,17 @@ class MainActivity : AppCompatActivity() {
         setIntent(intent)
         Log.d("NOTIFICATION", "onNewIntent вызван")
         handleNotificationIntent(intent)
+        handleDeepLink(intent)
     }
-
+    private fun handleDeepLink(intent: Intent?) {
+        val data = intent?.data
+        if (data != null && data.scheme == "biathlonapp" && data.host == "reset-password") {
+            val token = data.getQueryParameter("token")
+            if (!token.isNullOrEmpty()) {
+                startActivity(ResetPasswordActivity.newIntent(this, token))
+            }
+        }
+    }
     private fun updateFcmToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {

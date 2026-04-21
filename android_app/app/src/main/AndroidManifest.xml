@@ -58,7 +58,10 @@
             android:name=".ui.onboarding.OnboardingActivity"
             android:exported="false"
             android:theme="@style/Theme.BiathlonApp" />
-
+        <activity
+            android:name=".ui.auth.ResetPasswordActivity"
+            android:exported="true"
+            android:theme="@style/Theme.BiathlonApp" />
         <activity android:name=".ui.raceprotocol.RaceProtocolActivity" />
         <activity
             android:name=".MainActivity"
@@ -67,6 +70,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="biathlonapp" android:host="reset-password" />
             </intent-filter>
         </activity>
 
