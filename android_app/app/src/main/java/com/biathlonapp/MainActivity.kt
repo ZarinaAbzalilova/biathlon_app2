@@ -2,9 +2,14 @@ package com.biathlonapp
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.biathlonapp.data.api.ApiClient
+import com.biathlonapp.data.api.BiathlonApiService
 import com.biathlonapp.data.repository.AuthRepository
 import com.biathlonapp.databinding.ActivityMainBinding
 import com.biathlonapp.ui.adapters.ViewPagerAdapter
@@ -12,12 +17,15 @@ import com.biathlonapp.ui.auth.LoginActivity
 import com.biathlonapp.ui.settings.SettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var authRepository: AuthRepository
+    private lateinit var apiService: BiathlonApiService
 
     companion object {
         fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
@@ -26,7 +34,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Запрос разрешения на уведомления для Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
+        }
+
         authRepository = AuthRepository(this)
+        apiService = ApiClient.apiService
 
         // Проверяем авторизацию
         if (!authRepository.isLoggedIn()) {
@@ -37,12 +51,75 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         binding.buttonSettings.setOnClickListener {
             startActivity(SettingsActivity.newIntent(this))
         }
+
         setupToolbar()
         setupViewPager()
         setupBottomNavigation()
+        handleNotificationIntent(intent)
+        updateFcmToken()  // ← Теперь работает
+        // Проверяем, было ли приложение открыто из уведомления
+        if (intent?.getBooleanExtra("open_race", false) == true) {
+            handleNotificationIntent(intent)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        Log.d("NOTIFICATION", "onNewIntent вызван")
+        handleNotificationIntent(intent)
+    }
+
+    private fun updateFcmToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                val jwtToken = authRepository.getToken()
+                if (jwtToken != null) {
+                    // Используем lifecycleScope.launch для вызова suspend функции
+                    lifecycleScope.launch {
+                        try {
+                            val response = apiService.updateFcmToken("Bearer $jwtToken", mapOf("fcm_token" to token))
+                            if (response.isSuccessful) {
+                                Log.d("FCM", "✅ Токен автоматически обновлен")
+                            } else {
+                                Log.e("FCM", "Ошибка: ${response.code()}")
+                            }
+                        } catch (e: Exception) {
+                            Log.e("FCM", "Ошибка обновления токена: ${e.message}")
+                        }
+                    }
+                }
+            } else {
+                Log.e("FCM", "Ошибка получения токена FCM", task.exception)
+            }
+        }
+    }
+
+    private fun handleNotificationIntent(intent: Intent?) {
+        val shouldOpenRace = intent?.getBooleanExtra("open_race", false) ?: false
+        val raceId = intent?.getStringExtra("race_id") ?: ""
+
+        Log.d("NOTIFICATION", "========== ОБРАБОТКА НАЖАТИЯ ==========")
+        Log.d("NOTIFICATION", "Intent: $intent")
+        Log.d("NOTIFICATION", "shouldOpenRace: $shouldOpenRace")
+        Log.d("NOTIFICATION", "raceId: $raceId")
+        Log.d("NOTIFICATION", "Все extras: ${intent?.extras}")
+
+        if (shouldOpenRace && raceId.isNotEmpty()) {
+            Log.d("NOTIFICATION", "Открываем протокол гонки: $raceId")
+            val raceIntent = Intent(this, com.biathlonapp.ui.raceprotocol.RaceProtocolActivity::class.java)
+            raceIntent.putExtra("race_id", raceId)
+            startActivity(raceIntent)
+        } else if (shouldOpenRace) {
+            Log.d("NOTIFICATION", "Открываем главное приложение")
+        } else {
+            Log.d("NOTIFICATION", "Нет данных для открытия")
+        }
     }
 
     private fun setupToolbar() {

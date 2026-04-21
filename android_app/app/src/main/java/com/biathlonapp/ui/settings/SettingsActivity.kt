@@ -1,6 +1,7 @@
 package com.biathlonapp.ui.settings
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import com.biathlonapp.databinding.ActivitySettingsBinding
 import com.biathlonapp.ui.auth.LoginActivity
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
+import androidx.lifecycle.lifecycleScope
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -96,22 +98,23 @@ class SettingsActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 val token = task.result
                 android.util.Log.d("FCM_TOKEN", "======================================")
-                android.util.Log.d("FCM_TOKEN", "Ваш FCM токен:")
+                android.util.Log.d("FCM_TOKEN", "Полный FCM токен:")
                 android.util.Log.d("FCM_TOKEN", token)
+                android.util.Log.d("FCM_TOKEN", "Длина токена: ${token.length} символов")
                 android.util.Log.d("FCM_TOKEN", "======================================")
+
+                // Скопировать в буфер обмена для удобства
+                val clipboard = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                val clip = android.content.ClipData.newPlainText("FCM Token", token)
+                clipboard.setPrimaryClip(clip)
 
                 Toast.makeText(
                     this@SettingsActivity,
-                    "Токен скопирован в логи",
+                    "Токен скопирован в буфер обмена! Длина: ${token.length}",
                     Toast.LENGTH_LONG
                 ).show()
-
-                // Сохраняем токен в SharedPreferences
-                getSharedPreferences("fcm", MODE_PRIVATE).edit()
-                    .putString("fcm_token", token).apply()
             } else {
                 android.util.Log.e("FCM_TOKEN", "Ошибка: ${task.exception?.message}")
-                Toast.makeText(this@SettingsActivity, "Ошибка получения токена", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -168,7 +171,22 @@ class SettingsActivity : AppCompatActivity() {
             .setNegativeButton("Отмена", null)
             .show()
     }
-
+    // В методе sendTokenToServer используйте lifecycleScope
+    private fun sendTokenToServer(fcmToken: String) {
+        lifecycleScope.launch {  // ← lifecycleScope доступен в AppCompatActivity
+            val jwtToken = authRepository.getToken()
+            if (jwtToken != null) {
+                try {
+                    val response = apiService.updateFcmToken("Bearer $jwtToken", mapOf("fcm_token" to fcmToken))
+                    if (response.isSuccessful) {
+                        Log.d("FCM_TOKEN", "✅ Токен отправлен на сервер")
+                    }
+                } catch (e: Exception) {
+                    Log.e("FCM_TOKEN", "Ошибка: ${e.message}")
+                }
+            }
+        }
+    }
     private fun performLogout() {
         lifecycleScope.launch {
             try {

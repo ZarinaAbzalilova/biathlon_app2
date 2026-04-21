@@ -1,3 +1,0 @@
-com.biathlonapp.test
-style WhiteBackgroundDialogTheme
-style WhiteBackgroundTheme

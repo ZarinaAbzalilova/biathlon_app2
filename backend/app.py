@@ -18,6 +18,10 @@ from email.mime.multipart import MIMEMultipart
 import google.auth
 from google.auth.transport.requests import Request
 from google.oauth2 import service_account
+from datetime import datetime, timedelta
+import pytz
+from apscheduler.schedulers.background import BackgroundScheduler
+import atexit
 
 SCOPES = ['https://www.googleapis.com/auth/firebase.messaging']
 PROJECT_ID = os.environ.get('FCM_PROJECT_ID', 'biathlonapp-84d7a')
@@ -233,8 +237,173 @@ def validate_password(password):
 pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 CORS(app)
+def check_and_send_race_notifications():
+    """Проверяет гонки и отправляет уведомления за день до и в день гонки"""
+    try:
+        # Получаем текущую дату (без времени)
+        today = datetime.now().date()
+        tomorrow = today + timedelta(days=1)
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Получаем все гонки на сегодня и завтра
+        cursor.execute("""
+            SELECT DISTINCT 
+                r.race_id,
+                r.name_race,
+                r.discipline,
+                r.date as race_date,
+                r.place_race
+            FROM races r
+            JOIN race_pdf_urls p ON r.race_id = p.race_id
+            WHERE r.date IN (%s, %s)
+            ORDER BY r.date
+        """, (today, tomorrow))
+        
+        races = cursor.fetchall()
+        
+        if not races:
+            print("📭 Нет гонок на сегодня или завтра")
+            conn.close()
+            return
+        
+        # Получаем всех пользователей с включенными уведомлениями
+        cursor.execute("""
+            SELECT fcm_token FROM users 
+            WHERE fcm_token IS NOT NULL 
+            AND (notifications_enabled = 1 OR notifications_enabled IS NULL)
+        """)
+        
+        users = cursor.fetchall()
+        
+        if not users:
+            print("👥 Нет пользователей для отправки уведомлений")
+            conn.close()
+            return
+        
+        notifications_sent = 0
+        
+        for race in races:
+            race_id = race['race_id']
+            race_date = race['race_date']
+            name_race = race['name_race'] or f"{race['discipline']}"
+            
+            # Проверяем, нужно ли отправить уведомление за день до
+            if race_date == tomorrow:
+                # Проверяем, не отправляли ли уже
+                cursor.execute("""
+                    SELECT id FROM race_notifications_sent 
+                    WHERE race_id = %s AND notification_type = 'day_before'
+                """, (race_id,))
+                
+                if not cursor.fetchone():
+                    title = "🏆 Напоминание о гонке"
+                    body = f"Завтра: {name_race}"
+                    
+                    for user in users:
+                        if user['fcm_token']:
+                            send_fcm_notification_v1(user['fcm_token'], title, body, race_id)
+                    
+                    # Сохраняем, что уведомление отправлено
+                    cursor.execute("""
+                        INSERT INTO race_notifications_sent (race_id, notification_type)
+                        VALUES (%s, 'day_before')
+                    """, (race_id,))
+                    conn.commit()
+                    notifications_sent += 1
+                    print(f"✅ Отправлено уведомление 'Завтра' для гонки: {name_race}")
+            
+            # Проверяем, нужно ли отправить уведомление в день гонки
+            elif race_date == today:
+                # Проверяем текущее время (9 утра по серверу)
+                current_hour = datetime.now().hour
+                
+                if current_hour >= 9:  # После 9 утра
+                    cursor.execute("""
+                        SELECT id FROM race_notifications_sent 
+                        WHERE race_id = %s AND notification_type = 'day_of'
+                    """, (race_id,))
+                    
+                    if not cursor.fetchone():
+                        title = "🏃‍♂️ Гонка сегодня!"
+                        body = f"Сегодня: {name_race}"
+                        
+                        for user in users:
+                            if user['fcm_token']:
+                                send_fcm_notification_v1(user['fcm_token'], title, body, race_id)
+                        
+                        cursor.execute("""
+                            INSERT INTO race_notifications_sent (race_id, notification_type)
+                            VALUES (%s, 'day_of')
+                        """, (race_id,))
+                        conn.commit()
+                        notifications_sent += 1
+                        print(f"✅ Отправлено уведомление 'Сегодня' для гонки: {name_race}")
+        
+        conn.close()
+        print(f"📬 Всего отправлено уведомлений: {notifications_sent}")
+        
+    except Exception as e:
+        print(f"❌ Ошибка при проверке гонок: {e}")
 
+# Добавляем эндпоинт для ручного вызова (для тестирования)
+@app.route('/api/notifications/check-races', methods=['GET'])
+@token_required
+def manual_check_races():
+    """Ручной запуск проверки гонок (для тестирования)"""
+    check_and_send_race_notifications()
+    return jsonify({'success': True, 'message': 'Проверка гонок выполнена'})
 
+# Добавляем эндпоинт для добавления тестовой гонки (для разработки)
+@app.route('/api/notifications/add-test-race', methods=['POST'])
+@token_required
+def add_test_race():
+    """Добавление тестовой гонки для проверки уведомлений"""
+    try:
+        data = request.get_json()
+        race_id = data.get('race_id', 'TEST_RACE_001')
+        name_race = data.get('name_race', 'Тестовая гонка')
+        discipline = data.get('discipline', 'BT_Sprint')
+        date_str = data.get('date', (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d'))
+        place_race = data.get('place_race', 'Тестовое место')
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        # Добавляем гонку
+        cursor.execute("""
+            INSERT INTO races (race_id, discipline, date, name_race, place_race)
+            VALUES (%s, %s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE
+            discipline = VALUES(discipline),
+            date = VALUES(date),
+            name_race = VALUES(name_race),
+            place_race = VALUES(place_race)
+        """, (race_id, discipline, date_str, name_race, place_race))
+        
+        # Добавляем PDF URL (заглушку)
+        cursor.execute("""
+            INSERT INTO race_pdf_urls (race_id, gender, pdf_url, date)
+            VALUES (%s, 'М', 'https://example.com/test.pdf', %s)
+            ON DUPLICATE KEY UPDATE date = VALUES(date)
+        """, (race_id, date_str))
+        
+        conn.commit()
+        conn.close()
+        
+        return jsonify({
+            'success': True, 
+            'message': f'Тестовая гонка добавлена на {date_str}',
+            'race': {
+                'id': race_id,
+                'name': name_race,
+                'date': date_str
+            }
+        })
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # ========== ОСНОВНЫЕ ENDPOINTS ==========
 
@@ -1609,6 +1778,28 @@ def get_stats():
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# Создаем планировщик
+scheduler = BackgroundScheduler()
+
+# Запускаем проверку каждый день в 8:30 утра
+scheduler.add_job(
+    func=check_and_send_race_notifications,
+    trigger="cron",
+    hour=8,
+    minute=30,
+    id="race_notifications",
+    replace_existing=True
+)
+
+# Запускаем планировщик
+scheduler.start()
+
+# Останавливаем планировщик при завершении приложения
+atexit.register(lambda: scheduler.shutdown())
+
+
+
 if __name__ == '__main__':
     # Для продакшена используем порт из переменной окружения
     port = int(os.environ.get('PORT', 5000))
