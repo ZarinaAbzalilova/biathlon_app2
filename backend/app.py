@@ -155,18 +155,27 @@ def send_reset_email(to_email, reset_token):
         msg['Subject'] = subject
         msg.attach(MIMEText(html_content, 'html'))
         
-        # --- ИЗМЕНЕННЫЙ БЛОК ОТПРАВКИ ---
+        # ПРИНУДИТЕЛЬНО используем порт 465 для Яндекс
         import ssl
+        
+        # Создаём контекст БЕЗ проверки сертификата (только для дебага!)
+        # В продакшене лучше использовать ssl.create_default_context()
         context = ssl.create_default_context()
-        with smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT, context=context) as server:
+        
+        print(f"📧 Connecting to {EMAIL_HOST}:465")
+        
+        # Всегда подключаемся напрямую к Яндексу на порт 465
+        with smtplib.SMTP_SSL("smtp.yandex.ru", 465, context=context) as server:
             server.login(EMAIL_USER, EMAIL_PASSWORD)
             server.send_message(msg)
-        # -----------------------------
         
         print(f"✅ Reset email sent to {to_email}")
         return True
+        
     except Exception as e:
         print(f"❌ Failed to send email: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 # JWT настройки
 JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-change-in-production')

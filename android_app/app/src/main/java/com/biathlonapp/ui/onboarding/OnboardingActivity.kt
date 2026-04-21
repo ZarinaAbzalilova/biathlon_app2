@@ -48,19 +48,19 @@ class OnboardingActivity : AppCompatActivity() {
                 gifRes = R.raw.onboarding_welcome
             ),
             OnboardingItem(
-                title = "🔍 Поиск спортсменов",
+                title = "Поиск спортсменов",
                 description = "Быстрый поиск любого биатлониста по имени или фамилии. Вся информация о спортсмене в одном месте.",
                 imageRes = R.drawable.ic_onboarding_search,
                 gifRes = null
             ),
             OnboardingItem(
-                title = "📊 Результаты и статистика",
+                title = "Результаты и статистика",
                 description = "Детальная статистика выступлений, места, промахи. Анализируйте результаты любимых спортсменов.",
                 imageRes = R.drawable.ic_onboarding_stats,
                 gifRes = null
             ),
             OnboardingItem(
-                title = "🔔 Уведомления о гонках",
+                title = "Уведомления о гонках",
                 description = "Не пропустите ни одной гонки! Получайте напоминания за день и в день соревнований.",
                 imageRes = R.drawable.ic_onboarding_notification,
                 gifRes = null
