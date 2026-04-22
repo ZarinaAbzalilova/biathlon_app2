@@ -23,46 +23,50 @@
         <service
             android:name=".service.MyFirebaseMessagingService"
             android:exported="false"
-            android:launchMode="singleTop">>
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <!-- настройки -->
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
+        <!-- данные спортсмена -->
         <activity
             android:name=".ui.athlete.AthleteDetailActivity"
             android:exported="false" />
-
+        <!-- авторизация -->
         <activity android:name=".ui.auth.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.BiathlonApp" />
-
+        <!-- регистрация -->
         <activity android:name=".ui.auth.RegisterActivity"
             android:theme="@style/Theme.BiathlonApp" />
-
+        <!-- результаты спортсмена -->
         <activity
             android:name=".ui.stats.AthleteStatsActivity"
             android:exported="false" />
-
+        <!-- новости -->
         <activity
             android:name=".ui.news.NewsDetailActivity"
             android:parentActivityName=".MainActivity" />
-
+        <!-- команды -->
         <activity android:name=".ui.team.TeamListActivity" />
-
+        <!-- обучение -->
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:exported="false"
             android:theme="@style/Theme.BiathlonApp" />
+        <!-- сброс пароля -->
         <activity
             android:name=".ui.auth.ResetPasswordActivity"
             android:exported="true"
             android:theme="@style/Theme.BiathlonApp" />
+        <!-- итоговый протокол -->
         <activity android:name=".ui.raceprotocol.RaceProtocolActivity" />
+        <!-- главная форма -->
         <activity
             android:name=".MainActivity"
             android:exported="true"

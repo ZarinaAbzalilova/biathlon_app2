@@ -3,12 +3,18 @@ local
 array month_names
 color accent
 color background
+color blue_team
+color calendar_day_text
+color calendar_header_bg
+color calendar_today_bg
+color calendar_weekend_text
 color card_background
 color category_card_bg
 color divider
 color error
 color favorite_button
 color ic_launcher_background
+color pink_team
 color primary
 color primary_dark
 color primary_green
@@ -16,6 +22,7 @@ color primary_text
 color secondary_text
 color stats_button
 color success
+color surface
 drawable badge_background
 drawable circle_blue
 drawable circle_cyan
@@ -50,6 +57,7 @@ drawable ic_star
 drawable ic_star_border
 drawable ic_star_filled
 drawable icon
+drawable sbr_logo
 id action_favorite
 id action_settings
 id bottomNavigation
@@ -71,15 +79,11 @@ id buttonSkip
 id button_favorite
 id button_retry
 id button_stats
-id cardAbout
 id cardDay
 id cardEvent
 id cardFavorite
 id cardGoogleCalendar
 id cardNews
-id cardNotifications
-id cardProfile
-id cardTheme
 id dotsContainer
 id editConfirmPassword
 id editEmail
@@ -94,7 +98,6 @@ id edit_region_code
 id edit_sports_rank
 id genderBadge
 id gifImage
-id imageAthlete
 id imageIcon
 id imageNews
 id layoutError
@@ -208,7 +211,6 @@ layout fragment_calendar
 layout fragment_favorites
 layout fragment_news
 layout fragment_search
-layout fragment_settings
 layout fragment_team_categories
 layout fragment_team_list
 layout item_athlete
@@ -284,6 +286,8 @@ string start_number
 string stats_button
 string team_subtitle
 string team_title
+style CardViewStyle
+style OutlinedTextField
 style Theme.BiathlonApp
 xml backup_rules
 xml data_extraction_rules

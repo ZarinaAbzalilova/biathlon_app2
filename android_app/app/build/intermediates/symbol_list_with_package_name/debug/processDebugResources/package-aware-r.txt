@@ -1387,6 +1387,7 @@ color background_floating_material_dark
 color background_floating_material_light
 color background_material_dark
 color background_material_light
+color blue_team
 color bright_foreground_disabled_material_dark
 color bright_foreground_disabled_material_light
 color bright_foreground_inverse_material_dark
@@ -1395,6 +1396,10 @@ color bright_foreground_material_dark
 color bright_foreground_material_light
 color button_material_dark
 color button_material_light
+color calendar_day_text
+color calendar_header_bg
+color calendar_today_bg
+color calendar_weekend_text
 color call_notification_answer_color
 color call_notification_decline_color
 color card_background
@@ -2122,6 +2127,7 @@ color mtrl_textinput_focused_box_stroke_color
 color mtrl_textinput_hovered_box_stroke_color
 color notification_action_color_filter
 color notification_icon_bg_color
+color pink_team
 color primary
 color primary_dark
 color primary_dark_material_dark
@@ -2143,6 +2149,7 @@ color secondary_text_disabled_material_dark
 color secondary_text_disabled_material_light
 color stats_button
 color success
+color surface
 color switch_thumb_disabled_material_dark
 color switch_thumb_disabled_material_light
 color switch_thumb_material_dark
@@ -3194,6 +3201,7 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable sbr_logo
 drawable test_level_drawable
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
@@ -3325,15 +3333,11 @@ id button_stats
 id cache_measures
 id callMeasure
 id cancel_button
-id cardAbout
 id cardDay
 id cardEvent
 id cardFavorite
 id cardGoogleCalendar
 id cardNews
-id cardNotifications
-id cardProfile
-id cardTheme
 id carryVelocity
 id center
 id centerCrop
@@ -3471,7 +3475,6 @@ id ifRoom
 id ignore
 id ignoreRequest
 id image
-id imageAthlete
 id imageIcon
 id imageNews
 id immediateStop
@@ -4000,7 +4003,6 @@ layout fragment_calendar
 layout fragment_favorites
 layout fragment_news
 layout fragment_search
-layout fragment_settings
 layout fragment_team_categories
 layout fragment_team_list
 layout ime_base_split_test_activity
@@ -4616,6 +4618,7 @@ style Base_Widget_MaterialComponents_TextView
 style CardView
 style CardView_Dark
 style CardView_Light
+style CardViewStyle
 style MaterialAlertDialog_Material3
 style MaterialAlertDialog_Material3_Animation
 style MaterialAlertDialog_Material3_Body_Text
@@ -4636,6 +4639,7 @@ style MaterialAlertDialog_MaterialComponents_Title_Panel
 style MaterialAlertDialog_MaterialComponents_Title_Panel_CenterStacked
 style MaterialAlertDialog_MaterialComponents_Title_Text
 style MaterialAlertDialog_MaterialComponents_Title_Text_CenterStacked
+style OutlinedTextField
 style Platform_AppCompat
 style Platform_AppCompat_Light
 style Platform_MaterialComponents

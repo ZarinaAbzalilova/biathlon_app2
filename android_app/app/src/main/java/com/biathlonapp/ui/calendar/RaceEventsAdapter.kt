@@ -48,30 +48,26 @@ class RaceEventsAdapter(
             binding.textDiscipline.text = formatDiscipline(event.discipline)
             binding.textLocation.text = event.location
 
-            when {
-                event.isMixed -> {
-                    // Смешанная эстафета
-                    binding.textGender.text = "Смешанная эстафета"
-                    binding.textGender.setTextColor(Color.WHITE)
-                    binding.genderBadge.setCardBackgroundColor(Color.parseColor("#00BCD4")) // Голубой
-                    binding.cardEvent.setCardBackgroundColor(Color.parseColor("#E0F7FA")) // Светло-голубой
-                }
-                event.gender == "М" -> {
+            when (event.gender) {
+                "М", "мужской", "male", "Мужчины" -> {
                     binding.textGender.text = "Мужчины"
-                    binding.textGender.setTextColor(Color.WHITE)
-                    binding.genderBadge.setCardBackgroundColor(Color.parseColor("#2196F3"))
-                    binding.cardEvent.setCardBackgroundColor(Color.parseColor("#E3F2FD"))
+                    binding.genderBadge.setCardBackgroundColor(android.graphics.Color.parseColor("#2196F3"))
+                    binding.textGender.setTextColor(android.graphics.Color.WHITE)
                 }
-                event.gender == "Ж" -> {
+                "Ж", "женский", "female", "Женщины" -> {
                     binding.textGender.text = "Женщины"
-                    binding.textGender.setTextColor(Color.WHITE)
-                    binding.genderBadge.setCardBackgroundColor(Color.parseColor("#E91E63"))
-                    binding.cardEvent.setCardBackgroundColor(Color.parseColor("#FCE4EC"))
+                    binding.genderBadge.setCardBackgroundColor(android.graphics.Color.parseColor("#E91E63"))
+                    binding.textGender.setTextColor(android.graphics.Color.WHITE)
+                }
+                "Смешанная" -> {
+                    binding.textGender.text = "Смешанная"
+                    binding.genderBadge.setCardBackgroundColor(android.graphics.Color.parseColor("#00BCD4"))
+                    binding.textGender.setTextColor(android.graphics.Color.WHITE)
                 }
                 else -> {
-                    binding.textGender.text = ""
-                    binding.genderBadge.visibility = View.GONE
-                    binding.cardEvent.setCardBackgroundColor(Color.WHITE)
+                    binding.textGender.text = event.gender ?: "?"
+                    binding.genderBadge.setCardBackgroundColor(android.graphics.Color.parseColor("#9E9E9E"))
+                    binding.textGender.setTextColor(android.graphics.Color.WHITE)
                 }
             }
 

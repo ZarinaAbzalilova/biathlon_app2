@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="?android:attr/windowBackground">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
-        android:background="#F5F5F5" />
+        android:textColor="?android:attr/textColorPrimary"
+        android:background="?android:attr/windowBackground" />
 
     <!-- Заголовки столбцов -->
     <LinearLayout
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="12dp"
-        android:background="#DEE6F3">
+        android:background="?android:attr/windowBackground">
 
         <TextView
             android:layout_width="0dp"

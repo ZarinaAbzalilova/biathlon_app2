@@ -7,6 +7,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
+
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
@@ -50,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="10:00"
                 android:textSize="14sp"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="?android:attr/textColorSecondary"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -61,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Название гонки"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="4dp" />
@@ -72,7 +74,7 @@
             android:layout_height="wrap_content"
             android:text="Дисциплина"
             android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="?android:attr/textColorSecondary"
             android:layout_marginBottom="2dp" />
 
         <!-- Место проведения -->
@@ -82,7 +84,7 @@
             android:layout_height="wrap_content"
             android:text="Место проведения"
             android:textSize="14sp"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="?android:attr/textColorSecondary"
             android:drawablePadding="4dp" />
 
     </LinearLayout>

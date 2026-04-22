@@ -80,10 +80,9 @@ class RaceProtocolActivity : AppCompatActivity() {
         viewModel.raceResults.observe(this) { response ->
             supportActionBar?.title = response.raceInfo.nameRace
             binding.textRaceInfo.text = buildString {
-                append(response.raceInfo.discipline ?: "")
                 if (response.raceInfo.date.isNotEmpty()) {
                     if (isNotEmpty()) append(" • ")
-                    append(response.raceInfo.date)
+                    append(formatDate(response.raceInfo.date))
                 }
                 if (response.raceInfo.placeRace.isNotEmpty()) {
                     if (isNotEmpty()) append(" • ")
@@ -119,7 +118,22 @@ class RaceProtocolActivity : AppCompatActivity() {
             }
         }
     }
-
+    private fun formatDate(dateString: String): String {
+        return try {
+            // Предполагается формат "YYYY-MM-DD" или "YYYY-M-D"
+            val parts = dateString.split("-")
+            if (parts.size == 3) {
+                val year = parts[0]
+                val month = parts[1].padStart(2, '0')
+                val day = parts[2].padStart(2, '0')
+                "$day.$month.$year"
+            } else {
+                dateString // возвращаем как есть, если формат не соответствует
+            }
+        } catch (e: Exception) {
+            dateString // в случае ошибки возвращаем исходную строку
+        }
+    }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true

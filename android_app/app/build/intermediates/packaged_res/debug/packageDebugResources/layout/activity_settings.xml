@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/primary"
         app:titleTextColor="@android:color/white" />
 
     <ScrollView
@@ -28,13 +29,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    app:cardBackgroundColor="@color/card_background">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -42,6 +45,7 @@
                         android:text="Информация о пользователе"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:textColor="@color/primary_text"
                         android:layout_marginBottom="12dp" />
 
                     <TextView
@@ -49,7 +53,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="email@example.com"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textColor="@color/secondary_text" />
 
                     <Button
                         android:id="@+id/buttonAuth"
@@ -67,13 +72,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    app:cardBackgroundColor="@color/card_background">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -81,6 +88,7 @@
                         android:text="Уведомления"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:textColor="@color/primary_text"
                         android:layout_marginBottom="8dp" />
 
                     <LinearLayout
@@ -93,7 +101,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Push-уведомления о гонках" />
+                            android:text="Push-уведомления о гонках"
+                            android:textColor="@color/primary_text" />
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/switchNotifications"
@@ -109,13 +118,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/card_background">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    app:cardBackgroundColor="@color/card_background">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -123,6 +134,7 @@
                         android:text="Тема оформления"
                         android:textSize="16sp"
                         android:textStyle="bold"
+                        android:textColor="@color/primary_text"
                         android:layout_marginBottom="12dp" />
 
                     <RadioGroup
@@ -135,21 +147,24 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Как в системе"
-                            android:padding="8dp" />
+                            android:padding="8dp"
+                            android:textColor="@color/primary_text" />
 
                         <RadioButton
                             android:id="@+id/radioLight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Светлая"
-                            android:padding="8dp" />
+                            android:padding="8dp"
+                            android:textColor="@color/primary_text" />
 
                         <RadioButton
                             android:id="@+id/radioDark"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Темная"
-                            android:padding="8dp" />
+                            android:padding="8dp"
+                            android:textColor="@color/primary_text" />
 
                     </RadioGroup>
                 </LinearLayout>

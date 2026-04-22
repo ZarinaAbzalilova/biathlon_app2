@@ -10,7 +10,8 @@
     app:cardElevation="2dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    app:cardBackgroundColor="?attr/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +32,7 @@
                 android:text="1"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:textColor="@color/primary" />
+                android:textColor="?android:attr/textColorPrimary" />
 
             <TextView
                 android:id="@+id/text_start_number"
@@ -39,7 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:text="10"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorPrimary"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -53,7 +55,8 @@
                     android:layout_height="wrap_content"
                     android:text="Фамилия"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <TextView
                     android:id="@+id/text_athlete_first_name"
@@ -61,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:text="Имя"
                     android:textSize="12sp"
-                    android:textColor="@android:color/darker_gray" />
+                    android:textColor="?android:attr/textColorSecondary" />
 
             </LinearLayout>
 

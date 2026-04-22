@@ -4,6 +4,10 @@
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_race_event.xml"
     },
     {
+        "merged": "com.biathlonapp-debug-58:/layout_item_calendar_day.xml.flat",
+        "source": "com.biathlonapp-main-60:/layout/item_calendar_day.xml"
+    },
+    {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_google_calendar.xml.flat",
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_google_calendar.xml"
     },
@@ -72,6 +76,10 @@
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_delete.xml"
     },
     {
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_sbr_logo.jpg.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\sbr_logo.jpg"
+    },
+    {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_onboarding_search.xml.flat",
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_onboarding_search.xml"
     },
@@ -120,12 +128,12 @@
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_search.xml"
     },
     {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_login.xml.flat",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_login.xml"
-    },
-    {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_dot_active.xml.flat",
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\dot_active.xml"
+    },
+    {
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_login.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_login.xml"
     },
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_circle_red.xml.flat",
@@ -154,6 +162,10 @@
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_reset_password.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_reset_password.xml"
     },
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_calendar_day.xml.flat",
@@ -226,10 +238,6 @@
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xxhdpi\\ic_launcher_foreground.webp"
-    },
-    {
-        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_fragment_settings.xml.flat",
-        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\fragment_settings.xml"
     },
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-hdpi_ic_launcher.webp.flat",
@@ -346,10 +354,6 @@
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-mdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-mdpi\\ic_launcher.webp"
-    },
-    {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_reset_password.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_reset_password.xml"
     },
     {
         "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",

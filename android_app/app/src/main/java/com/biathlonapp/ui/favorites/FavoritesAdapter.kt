@@ -45,13 +45,6 @@ class FavoritesAdapter(
             binding.textSportsRank.text = favorite.sportsRank
             binding.textRegion.text = favorite.region ?: "Регион не указан"
 
-            // Устанавливаем иконку в зависимости от пола
-            if (favorite.gender.lowercase() == "male") {
-                binding.imageAthlete.setImageResource(com.biathlonapp.R.drawable.ic_male)
-            } else {
-                binding.imageAthlete.setImageResource(com.biathlonapp.R.drawable.ic_female)
-            }
-
             // Клик на всю карточку
             binding.cardFavorite.setOnClickListener {
                 onItemClick(favorite)

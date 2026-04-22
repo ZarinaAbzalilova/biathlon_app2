@@ -4,7 +4,9 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.biathlonapp.R
 import com.biathlonapp.data.model.CalendarDay
 import com.biathlonapp.databinding.ItemCalendarDayBinding
 import java.text.SimpleDateFormat
@@ -47,10 +49,15 @@ class CalendarAdapter(
         fun bind(day: CalendarDay) {
             binding.textDay.text = day.dayOfMonth.toString()
 
+            // Получаем цвет текста в зависимости от темы
+            val textColor = ContextCompat.getColor(binding.root.context, R.color.primary_text)
+
             if (!day.isCurrentMonth) {
                 binding.textDay.alpha = 0.3f
+                binding.textDay.setTextColor(textColor)
             } else {
                 binding.textDay.alpha = 1.0f
+                binding.textDay.setTextColor(textColor)
             }
 
             // Управление видимостью точек
@@ -61,7 +68,6 @@ class CalendarAdapter(
                     binding.viewMaleDot.visibility = View.GONE
                     binding.viewFemaleDot.visibility = View.GONE
                     binding.viewEventDot.visibility = View.GONE
-                    binding.textDay.setTextColor(Color.BLACK)
                 }
                 day.hasMaleEvent && day.hasFemaleEvent -> {
                     // Обе точки
@@ -69,7 +75,6 @@ class CalendarAdapter(
                     binding.viewFemaleDot.visibility = View.VISIBLE
                     binding.viewMixedDot.visibility = View.GONE
                     binding.viewEventDot.visibility = View.GONE
-                    binding.textDay.setTextColor(Color.BLACK)
                 }
                 day.hasMaleEvent -> {
                     // Только мужская
@@ -77,7 +82,6 @@ class CalendarAdapter(
                     binding.viewFemaleDot.visibility = View.GONE
                     binding.viewMixedDot.visibility = View.GONE
                     binding.viewEventDot.visibility = View.GONE
-                    binding.textDay.setTextColor(Color.BLACK)
                 }
                 day.hasFemaleEvent -> {
                     // Только женская
@@ -85,7 +89,6 @@ class CalendarAdapter(
                     binding.viewFemaleDot.visibility = View.VISIBLE
                     binding.viewMixedDot.visibility = View.GONE
                     binding.viewEventDot.visibility = View.GONE
-                    binding.textDay.setTextColor(Color.BLACK)
                 }
                 day.hasEvent -> {
                     // Обычная точка
@@ -93,7 +96,6 @@ class CalendarAdapter(
                     binding.viewFemaleDot.visibility = View.GONE
                     binding.viewMixedDot.visibility = View.GONE
                     binding.viewEventDot.visibility = View.VISIBLE
-                    binding.textDay.setTextColor(Color.parseColor("#2196F3"))
                 }
                 else -> {
                     // Нет событий
@@ -101,7 +103,6 @@ class CalendarAdapter(
                     binding.viewFemaleDot.visibility = View.GONE
                     binding.viewMixedDot.visibility = View.GONE
                     binding.viewEventDot.visibility = View.GONE
-                    binding.textDay.setTextColor(Color.BLACK)
                 }
             }
 
@@ -118,10 +119,17 @@ class CalendarAdapter(
                     dayCalendar.get(Calendar.YEAR) == currentYear &&
                     day.isCurrentMonth
 
-            binding.cardDay.setCardBackgroundColor(
-                if (isToday) android.graphics.Color.parseColor("#E3F2FD")
-                else android.graphics.Color.WHITE
-            )
+            // Установка цвета фона карточки (только для сегодняшнего дня)
+            if (isToday) {
+                binding.cardDay.setCardBackgroundColor(
+                    ContextCompat.getColor(binding.root.context, R.color.calendar_today_bg)
+                )
+            } else {
+                // Используем цвет фона из темы
+                binding.cardDay.setCardBackgroundColor(
+                    ContextCompat.getColor(binding.root.context, R.color.card_background)
+                )
+            }
 
             binding.cardDay.setOnClickListener {
                 if (day.isCurrentMonth) onDayClick(day)

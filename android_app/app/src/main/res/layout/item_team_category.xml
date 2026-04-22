@@ -25,4 +25,4 @@ android:textSize="18sp"
 android:textStyle="bold"
 android:textColor="@color/primary" />
 
-    </com.google.android.material.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>

@@ -37,48 +37,58 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:testOnly="true"
         android:theme="@style/Theme.BiathlonApp"
         android:usesCleartextTraffic="true" >
         <service
             android:name="com.biathlonapp.service.MyFirebaseMessagingService"
             android:exported="false"
             android:launchMode="singleTop" >
->
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
+        <!-- настройки -->
         <activity
             android:name="com.biathlonapp.ui.settings.SettingsActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <!-- данные спортсмена -->
         <activity
             android:name="com.biathlonapp.ui.athlete.AthleteDetailActivity"
             android:exported="false" />
+        <!-- авторизация -->
         <activity
             android:name="com.biathlonapp.ui.auth.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.BiathlonApp" />
+        <!-- регистрация -->
         <activity
             android:name="com.biathlonapp.ui.auth.RegisterActivity"
             android:theme="@style/Theme.BiathlonApp" />
+        <!-- результаты спортсмена -->
         <activity
             android:name="com.biathlonapp.ui.stats.AthleteStatsActivity"
             android:exported="false" />
+        <!-- новости -->
         <activity
             android:name="com.biathlonapp.ui.news.NewsDetailActivity"
             android:parentActivityName="com.biathlonapp.MainActivity" />
+        <!-- команды -->
         <activity android:name="com.biathlonapp.ui.team.TeamListActivity" />
+        <!-- обучение -->
         <activity
             android:name="com.biathlonapp.ui.onboarding.OnboardingActivity"
             android:exported="false"
             android:theme="@style/Theme.BiathlonApp" />
+        <!-- сброс пароля -->
         <activity
             android:name="com.biathlonapp.ui.auth.ResetPasswordActivity"
             android:exported="true"
             android:theme="@style/Theme.BiathlonApp" />
+        <!-- итоговый протокол -->
         <activity android:name="com.biathlonapp.ui.raceprotocol.RaceProtocolActivity" />
+        <!-- главная форма -->
         <activity
             android:name="com.biathlonapp.MainActivity"
             android:exported="true"

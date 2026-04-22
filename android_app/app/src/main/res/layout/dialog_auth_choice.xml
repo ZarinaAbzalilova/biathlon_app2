@@ -7,10 +7,10 @@
     android:padding="24dp">
 
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
-        android:src="@drawable/ic_biathlon_logo"
+        android:src="@drawable/sbr_logo"
         android:layout_marginBottom="16dp" />
 
     <TextView

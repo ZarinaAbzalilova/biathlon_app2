@@ -9,7 +9,6 @@ import com.biathlonapp.ui.calendar.CalendarFragment
 import com.biathlonapp.ui.favorites.FavoritesFragment
 import com.biathlonapp.ui.news.NewsFragment
 import com.biathlonapp.ui.search.SearchFragment
-import com.biathlonapp.ui.settings.SettingsFragment
 import com.biathlonapp.ui.team.TeamCategoriesFragment
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {

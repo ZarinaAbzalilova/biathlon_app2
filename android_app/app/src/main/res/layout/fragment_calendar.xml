@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="?android:attr/windowBackground">
 
     <!-- Заголовок как в сборной -->
     <TextView
@@ -61,7 +61,7 @@
         android:orientation="horizontal"
         android:paddingHorizontal="8dp"
         android:paddingVertical="8dp"
-        android:background="#F5F5F5">
+        android:background="?attr/colorSurface">
 
         <TextView
             android:id="@+id/textMon"
@@ -70,7 +70,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="ПН"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"/>
 
         <TextView
             android:id="@+id/textTue"
@@ -79,7 +80,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="ВТ"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"/>
 
         <TextView
             android:id="@+id/textWed"
@@ -88,7 +90,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="СР"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"/>
 
         <TextView
             android:id="@+id/textThu"
@@ -97,7 +100,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="ЧТ"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"/>
 
         <TextView
             android:id="@+id/textFri"
@@ -106,7 +110,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="ПТ"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"/>
 
         <TextView
             android:id="@+id/textSat"
@@ -116,7 +121,7 @@
             android:gravity="center"
             android:text="СБ"
             android:textStyle="bold"
-            android:textColor="#2196F3" />
+            android:textColor="@color/calendar_weekend_text" />
 
         <TextView
             android:id="@+id/textSun"
@@ -126,7 +131,7 @@
             android:gravity="center"
             android:text="ВС"
             android:textStyle="bold"
-            android:textColor="#F44336" />
+            android:textColor="@color/calendar_weekend_text" />
 
     </LinearLayout>
 

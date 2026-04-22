@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="?android:attr/windowBackground"
     tools:context=".ui.athlete.AthleteDetailActivity">
 
     <!-- Toolbar -->
@@ -44,12 +44,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                style="@style/OutlinedTextField"
                 android:hint="@string/last_name_label">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     android:editable="false"
                     android:focusable="false"
                     tools:text="Иванов" />
@@ -60,6 +63,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/OutlinedTextField"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/first_name_label">
 
@@ -67,6 +71,8 @@
                     android:id="@+id/edit_first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     android:editable="false"
                     android:focusable="false"
                     tools:text="Иван" />
@@ -77,6 +83,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/OutlinedTextField"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/birth_date">
 
@@ -84,6 +91,8 @@
                     android:id="@+id/edit_birth_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     android:editable="false"
                     android:focusable="false"
                     tools:text="01.01.1990" />
@@ -94,6 +103,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/OutlinedTextField"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/gender">
 
@@ -101,6 +111,8 @@
                     android:id="@+id/edit_gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     android:editable="false"
                     android:focusable="false"
                     tools:text="Мужской" />
@@ -111,6 +123,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/OutlinedTextField"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/region">
 
@@ -118,6 +131,8 @@
                     android:id="@+id/edit_region"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     android:editable="false"
                     android:focusable="false"
                     tools:text='Москва' />
@@ -128,6 +143,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/OutlinedTextField"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/region_code">
 
@@ -135,6 +151,8 @@
                     android:id="@+id/edit_region_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     android:editable="false"
                     android:focusable="false"
                     tools:text="МСК" />
@@ -145,6 +163,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/OutlinedTextField"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/sports_rank">
 
@@ -152,6 +171,8 @@
                     android:id="@+id/edit_sports_rank"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     android:editable="false"
                     android:focusable="false"
                     tools:text="МСМК" />

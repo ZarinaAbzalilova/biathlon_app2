@@ -2,7 +2,9 @@ package com.biathlonapp.ui.team
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.biathlonapp.R
 import com.biathlonapp.databinding.ItemTeamCategoryBinding
 
 class TeamCategoryAdapter(
@@ -38,6 +40,22 @@ class TeamCategoryAdapter(
 
         fun bind(category: TeamCategory) {
             binding.textCategoryTitle.text = category.title
+
+            // Определяем цвет в зависимости от пола команды
+            val colorRes = if (category.title.contains("женская", ignoreCase = true)) {
+                R.color.pink_team  // #E91E63 для женских команд
+            } else {
+                R.color.blue_team  // #2196F3 для мужских команд
+            }
+
+            val color = ContextCompat.getColor(binding.root.context, colorRes)
+
+            // Применяем цвет к обводке карточки
+            binding.root.strokeColor = color
+
+            // Применяем цвет к тексту
+            binding.textCategoryTitle.setTextColor(color)
+
             itemView.setOnClickListener {
                 onCategoryClick(category)
             }

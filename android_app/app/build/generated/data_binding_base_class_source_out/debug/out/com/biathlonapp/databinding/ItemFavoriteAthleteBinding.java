@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,9 +27,6 @@ public final class ItemFavoriteAthleteBinding implements ViewBinding {
   public final MaterialCardView cardFavorite;
 
   @NonNull
-  public final ImageView imageAthlete;
-
-  @NonNull
   public final TextView textName;
 
   @NonNull
@@ -41,12 +37,10 @@ public final class ItemFavoriteAthleteBinding implements ViewBinding {
 
   private ItemFavoriteAthleteBinding(@NonNull MaterialCardView rootView,
       @NonNull ImageButton buttonRemove, @NonNull MaterialCardView cardFavorite,
-      @NonNull ImageView imageAthlete, @NonNull TextView textName, @NonNull TextView textRegion,
-      @NonNull TextView textSportsRank) {
+      @NonNull TextView textName, @NonNull TextView textRegion, @NonNull TextView textSportsRank) {
     this.rootView = rootView;
     this.buttonRemove = buttonRemove;
     this.cardFavorite = cardFavorite;
-    this.imageAthlete = imageAthlete;
     this.textName = textName;
     this.textRegion = textRegion;
     this.textSportsRank = textSportsRank;
@@ -87,12 +81,6 @@ public final class ItemFavoriteAthleteBinding implements ViewBinding {
 
       MaterialCardView cardFavorite = (MaterialCardView) rootView;
 
-      id = R.id.imageAthlete;
-      ImageView imageAthlete = ViewBindings.findChildViewById(rootView, id);
-      if (imageAthlete == null) {
-        break missingId;
-      }
-
       id = R.id.textName;
       TextView textName = ViewBindings.findChildViewById(rootView, id);
       if (textName == null) {
@@ -112,7 +100,7 @@ public final class ItemFavoriteAthleteBinding implements ViewBinding {
       }
 
       return new ItemFavoriteAthleteBinding((MaterialCardView) rootView, buttonRemove, cardFavorite,
-          imageAthlete, textName, textRegion, textSportsRank);
+          textName, textRegion, textSportsRank);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Основные цвета (не меняются от темы) -->
     <color name="primary">#1976D2</color>
     <color name="primary_dark">#1565C0</color>
     <color name="accent">#FF4081</color>
     <color name="stats_button">#669DF7</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#757575</color>
-    <color name="divider">#BDBDBD</color>
-    <color name="background">#FAFAFA</color>
-    <color name="card_background">#FFFFFF</color>
     <color name="error">#D32F2F</color>
     <color name="success">#388E3C</color>
     <color name="primary_green">#4CAF50</color>
-    <color name="category_card_bg">#F5F5F5</color>  <!-- светло-серый фон для карточек категорий -->
-    <color name="favorite_button">#FFC107</color> <!-- Желтый цвет для кнопки избранного -->
+    <color name="favorite_button">#FFC107</color>
+    <color name="blue_team">#2196F3</color>
+    <color name="pink_team">#E91E63</color>
+
+
+    <!-- Цвета для светлой темы (будут переопределены в night) -->
+    <color name="background">#FAFAFA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="category_card_bg">#F5F5F5</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="calendar_today_bg">#E3F2FD</color>
+
+    <!-- Атрибуты для использования в лейаутах -->
+    <color name="calendar_day_text">#212121</color>
+    <color name="calendar_weekend_text">#F44336</color>
+    <color name="calendar_header_bg">#F5F5F5</color>
 </resources>
