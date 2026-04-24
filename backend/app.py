@@ -543,7 +543,43 @@ def add_test_race():
         return jsonify({'error': str(e)}), 500
 
 # ========== ОСНОВНЫЕ ENDPOINTS ==========
-     
+@app.route('/api/race/<path:race_id>/info', methods=['GET'])
+def get_race_info(race_id):
+    """Получить базовую информацию о гонке"""
+    try:
+        # Очищаем race_id от суффикса пола
+        clean_race_id = race_id
+        if race_id.endswith('_М'):
+            clean_race_id = race_id[:-2]
+        elif race_id.endswith('_Ж'):
+            clean_race_id = race_id[:-2]
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        
+        cursor.execute("""
+            SELECT 
+                race_id,
+                name_race,
+                discipline,
+                date,
+                place_race
+            FROM races
+            WHERE race_id = %s
+        """, (clean_race_id,))
+        
+        race = cursor.fetchone()
+        conn.close()
+        
+        if race:
+            if race['date']:
+                race['date'] = race['date'].strftime('%Y-%m-%d')
+            return jsonify(race)
+        else:
+            return jsonify({"error": "Гонка не найдена"}), 404
+            
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 @app.route('/api/auth/update-fcm-token', methods=['POST'])
 @token_required
 def update_fcm_token():
