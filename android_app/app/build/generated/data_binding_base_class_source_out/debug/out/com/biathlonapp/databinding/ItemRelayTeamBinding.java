@@ -31,6 +31,12 @@ public final class ItemRelayTeamBinding implements ViewBinding {
   public final TextView textFinishTime;
 
   @NonNull
+  public final TextView textMembers;
+
+  @NonNull
+  public final TextView textMembersCount;
+
+  @NonNull
   public final TextView textMissCount;
 
   @NonNull
@@ -41,12 +47,15 @@ public final class ItemRelayTeamBinding implements ViewBinding {
 
   private ItemRelayTeamBinding(@NonNull MaterialCardView rootView,
       @NonNull LinearLayout expandedMembersContainer, @NonNull ImageView imageExpand,
-      @NonNull TextView textFinishTime, @NonNull TextView textMissCount,
+      @NonNull TextView textFinishTime, @NonNull TextView textMembers,
+      @NonNull TextView textMembersCount, @NonNull TextView textMissCount,
       @NonNull TextView textPlace, @NonNull TextView textTeamName) {
     this.rootView = rootView;
     this.expandedMembersContainer = expandedMembersContainer;
     this.imageExpand = imageExpand;
     this.textFinishTime = textFinishTime;
+    this.textMembers = textMembers;
+    this.textMembersCount = textMembersCount;
     this.textMissCount = textMissCount;
     this.textPlace = textPlace;
     this.textTeamName = textTeamName;
@@ -97,6 +106,18 @@ public final class ItemRelayTeamBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.textMembers;
+      TextView textMembers = ViewBindings.findChildViewById(rootView, id);
+      if (textMembers == null) {
+        break missingId;
+      }
+
+      id = R.id.textMembersCount;
+      TextView textMembersCount = ViewBindings.findChildViewById(rootView, id);
+      if (textMembersCount == null) {
+        break missingId;
+      }
+
       id = R.id.textMissCount;
       TextView textMissCount = ViewBindings.findChildViewById(rootView, id);
       if (textMissCount == null) {
@@ -116,7 +137,8 @@ public final class ItemRelayTeamBinding implements ViewBinding {
       }
 
       return new ItemRelayTeamBinding((MaterialCardView) rootView, expandedMembersContainer,
-          imageExpand, textFinishTime, textMissCount, textPlace, textTeamName);
+          imageExpand, textFinishTime, textMembers, textMembersCount, textMissCount, textPlace,
+          textTeamName);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -153,6 +153,8 @@ id textHeader
 id textLikes
 id textLocation
 id textLogin
+id textMembers
+id textMembersCount
 id textMissCount
 id textMon
 id textMonthYear
