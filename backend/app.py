@@ -588,10 +588,10 @@ def get_relay_results(race_id):
     try:
         # Очищаем race_id от суффикса пола
         clean_race_id = race_id
-        if race_id.endswith('_М'):
-            clean_race_id = race_id[:-2]
-        elif race_id.endswith('_Ж'):
-            clean_race_id = race_id[:-2]
+        for suffix in ['_М', '_Ж', '_Смешанная']:
+            if race_id.endswith(suffix):
+                clean_race_id = race_id[:-len(suffix)]
+                break
         
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -616,28 +616,44 @@ def get_relay_results(race_id):
         if race_info['date']:
             race_info['date'] = race_info['date'].strftime('%Y-%m-%d')
         
-        # Группируем результаты по командам (используем region как team_name)
-        # Если у вас есть поле team_name в таблице results, используйте его
+        # Определяем тип эстафеты и максимальный этаж
+        discipline = race_info['discipline']
+        is_single_mixed = 'SingleMixedRelay' in discipline
+        is_mixed = 'MixedRelay' in discipline
+        is_relay = 'Relay' in discipline
+        
+        if not is_relay:
+            # Если не эстафета, возвращаем обычные результаты
+            return get_race_results(race_id)
+        
+        # Определяем максимальный номер этапа для определения финишного времени и места
+        max_leg = 2 if is_single_mixed else 4
+        
+        # Группируем результаты по командам
         cursor.execute("""
             SELECT 
-                COALESCE(r.team_name, a.region) as team_name,
-                MIN(r.finish_place) as finish_place,
+                r.team_name,
+                MAX(CASE WHEN r.team_leg = %s THEN r.finish_place END) as finish_place,
                 SUM(r.miss_count) as total_miss_count,
-                MIN(r.finish_time) as finish_time,
+                MAX(CASE WHEN r.team_leg = %s THEN r.finish_time END) as finish_time,
                 GROUP_CONCAT(
-                    CONCAT(a.last_name, ' ', a.first_name, '|', 
-                           COALESCE(r.miss_count, 0), '|', 
-                           COALESCE(r.start_number, 0), '|', 
-                           a.athlete_id)
-                    ORDER BY r.start_number ASC
+                    CONCAT(
+                        r.team_leg, '|',
+                        a.athlete_id, '|',
+                        a.last_name, ' ', a.first_name, '|',
+                        COALESCE(r.miss_count, 0), '|',
+                        COALESCE(r.start_number, 0), '|',
+                        a.gender
+                    )
+                    ORDER BY r.team_leg ASC
                     SEPARATOR ';'
                 ) as members_data
             FROM results r
             JOIN athlete a ON r.athlete_id = a.athlete_id
-            WHERE r.race_id = %s
-            GROUP BY COALESCE(r.team_name, a.region)
-            ORDER BY MIN(r.finish_place) ASC
-        """, (clean_race_id,))
+            WHERE r.race_id = %s AND r.team_name IS NOT NULL AND r.team_name != ''
+            GROUP BY r.team_name
+            ORDER BY MAX(CASE WHEN r.team_leg = %s THEN r.finish_place END) ASC
+        """, (max_leg, max_leg, clean_race_id, max_leg))
         
         teams = cursor.fetchall()
         
@@ -648,19 +664,21 @@ def get_relay_results(race_id):
             if team['members_data']:
                 for member_str in team['members_data'].split(';'):
                     parts = member_str.split('|')
-                    if len(parts) >= 4:
+                    if len(parts) >= 6:
                         members.append({
-                            'full_name': parts[0],
-                            'miss_count': int(parts[1]) if parts[1].isdigit() else 0,
-                            'leg_number': int(parts[2]) if parts[2].isdigit() else 0,
-                            'athlete_id': int(parts[3]) if parts[3].isdigit() else 0
+                            'leg_number': int(parts[0]),
+                            'athlete_id': int(parts[1]),
+                            'full_name': parts[2],
+                            'miss_count': int(parts[3]),
+                            'start_number': int(parts[4]),
+                            'gender': parts[5]
                         })
             
             results.append({
                 'team_name': team['team_name'],
                 'finish_place': team['finish_place'],
                 'total_miss_count': team['total_miss_count'],
-                'finish_time': team['finish_time'],
+                'finish_time': team['finish_time'] or '',
                 'members': members
             })
         
