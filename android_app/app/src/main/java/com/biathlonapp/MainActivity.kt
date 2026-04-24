@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         // Проверяем, нужно ли показать онбординг
         val prefs = getSharedPreferences("onboarding_prefs", Context.MODE_PRIVATE)
         val onboardingCompleted = prefs.getBoolean("onboarding_completed", false)
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             finish()
             return
         }
+
         // Запрос разрешения на уведомления для Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
@@ -53,7 +55,6 @@ class MainActivity : AppCompatActivity() {
 
         authRepository = AuthRepository(this)
         apiService = ApiClient.apiService
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -66,7 +67,8 @@ class MainActivity : AppCompatActivity() {
         setupViewPager()
         setupBottomNavigation()
         handleNotificationIntent(intent)
-        updateFcmToken()  // ← Теперь работает
+        updateFcmToken()
+
         // Проверяем, было ли приложение открыто из уведомления
         if (intent?.getBooleanExtra("open_race", false) == true) {
             handleNotificationIntent(intent)
@@ -83,6 +85,7 @@ class MainActivity : AppCompatActivity() {
         handleNotificationIntent(intent)
         handleDeepLink(intent)
     }
+
     private fun handleDeepLink(intent: Intent?) {
         val data = intent?.data
         if (data != null) {
@@ -97,18 +100,18 @@ class MainActivity : AppCompatActivity() {
                 android.util.Log.d("DEEPLINK", "Token: $token")
                 if (!token.isNullOrEmpty()) {
                     startActivity(ResetPasswordActivity.newIntent(this, token))
-                    finish()  // Закрываем MainActivity, чтобы не оставалось в фоне
+                    finish()
                 }
             }
         }
     }
+
     private fun updateFcmToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val token = task.result
                 val jwtToken = authRepository.getToken()
                 if (jwtToken != null) {
-                    // Используем lifecycleScope.launch для вызова suspend функции
                     lifecycleScope.launch {
                         try {
                             val response = apiService.updateFcmToken("Bearer $jwtToken", mapOf("fcm_token" to token))
@@ -131,12 +134,6 @@ class MainActivity : AppCompatActivity() {
     private fun handleNotificationIntent(intent: Intent?) {
         val shouldOpenRace = intent?.getBooleanExtra("open_race", false) ?: false
         val raceId = intent?.getStringExtra("race_id") ?: ""
-
-        Log.d("NOTIFICATION", "========== ОБРАБОТКА НАЖАТИЯ ==========")
-        Log.d("NOTIFICATION", "Intent: $intent")
-        Log.d("NOTIFICATION", "shouldOpenRace: $shouldOpenRace")
-        Log.d("NOTIFICATION", "raceId: $raceId")
-        Log.d("NOTIFICATION", "Все extras: ${intent?.extras}")
 
         if (shouldOpenRace && raceId.isNotEmpty()) {
             Log.d("NOTIFICATION", "Открываем протокол гонки: $raceId")
@@ -171,34 +168,24 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.apply {
             adapter = viewPagerAdapter
             isUserInputEnabled = false
+            offscreenPageLimit = 4  // ← Загружаем все страницы
         }
     }
 
     private fun setupBottomNavigation() {
         binding.bottomNavigation.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.navigation_news -> {
-                    binding.viewPager.currentItem = 0
-                    true
-                }
-                R.id.navigation_team -> {
-                    binding.viewPager.currentItem = 1
-                    true
-                }
-                R.id.navigation_calendar -> {
-                    binding.viewPager.currentItem = 2
-                    true
-                }
-                R.id.navigation_favorites -> {
-                    binding.viewPager.currentItem = 3
-                    true
-                }
-                R.id.navigation_search -> {
-                    binding.viewPager.currentItem = 4
-                    true
-                }
-                else -> false
+            val targetPosition = when (menuItem.itemId) {
+                R.id.navigation_news -> 0
+                R.id.navigation_team -> 1
+                R.id.navigation_calendar -> 2
+                R.id.navigation_favorites -> 3
+                R.id.navigation_search -> 4
+                else -> return@setOnItemSelectedListener false
             }
+
+            // Мгновенное переключение без анимации
+            binding.viewPager.setCurrentItem(targetPosition, false)
+            true
         }
     }
 }
