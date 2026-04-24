@@ -142,6 +142,7 @@ id textDiscipline
 id textEmpty
 id textError
 id textFinishPlace
+id textFinishTime
 id textForgotPassword
 id textFri
 id textGender
@@ -149,10 +150,13 @@ id textHeader
 id textLikes
 id textLocation
 id textLogin
+id textMembers
+id textMembersCount
 id textMissCount
 id textMon
 id textMonthYear
 id textName
+id textPlace
 id textPreview
 id textRaceInfo
 id textRaceName
@@ -165,6 +169,7 @@ id textSource
 id textSportsRank
 id textStartNumber
 id textSun
+id textTeamName
 id textThu
 id textTime
 id textTitle
@@ -220,6 +225,7 @@ layout item_news
 layout item_race_event
 layout item_race_protocol
 layout item_race_result
+layout item_relay_team
 layout item_team_athlete
 layout item_team_category
 layout item_team_header

@@ -543,6 +543,7 @@ def add_test_race():
         return jsonify({'error': str(e)}), 500
 
 # ========== ОСНОВНЫЕ ENDPOINTS ==========
+
 @app.route('/api/race/<path:race_id>/info', methods=['GET'])
 def get_race_info(race_id):
     """Получить базовую информацию о гонке"""
@@ -580,6 +581,10 @@ def get_race_info(race_id):
             
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+
+
 @app.route('/api/auth/update-fcm-token', methods=['POST'])
 @token_required
 def update_fcm_token():
@@ -941,10 +946,18 @@ def get_race_details(race_id, gender):
             
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-@app.route('/api/race/<race_id>/relay-results', methods=['GET'])
+
+@app.route('/api/race/<path:race_id>/relay-results', methods=['GET'])
 def get_relay_results(race_id):
     """Получить результаты эстафеты с группировкой по командам"""
     try:
+        # Очищаем race_id от суффикса пола
+        clean_race_id = race_id
+        if race_id.endswith('_М'):
+            clean_race_id = race_id[:-2]
+        elif race_id.endswith('_Ж'):
+            clean_race_id = race_id[:-2]
+        
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         
@@ -958,7 +971,7 @@ def get_relay_results(race_id):
                 r.place_race
             FROM races r
             WHERE r.race_id = %s
-        """, (race_id,))
+        """, (clean_race_id,))
         
         race_info = cursor.fetchone()
         
@@ -968,32 +981,33 @@ def get_relay_results(race_id):
         if race_info['date']:
             race_info['date'] = race_info['date'].strftime('%Y-%m-%d')
         
-        # Группируем результаты по командам
+        # Группируем результаты по командам (используем region как team_name)
+        # Если у вас есть поле team_name в таблице results, используйте его
         cursor.execute("""
             SELECT 
-                r.team_name,
+                COALESCE(r.team_name, a.region) as team_name,
                 MIN(r.finish_place) as finish_place,
                 SUM(r.miss_count) as total_miss_count,
                 MIN(r.finish_time) as finish_time,
                 GROUP_CONCAT(
-                    CONCAT(
-                        a.last_name, ' ', a.first_name, 
-                        '|', r.miss_count, 
-                        '|', r.start_number,
-                        '|', r.athlete_id
-                    ) 
-                    ORDER BY r.start_number SEPARATOR ';'
+                    CONCAT(a.last_name, ' ', a.first_name, '|', 
+                           COALESCE(r.miss_count, 0), '|', 
+                           COALESCE(r.start_number, 0), '|', 
+                           a.athlete_id)
+                    ORDER BY r.start_number ASC
+                    SEPARATOR ';'
                 ) as members_data
             FROM results r
             JOIN athlete a ON r.athlete_id = a.athlete_id
-            WHERE r.race_id = %s AND r.team_name IS NOT NULL
-            GROUP BY r.team_name
+            WHERE r.race_id = %s
+            GROUP BY COALESCE(r.team_name, a.region)
             ORDER BY MIN(r.finish_place) ASC
-        """, (race_id,))
+        """, (clean_race_id,))
         
         teams = cursor.fetchall()
         
-        # Форматируем участников
+        # Форматируем результаты
+        results = []
         for team in teams:
             members = []
             if team['members_data']:
@@ -1006,15 +1020,21 @@ def get_relay_results(race_id):
                             'leg_number': int(parts[2]) if parts[2].isdigit() else 0,
                             'athlete_id': int(parts[3]) if parts[3].isdigit() else 0
                         })
-            team['members'] = members
-            del team['members_data']
+            
+            results.append({
+                'team_name': team['team_name'],
+                'finish_place': team['finish_place'],
+                'total_miss_count': team['total_miss_count'],
+                'finish_time': team['finish_time'],
+                'members': members
+            })
         
         # PDF URL
         cursor.execute("""
             SELECT pdf_url, gender
             FROM race_pdf_urls
             WHERE race_id = %s
-        """, (race_id,))
+        """, (clean_race_id,))
         
         pdf_urls = cursor.fetchall()
         
@@ -1030,13 +1050,14 @@ def get_relay_results(race_id):
                 "is_relay": True,
                 "pdf_urls": pdf_urls
             },
-            "results": teams,
-            "results_count": len(teams)
+            "results": results,
+            "results_count": len(results)
         })
         
     except Exception as e:
         print(f"Error: {e}")
-        return jsonify({"error": str(e)}), 500
+
+
 @app.route('/api/race/<path:race_id>/results', methods=['GET'])
 def get_race_results(race_id):
     try:
