@@ -31,6 +31,7 @@ drawable dialog_background
 drawable dot_active
 drawable dot_inactive
 drawable ic_arrow_back
+drawable ic_arrow_down
 drawable ic_arrow_forward
 drawable ic_arrow_left
 drawable ic_arrow_right
@@ -96,8 +97,10 @@ id edit_last_name
 id edit_region
 id edit_region_code
 id edit_sports_rank
+id expandedMembersContainer
 id genderBadge
 id gifImage
+id imageExpand
 id imageIcon
 id imageNews
 id layoutError
@@ -150,8 +153,6 @@ id textHeader
 id textLikes
 id textLocation
 id textLogin
-id textMembers
-id textMembersCount
 id textMissCount
 id textMon
 id textMonthYear

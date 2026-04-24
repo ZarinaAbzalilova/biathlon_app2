@@ -11,6 +11,7 @@ import retrofit2.Retrofit
 import com.biathlonapp.data.model.AthleteResultsResponse
 import com.biathlonapp.data.model.AuthResponse
 import com.biathlonapp.data.model.RaceResultsResponse
+import com.biathlonapp.data.model.RelayResultsResponse
 import com.biathlonapp.data.model.User
 import okhttp3.RequestBody
 import retrofit2.converter.gson.GsonConverterFactory
@@ -60,7 +61,8 @@ interface BiathlonApiService {
         @Query("page") page: Int = 1,
         @Query("per_page") perPage: Int = 50
     ): Response<PaginatedResponse<Athlete>>
-
+    @GET("api/race/{raceId}/relay-results")
+    suspend fun getRelayResults(@Path("raceId") raceId: String): Response<RelayResultsResponse>
     @GET("races/{raceId}/pdf-url")
     suspend fun getRacePdfUrl(
         @Path("raceId") raceId: String,

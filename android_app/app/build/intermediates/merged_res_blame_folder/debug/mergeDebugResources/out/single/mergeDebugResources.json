@@ -1,370 +1,378 @@
 [
     {
-        "merged": "com.biathlonapp-debug-58:/xml_data_extraction_rules.xml.flat",
-        "source": "com.biathlonapp-main-60:/xml/data_extraction_rules.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_race_event.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_race_event.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_item_calendar_day.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/item_calendar_day.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_google_calendar.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_google_calendar.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_dot_active.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/dot_active.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\xml\\backup_rules.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_item_race_result.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/item_race_result.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_fragment_team_list.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\fragment_team_list.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_launcher_background.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_launcher_background.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_fragment_search.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/fragment_search.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_dialog_auth_choice.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\dialog_auth_choice.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_female.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_female.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\menu_menu_athlete_detail.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\menu\\menu_athlete_detail.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/raw_onboarding_welcome.gif.flat",
-        "source": "com.biathlonapp-main-60:/raw/onboarding_welcome.gif"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_notification.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_notification.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\menu_bottom_navigation_menu.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\menu\\bottom_navigation_menu.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_race_result.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_race_result.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_star.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_star.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_news.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_news.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_delete.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_delete.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_race_protocol.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_race_protocol.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_item_athlete.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/item_athlete.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_calendar.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_calendar.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_comment.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_comment.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/menu_toolbar_menu.xml.flat",
-        "source": "com.biathlonapp-main-60:/menu/toolbar_menu.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_relay_team.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_relay_team.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_login.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_login.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_athlete.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_athlete.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_settings.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_settings.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-hdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_race_protocol.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_race_protocol.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_female.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_female.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_calendar.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_calendar.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_delete.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_delete.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-xhdpi_ic_launcher_foreground.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-xhdpi/ic_launcher_foreground.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_sbr_logo.jpg.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\sbr_logo.jpg"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_repost.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_repost.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_onboarding_search.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_onboarding_search.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_arrow_back.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_arrow_back.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_star.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_star.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_main.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_main.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_arrow_forward.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_arrow_forward.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_team_header.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_team_header.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/xml_backup_rules.xml.flat",
-        "source": "com.biathlonapp-main-60:/xml/backup_rules.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_arrow_left.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_arrow_left.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_arrow_right.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_arrow_right.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_team_category.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_team_category.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_onboarding_notification.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_onboarding_notification.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_onboarding_notification.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_onboarding_notification.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_item_team_category.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/item_team_category.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_arrow_right.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_arrow_right.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_team_list.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_team_list.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_team_list.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_team_list.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_register.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_register.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_like.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_like.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_search.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_search.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_fragment_athletes.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/fragment_athletes.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_dot_active.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\dot_active.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_launcher_foreground.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_login.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_login.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_settings.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_settings.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_arrow_down.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_arrow_down.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_fragment_favorites.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/fragment_favorites.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_circle_red.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\circle_red.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_dialog_race_events.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/dialog_race_events.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_repost.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_repost.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_onboarding_item.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\onboarding_item.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_male.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_male.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_dialog_race_events.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\dialog_race_events.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_like.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_like.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_athlete_detail.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_athlete_detail.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_item_team_header.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/item_team_header.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_item_race_protocol.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/item_race_protocol.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_reset_password.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_reset_password.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_star_filled.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_star_filled.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_calendar_day.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_calendar_day.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_icon.png.flat",
-        "source": "com.biathlonapp-main-60:/drawable/icon.png"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_dialog_forgot_password.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\dialog_forgot_password.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-xxxhdpi/ic_launcher_foreground.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_onboarding_stats.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_onboarding_stats.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-hdpi_ic_launcher_foreground.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-hdpi/ic_launcher_foreground.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_circle_cyan.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\circle_cyan.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_onboarding.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_onboarding.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_fragment_team_categories.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\fragment_team_categories.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_fragment_calendar.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/fragment_calendar.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_fragment_news.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\fragment_news.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_biathlon_logo.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_biathlon_logo.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-mdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_item_favorite_athlete.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/item_favorite_athlete.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_launcher_background.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_circle_cyan.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/circle_cyan.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_circle_blue.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\circle_blue.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_google_calendar.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_google_calendar.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xhdpi_ic_launcher_foreground.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xhdpi\\ic_launcher_foreground.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_sbr_logo.jpg.flat",
-        "source": "com.biathlonapp-main-60:/drawable/sbr_logo.jpg"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_register.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_register.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_fragment_team_list.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/fragment_team_list.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_fragment_athletes.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\fragment_athletes.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_arrow_left.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_arrow_left.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\xml\\data_extraction_rules.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_dialog_auth_choice.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/dialog_auth_choice.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_favorite_athlete.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_favorite_athlete.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_search.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_search.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_star_border.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_star_border.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/menu_bottom_navigation_menu.xml.flat",
-        "source": "com.biathlonapp-main-60:/menu/bottom_navigation_menu.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_settings.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_settings.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-mdpi_ic_launcher_foreground.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-mdpi/ic_launcher_foreground.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-mdpi_ic_launcher_foreground.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-mdpi\\ic_launcher_foreground.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_dialog_forgot_password.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/dialog_forgot_password.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xxhdpi\\ic_launcher_foreground.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_athlete_stats.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_athlete_stats.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-hdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_onboarding_stats.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_onboarding_stats.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_arrow_back.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_arrow_back.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_circle_red.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/circle_red.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_main.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_onboarding_item.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/onboarding_item.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_settings.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_settings.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_item_team_athlete.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/item_team_athlete.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_onboarding.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_onboarding.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_onboarding_search.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_onboarding_search.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_biathlon_logo.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_biathlon_logo.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_dot_inactive.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/dot_inactive.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_item_team_athlete.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\item_team_athlete.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-xxhdpi_ic_launcher_foreground.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-xxhdpi/ic_launcher_foreground.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_dialog_background.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\dialog_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_news_detail.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_news_detail.xml"
+    },
+    {
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_race_protocol.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_race_protocol.xml"
     },
     {
         "merged": "com.biathlonapp-debug-58:/layout_item_relay_team.xml.flat",
         "source": "com.biathlonapp-main-60:/layout/item_relay_team.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_male.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_male.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_dot_inactive.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\dot_inactive.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_fragment_team_categories.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/fragment_team_categories.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-hdpi_ic_launcher_foreground.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-hdpi\\ic_launcher_foreground.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/menu_menu_athlete_detail.xml.flat",
-        "source": "com.biathlonapp-main-60:/menu/menu_athlete_detail.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_fragment_search.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\fragment_search.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_notification.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_notification.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\raw_onboarding_welcome.gif.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\raw\\onboarding_welcome.gif"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_item_race_event.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/item_race_event.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_star_filled.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_star_filled.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_circle_blue.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/circle_blue.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_activity_athlete_stats.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\activity_athlete_stats.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_comment.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_comment.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_icon.png.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\icon.png"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_badge_background.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/badge_background.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_news.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_news.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_fragment_news.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/fragment_news.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_badge_background.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\badge_background.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\menu_toolbar_menu.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\menu\\toolbar_menu.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xxxhdpi_ic_launcher_foreground.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xxxhdpi\\ic_launcher_foreground.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_athlete_detail.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_athlete_detail.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_news.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_news.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_fragment_favorites.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\fragment_favorites.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/xml_network_security_config.xml.flat",
-        "source": "com.biathlonapp-main-60:/xml/network_security_config.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\xml_network_security_config.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\xml\\network_security_config.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_item_news.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/item_news.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "com.biathlonapp-main-60:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\layout_fragment_calendar.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\layout\\fragment_calendar.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_dialog_background.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/dialog_background.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_arrow_forward.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_arrow_forward.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_news_detail.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_news_detail.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-mdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_athletes.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_athletes.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_activity_reset_password.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/activity_reset_password.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\mipmap-xxxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/drawable_ic_star_border.xml.flat",
-        "source": "com.biathlonapp-main-60:/drawable/ic_star_border.xml"
+        "merged": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-debug-58:\\drawable_ic_athletes.xml.flat",
+        "source": "C:\\Users\\abzal\\.gradle\\daemon\\8.11.1\\com.biathlonapp-main-60:\\drawable\\ic_athletes.xml"
     }
 ]

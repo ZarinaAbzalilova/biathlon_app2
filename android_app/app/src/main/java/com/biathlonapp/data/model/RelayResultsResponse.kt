@@ -25,10 +25,12 @@ data class RelayTeam(
 )
 
 data class RelayTeamMember(
+    val leg_number: Int,
+    val athlete_id: Long,  // ← ИЗМЕНИТЕ С Int НА Long
     val full_name: String,
     val miss_count: Int,
-    val leg_number: Int,
-    val athlete_id: Int
+    val start_number: Int,
+    val gender: String
 )
 
 data class PdfUrl(

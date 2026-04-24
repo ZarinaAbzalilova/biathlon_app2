@@ -582,16 +582,21 @@ def get_race_info(race_id):
         return jsonify({"error": str(e)}), 500
 
 
+
 @app.route('/api/race/<path:race_id>/relay-results', methods=['GET'])
 def get_relay_results(race_id):
     """Получить результаты эстафеты с группировкой по командам"""
     try:
-        # Очищаем race_id от суффикса пола
+        # Извлекаем пол из race_id (если есть)
         clean_race_id = race_id
-        for suffix in ['_М', '_Ж', '_Смешанная']:
-            if race_id.endswith(suffix):
-                clean_race_id = race_id[:-len(suffix)]
-                break
+        gender = None
+        
+        if race_id.endswith('_М'):
+            clean_race_id = race_id[:-2]
+            gender = 'М'
+        elif race_id.endswith('_Ж'):
+            clean_race_id = race_id[:-2]
+            gender = 'Ж'
         
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -619,18 +624,10 @@ def get_relay_results(race_id):
         # Определяем тип эстафеты и максимальный этаж
         discipline = race_info['discipline']
         is_single_mixed = 'SingleMixedRelay' in discipline
-        is_mixed = 'MixedRelay' in discipline
-        is_relay = 'Relay' in discipline
-        
-        if not is_relay:
-            # Если не эстафета, возвращаем обычные результаты
-            return get_race_results(race_id)
-        
-        # Определяем максимальный номер этапа для определения финишного времени и места
         max_leg = 2 if is_single_mixed else 4
         
-        # Группируем результаты по командам
-        cursor.execute("""
+        # Базовый запрос
+        query = """
             SELECT 
                 r.team_name,
                 MAX(CASE WHEN r.team_leg = %s THEN r.finish_place END) as finish_place,
@@ -651,9 +648,19 @@ def get_relay_results(race_id):
             FROM results r
             JOIN athlete a ON r.athlete_id = a.athlete_id
             WHERE r.race_id = %s AND r.team_name IS NOT NULL AND r.team_name != ''
-            GROUP BY r.team_name
-            ORDER BY MAX(CASE WHEN r.team_leg = %s THEN r.finish_place END) ASC
-        """, (max_leg, max_leg, clean_race_id, max_leg))
+        """
+        
+        params = [max_leg, max_leg, clean_race_id]
+        
+        # Если указан пол, фильтруем команды по полу участников
+        if gender:
+            query += " AND a.gender = %s"
+            params.append(gender)
+        
+        query += " GROUP BY r.team_name ORDER BY MAX(CASE WHEN r.team_leg = %s THEN r.finish_place END) ASC"
+        params.append(max_leg)
+        
+        cursor.execute(query, params)
         
         teams = cursor.fetchall()
         
@@ -710,7 +717,6 @@ def get_relay_results(race_id):
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": str(e)}), 500
-
 
 
 @app.route('/api/auth/update-fcm-token', methods=['POST'])

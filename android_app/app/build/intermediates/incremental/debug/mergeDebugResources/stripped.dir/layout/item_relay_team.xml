@@ -16,6 +16,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Верхняя строка: место, команда, стрелочка -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:text="1"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/primary" />
 
@@ -41,8 +42,16 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/imageExpand"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_down"
+                android:contentDescription="Развернуть" />
+
         </LinearLayout>
 
+        <!-- Статистика команды -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,6 +79,7 @@
 
         </LinearLayout>
 
+        <!-- Сокращенный состав -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,25 +87,16 @@
             android:layout_marginTop="8dp"
             android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/textMembers"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Состав: "
-                android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary" />
-
-            <TextView
-                android:id="@+id/textMembersCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+2"
-                android:textSize="12sp"
-                android:textColor="@color/primary"
-                android:layout_marginStart="4dp" />
-
         </LinearLayout>
+
+        <!-- Раскрывающийся список участников -->
+        <LinearLayout
+            android:id="@+id/expandedMembersContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 

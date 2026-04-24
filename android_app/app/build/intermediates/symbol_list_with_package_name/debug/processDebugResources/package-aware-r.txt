@@ -3085,6 +3085,7 @@ drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
 drawable ic_arrow_back
 drawable ic_arrow_back_black_24
+drawable ic_arrow_down
 drawable ic_arrow_forward
 drawable ic_arrow_left
 drawable ic_arrow_right
@@ -3431,6 +3432,7 @@ id enterAlwaysCollapsed
 id escape
 id exitUntilCollapsed
 id expand_activities_button
+id expandedMembersContainer
 id expanded_menu
 id fade
 id fill
@@ -3475,6 +3477,7 @@ id ifRoom
 id ignore
 id ignoreRequest
 id image
+id imageExpand
 id imageIcon
 id imageNews
 id immediateStop
@@ -3754,8 +3757,6 @@ id textHeader
 id textLikes
 id textLocation
 id textLogin
-id textMembers
-id textMembersCount
 id textMissCount
 id textMon
 id textMonthYear

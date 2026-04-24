@@ -1,16 +1,21 @@
 package com.biathlonapp.ui.raceprotocol
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.biathlonapp.data.model.RelayTeam
+import com.biathlonapp.data.model.RelayTeamMember
 import com.biathlonapp.databinding.ItemRelayTeamBinding
 
 class RelayProtocolAdapter(
-    private val onTeamClick: (String) -> Unit
+    private val onTeamClick: (String, List<RelayTeamMember>) -> Unit
 ) : RecyclerView.Adapter<RelayProtocolAdapter.ViewHolder>() {
 
     private var teams: List<RelayTeam> = emptyList()
+    private var expandedPositions = mutableSetOf<Int>()
 
     fun submitList(newTeams: List<RelayTeam>) {
         teams = newTeams
@@ -23,40 +28,71 @@ class RelayProtocolAdapter(
             parent,
             false
         )
-        return ViewHolder(binding, onTeamClick)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(teams[position])
+        holder.bind(teams[position], position, expandedPositions.contains(position))
     }
 
     override fun getItemCount() = teams.size
 
-    class ViewHolder(
-        private val binding: ItemRelayTeamBinding,
-        private val onTeamClick: (String) -> Unit
+    inner class ViewHolder(
+        private val binding: ItemRelayTeamBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(team: RelayTeam) {
+        fun bind(team: RelayTeam, position: Int, isExpanded: Boolean) {
             binding.textPlace.text = team.finish_place?.toString() ?: "-"
             binding.textTeamName.text = team.team_name
-            binding.textMissCount.text = team.total_miss_count?.toString() ?: "-"
+            binding.textMissCount.text = "Промахи: ${team.total_miss_count ?: "-"}"
             binding.textFinishTime.text = team.finish_time ?: "-"
 
-            // Показываем первых трех участников
-            val membersText = team.members.take(3).joinToString { it.full_name.split(" ")[0] }
-            binding.textMembers.text = membersText
-
-            if (team.members.size > 3) {
-                binding.textMembersCount.text = "+${team.members.size - 3}"
-                binding.textMembersCount.visibility = android.view.View.VISIBLE
+            // Раскрывающийся список участников
+            if (isExpanded) {
+                binding.expandedMembersContainer.removeAllViews()
+                team.members.forEach { member ->
+                    val memberView = createMemberView(member)
+                    binding.expandedMembersContainer.addView(memberView)
+                }
+                binding.expandedMembersContainer.visibility = View.VISIBLE
+                binding.imageExpand.setImageResource(android.R.drawable.arrow_up_float)
             } else {
-                binding.textMembersCount.visibility = android.view.View.GONE
+                binding.expandedMembersContainer.visibility = View.GONE
+                binding.imageExpand.setImageResource(android.R.drawable.arrow_down_float)
             }
 
             binding.root.setOnClickListener {
-                onTeamClick(team.team_name)
+                if (isExpanded) {
+                    expandedPositions.remove(position)
+                } else {
+                    expandedPositions.add(position)
+                }
+                notifyItemChanged(position)
             }
+        }
+
+        private fun createMemberView(member: RelayTeamMember): View {
+            val textView = TextView(binding.root.context).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    topMargin = 8
+                    leftMargin = 24
+                }
+                // Только этап, фамилия и имя
+                text = "${member.leg_number}. ${member.full_name}"
+                textSize = 14f
+                setTextColor(binding.root.context.getColor(android.R.color.darker_gray))
+
+                // При нажатии на участника открываем его детали
+                setOnClickListener {
+                    val intent = android.content.Intent(binding.root.context, com.biathlonapp.ui.athlete.AthleteDetailActivity::class.java)
+                    intent.putExtra(com.biathlonapp.ui.athlete.AthleteDetailActivity.EXTRA_ATHLETE_ID, member.athlete_id.toString())
+                    binding.root.context.startActivity(intent)
+                }
+            }
+            return textView
         }
     }
 }
