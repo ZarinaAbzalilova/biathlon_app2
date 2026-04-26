@@ -52,10 +52,6 @@
         "source": "com.biathlonapp-main-60:/layout/item_team_header.xml"
     },
     {
-        "merged": "com.biathlonapp-mergeDebugResources-57:/layout/fragment_search.xml",
-        "source": "com.biathlonapp-main-60:/layout/fragment_search.xml"
-    },
-    {
         "merged": "com.biathlonapp-mergeDebugResources-57:/layout/activity_news_detail.xml",
         "source": "com.biathlonapp-main-60:/layout/activity_news_detail.xml"
     },

@@ -4,7 +4,6 @@ package com.biathlonapp.ui.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.biathlonapp.ui.athletes.AthletesFragment
 import com.biathlonapp.ui.calendar.CalendarFragment
 import com.biathlonapp.ui.favorites.FavoritesFragment
 import com.biathlonapp.ui.news.NewsFragment

@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.biathlonapp.R
 import com.biathlonapp.data.api.ApiClient
 import com.biathlonapp.data.repository.CalendarRepository
 import com.biathlonapp.databinding.FragmentCalendarBinding
-import java.text.SimpleDateFormat
 import java.util.*
 
 class CalendarFragment : Fragment() {
@@ -22,7 +22,6 @@ class CalendarFragment : Fragment() {
     private lateinit var calendarAdapter: CalendarAdapter
     private lateinit var viewModel: CalendarViewModel
     private val calendar = Calendar.getInstance()
-    private val monthYearFormat = SimpleDateFormat("MMMM yyyy", Locale("ru"))
 
     private val googleCalendarUrl = "https://calendar.google.com/calendar/embed?src=4b3001e8fde006b0a3ae97e9af0fdeca615609b638ef58f5a0ba8760541c41ba%40group.calendar.google.com&ctz=Asia%2FYekaterinburg"
 
@@ -48,8 +47,7 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setupViewModel() {
-        // Используем существующий ApiClient
-        val apiService = ApiClient.apiService  // ← Вот так правильно!
+        val apiService = ApiClient.apiService
         val repository = CalendarRepository(apiService)
         viewModel = CalendarViewModel(repository)
     }
@@ -141,8 +139,12 @@ class CalendarFragment : Fragment() {
     }
 
     private fun updateCalendar() {
-        binding.textMonthYear.text = monthYearFormat.format(calendar.time)
-            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        // ← ИСПРАВЛЕНИЕ ЗДЕСЬ
+        val monthNames = resources.getStringArray(R.array.month_names)
+        val monthIndex = calendar.get(Calendar.MONTH)
+        val monthName = monthNames[monthIndex]
+        val year = calendar.get(Calendar.YEAR)
+        binding.textMonthYear.text = "$monthName $year"
 
         // Загружаем события для этого месяца
         viewModel.loadMonthEvents(calendar)
@@ -169,7 +171,7 @@ class CalendarFragment : Fragment() {
     }
 }
 
-// Фабрика для ViewModel
+// Фабрика для ViewModel (оставляем без изменений)
 class CalendarViewModelFactory(
     private val repository: CalendarRepository
 ) : ViewModelProvider.Factory {

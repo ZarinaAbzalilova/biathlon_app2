@@ -218,7 +218,6 @@ layout fragment_athletes
 layout fragment_calendar
 layout fragment_favorites
 layout fragment_news
-layout fragment_search
 layout fragment_team_categories
 layout fragment_team_list
 layout item_athlete

@@ -20,10 +20,6 @@
         "source": "com.biathlonapp-main-60:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "com.biathlonapp-debug-58:/layout_fragment_search.xml.flat",
-        "source": "com.biathlonapp-main-60:/layout/fragment_search.xml"
-    },
-    {
         "merged": "com.biathlonapp-debug-58:/drawable_ic_female.xml.flat",
         "source": "com.biathlonapp-main-60:/drawable/ic_female.xml"
     },
