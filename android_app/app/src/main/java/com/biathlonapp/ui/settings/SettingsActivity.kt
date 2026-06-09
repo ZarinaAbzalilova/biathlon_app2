@@ -88,9 +88,12 @@ class SettingsActivity : AppCompatActivity() {
             if (authRepository.isLoggedIn()) {
                 showLogoutDialog()
             } else {
-                // Переход на экран логина
+                // Устанавливаем флаг активности перед переходом на логин
+                val prefs = getSharedPreferences("onboarding_prefs", MODE_PRIVATE)
+                prefs.edit().putBoolean("app_is_active", true).apply()
+
                 startActivity(LoginActivity.newIntent(this))
-                finish()
+                // НЕ вызываем finish(), чтобы пользователь мог вернуться
             }
         }
     }
@@ -171,6 +174,12 @@ class SettingsActivity : AppCompatActivity() {
             try {
                 favoritesRepository.clearAllFavorites()
                 authRepository.clear()
+
+                // При выходе сбрасываем флаг активности
+                val prefs = getSharedPreferences("onboarding_prefs", MODE_PRIVATE)
+                prefs.edit()
+                    .putBoolean("app_is_active", false)
+                    .apply()
 
                 Toast.makeText(this@SettingsActivity, "Вы вышли из системы", Toast.LENGTH_SHORT).show()
 

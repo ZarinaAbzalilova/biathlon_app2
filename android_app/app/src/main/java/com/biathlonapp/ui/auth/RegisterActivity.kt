@@ -1,5 +1,6 @@
 package com.biathlonapp.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -87,7 +88,16 @@ class RegisterActivity : AppCompatActivity() {
 
                     Toast.makeText(this@RegisterActivity, "Регистрация успешна!", Toast.LENGTH_SHORT).show()
 
-                    val intent = MainActivity.newIntent(this@RegisterActivity)
+                    // Устанавливаем флаг активности перед переходом
+                    val prefs = getSharedPreferences("onboarding_prefs", MODE_PRIVATE)
+                    prefs.edit()
+                        .putBoolean("app_is_active", true)
+                        .putBoolean("onboarding_completed", true)
+                        .apply()
+
+                    val intent = MainActivity.newIntent(this@RegisterActivity).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
                     startActivity(intent)
                     finish()
                 } else {

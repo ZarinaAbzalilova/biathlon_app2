@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var apiService: BiathlonApiService
 
     companion object {
+        private const val PREFS_NAME = "onboarding_prefs"
+
         fun newIntent(context: Context): Intent {
             return Intent(context, MainActivity::class.java)
         }
@@ -38,15 +40,57 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Проверяем, нужно ли показать онбординг
-        val prefs = getSharedPreferences("onboarding_prefs", Context.MODE_PRIVATE)
-        val onboardingCompleted = prefs.getBoolean("onboarding_completed", false)
+        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val justCompletedOnboarding = prefs.getBoolean("just_completed_onboarding", false)
+        val appIsActive = prefs.getBoolean("app_is_active", false)
 
-        if (!onboardingCompleted) {
-            startActivity(OnboardingActivity.newIntent(this))
-            finish()
+        Log.d("MAIN_ACTIVITY", "onCreate, justCompletedOnboarding: $justCompletedOnboarding, appIsActive: $appIsActive")
+
+        // Если приложение уже активно или только что завершен онбординг - инициализируем
+        if (justCompletedOnboarding || appIsActive) {
+            // Сбрасываем временный флаг онбординга
+            prefs.edit()
+                .putBoolean("just_completed_onboarding", false)
+                .apply()
+
+            // Инициализируем приложение
+            initializeApp()
             return
         }
+
+        // Если приложение не активно - показываем онбординг
+        Log.d("MAIN_ACTIVITY", "Opening OnboardingActivity")
+        startActivity(OnboardingActivity.newIntent(this))
+        finish()
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+
+        Log.d("NOTIFICATION", "onNewIntent вызван")
+
+        // Если приложение уже инициализировано
+        if (::binding.isInitialized) {
+            handleNotificationIntent(intent)
+            handleDeepLink(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // Сбрасываем флаг активности при возврате в приложение
+        // Это гарантирует, что при следующем холодном старте будет показан онбординг
+        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        if (prefs.getBoolean("app_is_active", false)) {
+            Log.d("MAIN_ACTIVITY", "App is active, resetting flag for next cold start")
+            prefs.edit().putBoolean("app_is_active", false).apply()
+        }
+    }
+
+    private fun initializeApp() {
+        Log.d("MAIN_ACTIVITY", "Initializing app...")
 
         // Запрос разрешения на уведомления для Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -75,14 +119,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Обработка Deep Link (сброс пароля)
-        handleDeepLink(intent)
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        Log.d("NOTIFICATION", "onNewIntent вызван")
-        handleNotificationIntent(intent)
         handleDeepLink(intent)
     }
 
@@ -168,7 +204,7 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.apply {
             adapter = viewPagerAdapter
             isUserInputEnabled = false
-            offscreenPageLimit = 4  // ← Загружаем все страницы
+            offscreenPageLimit = 4
         }
     }
 
@@ -183,7 +219,6 @@ class MainActivity : AppCompatActivity() {
                 else -> return@setOnItemSelectedListener false
             }
 
-            // Мгновенное переключение без анимации
             binding.viewPager.setCurrentItem(targetPosition, false)
             true
         }

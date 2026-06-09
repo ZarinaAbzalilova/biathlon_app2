@@ -1,0 +1,432 @@
+package com.biathlonapp.data.api;
+
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u00a4\u0001\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010$\n\u0002\u0010\t\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010 \n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0010\u000b\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0006\bf\u0018\u0000 C2\u00020\u0001:\u0005CDEFGJ4\u0010\u0002\u001a\b\u0012\u0004\u0012\u00020\u00040\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u00062\u0014\b\u0001\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\t0\bH\u00a7@\u00a2\u0006\u0002\u0010\nJ\u001e\u0010\u000b\u001a\b\u0012\u0004\u0012\u00020\f0\u00032\b\b\u0001\u0010\r\u001a\u00020\tH\u00a7@\u00a2\u0006\u0002\u0010\u000eJ(\u0010\u000b\u001a\b\u0012\u0004\u0012\u00020\f0\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u00062\b\b\u0001\u0010\r\u001a\u00020\tH\u00a7@\u00a2\u0006\u0002\u0010\u000fJ*\u0010\u0010\u001a\b\u0012\u0004\u0012\u00020\u00110\u00032\u0014\b\u0001\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\u00060\bH\u00a7@\u00a2\u0006\u0002\u0010\u0012J\u001e\u0010\u0013\u001a\b\u0012\u0004\u0012\u00020\u00140\u00032\b\b\u0001\u0010\r\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0015J\u001a\u0010\u0016\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00180\u00170\u0003H\u00a7@\u00a2\u0006\u0002\u0010\u0019J$\u0010\u001a\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00180\u00170\u00032\b\b\u0001\u0010\u001b\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0015J.\u0010\u001c\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00180\u001d0\u00032\b\b\u0003\u0010\u001e\u001a\u00020\u001f2\b\b\u0003\u0010 \u001a\u00020\u001fH\u00a7@\u00a2\u0006\u0002\u0010!J.\u0010\"\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020#0\u00170\u00032\b\b\u0001\u0010$\u001a\u00020\u001f2\b\b\u0001\u0010%\u001a\u00020\u001fH\u00a7@\u00a2\u0006\u0002\u0010!J\u001e\u0010&\u001a\b\u0012\u0004\u0012\u00020\'0\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0015J$\u0010(\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00180\u00170\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0015J(\u0010)\u001a\b\u0012\u0004\u0012\u00020*0\u00032\b\b\u0001\u0010+\u001a\u00020\u00062\b\b\u0001\u0010\r\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010,J*\u0010-\u001a\b\u0012\u0004\u0012\u00020.0\u00032\b\b\u0001\u0010+\u001a\u00020\u00062\n\b\u0003\u0010/\u001a\u0004\u0018\u00010\u0006H\u00a7@\u00a2\u0006\u0002\u0010,J(\u00100\u001a\b\u0012\u0004\u0012\u00020.0\u00032\b\b\u0001\u0010+\u001a\u00020\u00062\b\b\u0001\u0010/\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010,J$\u00101\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u0002020\u00170\u00032\b\b\u0001\u00103\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0015J\u001e\u00104\u001a\b\u0012\u0004\u0012\u0002050\u00032\b\b\u0001\u0010+\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0015J*\u00106\u001a\b\u0012\u0004\u0012\u0002070\u00032\u0014\b\u0001\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\u00060\bH\u00a7@\u00a2\u0006\u0002\u0010\u0012J*\u00108\u001a\b\u0012\u0004\u0012\u0002070\u00032\u0014\b\u0001\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\u00060\bH\u00a7@\u00a2\u0006\u0002\u0010\u0012J(\u00109\u001a\b\u0012\u0004\u0012\u00020\u00040\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u00062\b\b\u0001\u0010\r\u001a\u00020\tH\u00a7@\u00a2\u0006\u0002\u0010\u000fJ*\u0010:\u001a\b\u0012\u0004\u0012\u00020;0\u00032\u0014\b\u0001\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\u00060\bH\u00a7@\u00a2\u0006\u0002\u0010\u0012J$\u0010<\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00180\u00170\u00032\b\b\u0001\u0010=\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0015J4\u0010>\u001a\b\u0012\u0004\u0012\u00020\u00040\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u00062\u0014\b\u0001\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\u00060\bH\u00a7@\u00a2\u0006\u0002\u0010\nJ4\u0010?\u001a\b\u0012\u0004\u0012\u00020\u00040\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u00062\u0014\b\u0001\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020@0\bH\u00a7@\u00a2\u0006\u0002\u0010\nJ\u001e\u0010A\u001a\b\u0012\u0004\u0012\u00020B0\u00032\b\b\u0001\u0010\u0005\u001a\u00020\u0006H\u00a7@\u00a2\u0006\u0002\u0010\u0015\u00a8\u0006H"}, d2 = {"Lcom/biathlonapp/data/api/BiathlonApiService;", "", "addFavorite", "Lretrofit2/Response;", "", "token", "", "body", "", "", "(Ljava/lang/String;Ljava/util/Map;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "checkFavorite", "Lcom/biathlonapp/data/api/FavoriteCheckResponse;", "athleteId", "(JLkotlin/coroutines/Continuation;)Ljava/lang/Object;", "(Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;", "forgotPassword", "Lcom/biathlonapp/data/api/BiathlonApiService$ForgotPasswordResponse;", "(Ljava/util/Map;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getAthleteResults", "Lcom/biathlonapp/data/model/AthleteResultsResponse;", "(Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getAthletes", "", "Lcom/biathlonapp/data/model/Athlete;", "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getAthletesByTeam", "team", "getAthletesPaginated", "Lcom/biathlonapp/data/api/BiathlonApiService$PaginatedResponse;", "page", "", "perPage", "(IILkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getCalendarRaces", "Lcom/biathlonapp/data/api/DayEventsResponse;", "year", "month", "getCurrentUser", "Lcom/biathlonapp/data/model/User;", "getFavorites", "getRacePdfUrl", "Lcom/biathlonapp/data/model/PdfUrlResponse;", "raceId", "(Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "getRaceResults", "Lcom/biathlonapp/data/model/RaceResultsResponse;", "gender", "getRaceResultsByGender", "getRacesByDate", "Lcom/biathlonapp/data/api/CalendarRaceResponse;", "date", "getRelayResults", "Lcom/biathlonapp/data/model/RelayResultsResponse;", "login", "Lcom/biathlonapp/data/model/AuthResponse;", "register", "removeFavorite", "resetPassword", "Lcom/biathlonapp/data/api/BiathlonApiService$ResetPasswordResponse;", "searchAthletes", "query", "updateFcmToken", "updateNotificationSettings", "", "verifyResetToken", "Lcom/biathlonapp/data/api/BiathlonApiService$VerifyTokenResponse;", "Companion", "ForgotPasswordResponse", "PaginatedResponse", "ResetPasswordResponse", "VerifyTokenResponse", "app_release"})
+public abstract interface BiathlonApiService {
+    @org.jetbrains.annotations.NotNull()
+    public static final java.lang.String BASE_URL = "https://biathlon-app2.onrender.com";
+    @org.jetbrains.annotations.NotNull()
+    public static final com.biathlonapp.data.api.BiathlonApiService.Companion Companion = null;
+    
+    @retrofit2.http.GET(value = "api/athletes/by-team")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getAthletesByTeam(@retrofit2.http.Query(value = "team")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String team, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<java.util.List<com.biathlonapp.data.model.Athlete>>> $completion);
+    
+    @retrofit2.http.GET(value = "api/athletes")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getAthletes(@org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<java.util.List<com.biathlonapp.data.model.Athlete>>> $completion);
+    
+    @retrofit2.http.GET(value = "api/athletes/search")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object searchAthletes(@retrofit2.http.Query(value = "q")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String query, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<java.util.List<com.biathlonapp.data.model.Athlete>>> $completion);
+    
+    @retrofit2.http.GET(value = "api/athletes/{athleteId}/results")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getAthleteResults(@retrofit2.http.Path(value = "athleteId")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String athleteId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.AthleteResultsResponse>> $completion);
+    
+    @retrofit2.http.GET(value = "api/athletes/paginated")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getAthletesPaginated(@retrofit2.http.Query(value = "page")
+    int page, @retrofit2.http.Query(value = "per_page")
+    int perPage, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.api.BiathlonApiService.PaginatedResponse<com.biathlonapp.data.model.Athlete>>> $completion);
+    
+    @retrofit2.http.GET(value = "api/race/{raceId}/relay-results")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getRelayResults(@retrofit2.http.Path(value = "raceId")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String raceId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.RelayResultsResponse>> $completion);
+    
+    @retrofit2.http.GET(value = "races/{raceId}/pdf-url")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getRacePdfUrl(@retrofit2.http.Path(value = "raceId")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String raceId, @retrofit2.http.Query(value = "athlete_id")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String athleteId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.PdfUrlResponse>> $completion);
+    
+    @retrofit2.http.GET(value = "api/calendar/races")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getCalendarRaces(@retrofit2.http.Query(value = "year")
+    int year, @retrofit2.http.Query(value = "month")
+    int month, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<java.util.List<com.biathlonapp.data.api.DayEventsResponse>>> $completion);
+    
+    @retrofit2.http.GET(value = "api/calendar/races/by-date")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getRacesByDate(@retrofit2.http.Query(value = "date")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String date, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<java.util.List<com.biathlonapp.data.api.CalendarRaceResponse>>> $completion);
+    
+    @retrofit2.http.GET(value = "api/race/{raceId}/results")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getRaceResults(@retrofit2.http.Path(value = "raceId")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String raceId, @retrofit2.http.Query(value = "gender")
+    @org.jetbrains.annotations.Nullable()
+    java.lang.String gender, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.RaceResultsResponse>> $completion);
+    
+    @retrofit2.http.GET(value = "api/race/{raceId}/{gender}")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getRaceResultsByGender(@retrofit2.http.Path(value = "raceId")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String raceId, @retrofit2.http.Path(value = "gender")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String gender, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.RaceResultsResponse>> $completion);
+    
+    @retrofit2.http.POST(value = "api/auth/register")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object register(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    java.util.Map<java.lang.String, java.lang.String> body, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.AuthResponse>> $completion);
+    
+    @retrofit2.http.POST(value = "api/auth/login")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object login(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    java.util.Map<java.lang.String, java.lang.String> body, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.AuthResponse>> $completion);
+    
+    @retrofit2.http.GET(value = "api/auth/me")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getCurrentUser(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.model.User>> $completion);
+    
+    @retrofit2.http.GET(value = "api/favorites")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object getFavorites(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<java.util.List<com.biathlonapp.data.model.Athlete>>> $completion);
+    
+    @retrofit2.http.POST(value = "api/favorites")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object addFavorite(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    java.util.Map<java.lang.String, java.lang.Long> body, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<kotlin.Unit>> $completion);
+    
+    @retrofit2.http.DELETE(value = "api/favorites/{athleteId}")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object removeFavorite(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @retrofit2.http.Path(value = "athleteId")
+    long athleteId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<kotlin.Unit>> $completion);
+    
+    @retrofit2.http.GET(value = "api/favorites/check/{athleteId}")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object checkFavorite(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @retrofit2.http.Path(value = "athleteId")
+    long athleteId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.api.FavoriteCheckResponse>> $completion);
+    
+    @retrofit2.http.GET(value = "api/favorites/check/{athleteId}")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object checkFavorite(@retrofit2.http.Path(value = "athleteId")
+    long athleteId, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.api.FavoriteCheckResponse>> $completion);
+    
+    @retrofit2.http.POST(value = "api/auth/update-fcm-token")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object updateFcmToken(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    java.util.Map<java.lang.String, java.lang.String> body, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<kotlin.Unit>> $completion);
+    
+    @retrofit2.http.POST(value = "api/auth/forgot-password")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object forgotPassword(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    java.util.Map<java.lang.String, java.lang.String> body, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.api.BiathlonApiService.ForgotPasswordResponse>> $completion);
+    
+    @retrofit2.http.POST(value = "api/auth/reset-password")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object resetPassword(@retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    java.util.Map<java.lang.String, java.lang.String> body, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.api.BiathlonApiService.ResetPasswordResponse>> $completion);
+    
+    @retrofit2.http.GET(value = "api/auth/verify-reset-token")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object verifyResetToken(@retrofit2.http.Query(value = "token")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<com.biathlonapp.data.api.BiathlonApiService.VerifyTokenResponse>> $completion);
+    
+    @retrofit2.http.POST(value = "api/notifications/settings")
+    @org.jetbrains.annotations.Nullable()
+    public abstract java.lang.Object updateNotificationSettings(@retrofit2.http.Header(value = "Authorization")
+    @org.jetbrains.annotations.NotNull()
+    java.lang.String token, @retrofit2.http.Body()
+    @org.jetbrains.annotations.NotNull()
+    java.util.Map<java.lang.String, java.lang.Boolean> body, @org.jetbrains.annotations.NotNull()
+    kotlin.coroutines.Continuation<? super retrofit2.Response<kotlin.Unit>> $completion);
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0000\n\u0002\u0018\u0002\n\u0000\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002J\u0006\u0010\u0005\u001a\u00020\u0006R\u000e\u0010\u0003\u001a\u00020\u0004X\u0086T\u00a2\u0006\u0002\n\u0000\u00a8\u0006\u0007"}, d2 = {"Lcom/biathlonapp/data/api/BiathlonApiService$Companion;", "", "()V", "BASE_URL", "", "create", "Lcom/biathlonapp/data/api/BiathlonApiService;", "app_release"})
+    public static final class Companion {
+        @org.jetbrains.annotations.NotNull()
+        public static final java.lang.String BASE_URL = "https://biathlon-app2.onrender.com";
+        
+        private Companion() {
+            super();
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final com.biathlonapp.data.api.BiathlonApiService create() {
+            return null;
+        }
+    }
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 3, xi = 48)
+    public static final class DefaultImpls {
+    }
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u000b\n\u0002\u0010\b\n\u0002\b\u0002\b\u0086\b\u0018\u00002\u00020\u0001B\u0015\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0005\u00a2\u0006\u0002\u0010\u0006J\t\u0010\u000b\u001a\u00020\u0003H\u00c6\u0003J\t\u0010\f\u001a\u00020\u0005H\u00c6\u0003J\u001d\u0010\r\u001a\u00020\u00002\b\b\u0002\u0010\u0002\u001a\u00020\u00032\b\b\u0002\u0010\u0004\u001a\u00020\u0005H\u00c6\u0001J\u0013\u0010\u000e\u001a\u00020\u00032\b\u0010\u000f\u001a\u0004\u0018\u00010\u0001H\u00d6\u0003J\t\u0010\u0010\u001a\u00020\u0011H\u00d6\u0001J\t\u0010\u0012\u001a\u00020\u0005H\u00d6\u0001R\u0011\u0010\u0004\u001a\u00020\u0005\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0007\u0010\bR\u0011\u0010\u0002\u001a\u00020\u0003\u00a2\u0006\b\n\u0000\u001a\u0004\b\t\u0010\n\u00a8\u0006\u0013"}, d2 = {"Lcom/biathlonapp/data/api/BiathlonApiService$ForgotPasswordResponse;", "", "success", "", "message", "", "(ZLjava/lang/String;)V", "getMessage", "()Ljava/lang/String;", "getSuccess", "()Z", "component1", "component2", "copy", "equals", "other", "hashCode", "", "toString", "app_release"})
+    public static final class ForgotPasswordResponse {
+        private final boolean success = false;
+        @org.jetbrains.annotations.NotNull()
+        private final java.lang.String message = null;
+        
+        public ForgotPasswordResponse(boolean success, @org.jetbrains.annotations.NotNull()
+        java.lang.String message) {
+            super();
+        }
+        
+        public final boolean getSuccess() {
+            return false;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final java.lang.String getMessage() {
+            return null;
+        }
+        
+        public final boolean component1() {
+            return false;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final java.lang.String component2() {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final com.biathlonapp.data.api.BiathlonApiService.ForgotPasswordResponse copy(boolean success, @org.jetbrains.annotations.NotNull()
+        java.lang.String message) {
+            return null;
+        }
+        
+        @java.lang.Override()
+        public boolean equals(@org.jetbrains.annotations.Nullable()
+        java.lang.Object other) {
+            return false;
+        }
+        
+        @java.lang.Override()
+        public int hashCode() {
+            return 0;
+        }
+        
+        @java.lang.Override()
+        @org.jetbrains.annotations.NotNull()
+        public java.lang.String toString() {
+            return null;
+        }
+    }
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000*\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\b\n\u0002\b\u0004\n\u0002\u0010 \n\u0002\b\u000f\n\u0002\u0010\u000b\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0000\b\u0086\b\u0018\u0000*\u0004\b\u0000\u0010\u00012\u00020\u0002B3\u0012\u0006\u0010\u0003\u001a\u00020\u0004\u0012\u0006\u0010\u0005\u001a\u00020\u0004\u0012\u0006\u0010\u0006\u001a\u00020\u0004\u0012\u0006\u0010\u0007\u001a\u00020\u0004\u0012\f\u0010\b\u001a\b\u0012\u0004\u0012\u00028\u00000\t\u00a2\u0006\u0002\u0010\nJ\t\u0010\u0012\u001a\u00020\u0004H\u00c6\u0003J\t\u0010\u0013\u001a\u00020\u0004H\u00c6\u0003J\t\u0010\u0014\u001a\u00020\u0004H\u00c6\u0003J\t\u0010\u0015\u001a\u00020\u0004H\u00c6\u0003J\u000f\u0010\u0016\u001a\b\u0012\u0004\u0012\u00028\u00000\tH\u00c6\u0003JG\u0010\u0017\u001a\b\u0012\u0004\u0012\u00028\u00000\u00002\b\b\u0002\u0010\u0003\u001a\u00020\u00042\b\b\u0002\u0010\u0005\u001a\u00020\u00042\b\b\u0002\u0010\u0006\u001a\u00020\u00042\b\b\u0002\u0010\u0007\u001a\u00020\u00042\u000e\b\u0002\u0010\b\u001a\b\u0012\u0004\u0012\u00028\u00000\tH\u00c6\u0001J\u0013\u0010\u0018\u001a\u00020\u00192\b\u0010\u001a\u001a\u0004\u0018\u00010\u0002H\u00d6\u0003J\t\u0010\u001b\u001a\u00020\u0004H\u00d6\u0001J\t\u0010\u001c\u001a\u00020\u001dH\u00d6\u0001R\u0017\u0010\b\u001a\b\u0012\u0004\u0012\u00028\u00000\t\u00a2\u0006\b\n\u0000\u001a\u0004\b\u000b\u0010\fR\u0011\u0010\u0003\u001a\u00020\u0004\u00a2\u0006\b\n\u0000\u001a\u0004\b\r\u0010\u000eR\u0011\u0010\u0005\u001a\u00020\u0004\u00a2\u0006\b\n\u0000\u001a\u0004\b\u000f\u0010\u000eR\u0011\u0010\u0006\u001a\u00020\u0004\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0010\u0010\u000eR\u0011\u0010\u0007\u001a\u00020\u0004\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0011\u0010\u000e\u00a8\u0006\u001e"}, d2 = {"Lcom/biathlonapp/data/api/BiathlonApiService$PaginatedResponse;", "T", "", "page", "", "per_page", "total", "total_pages", "data", "", "(IIIILjava/util/List;)V", "getData", "()Ljava/util/List;", "getPage", "()I", "getPer_page", "getTotal", "getTotal_pages", "component1", "component2", "component3", "component4", "component5", "copy", "equals", "", "other", "hashCode", "toString", "", "app_release"})
+    public static final class PaginatedResponse<T extends java.lang.Object> {
+        private final int page = 0;
+        private final int per_page = 0;
+        private final int total = 0;
+        private final int total_pages = 0;
+        @org.jetbrains.annotations.NotNull()
+        private final java.util.List<T> data = null;
+        
+        public PaginatedResponse(int page, int per_page, int total, int total_pages, @org.jetbrains.annotations.NotNull()
+        java.util.List<? extends T> data) {
+            super();
+        }
+        
+        public final int getPage() {
+            return 0;
+        }
+        
+        public final int getPer_page() {
+            return 0;
+        }
+        
+        public final int getTotal() {
+            return 0;
+        }
+        
+        public final int getTotal_pages() {
+            return 0;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final java.util.List<T> getData() {
+            return null;
+        }
+        
+        public final int component1() {
+            return 0;
+        }
+        
+        public final int component2() {
+            return 0;
+        }
+        
+        public final int component3() {
+            return 0;
+        }
+        
+        public final int component4() {
+            return 0;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final java.util.List<T> component5() {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final com.biathlonapp.data.api.BiathlonApiService.PaginatedResponse<T> copy(int page, int per_page, int total, int total_pages, @org.jetbrains.annotations.NotNull()
+        java.util.List<? extends T> data) {
+            return null;
+        }
+        
+        @java.lang.Override()
+        public boolean equals(@org.jetbrains.annotations.Nullable()
+        java.lang.Object other) {
+            return false;
+        }
+        
+        @java.lang.Override()
+        public int hashCode() {
+            return 0;
+        }
+        
+        @java.lang.Override()
+        @org.jetbrains.annotations.NotNull()
+        public java.lang.String toString() {
+            return null;
+        }
+    }
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u000b\n\u0002\u0010\b\n\u0002\b\u0002\b\u0086\b\u0018\u00002\u00020\u0001B\u0015\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0005\u00a2\u0006\u0002\u0010\u0006J\t\u0010\u000b\u001a\u00020\u0003H\u00c6\u0003J\t\u0010\f\u001a\u00020\u0005H\u00c6\u0003J\u001d\u0010\r\u001a\u00020\u00002\b\b\u0002\u0010\u0002\u001a\u00020\u00032\b\b\u0002\u0010\u0004\u001a\u00020\u0005H\u00c6\u0001J\u0013\u0010\u000e\u001a\u00020\u00032\b\u0010\u000f\u001a\u0004\u0018\u00010\u0001H\u00d6\u0003J\t\u0010\u0010\u001a\u00020\u0011H\u00d6\u0001J\t\u0010\u0012\u001a\u00020\u0005H\u00d6\u0001R\u0011\u0010\u0004\u001a\u00020\u0005\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0007\u0010\bR\u0011\u0010\u0002\u001a\u00020\u0003\u00a2\u0006\b\n\u0000\u001a\u0004\b\t\u0010\n\u00a8\u0006\u0013"}, d2 = {"Lcom/biathlonapp/data/api/BiathlonApiService$ResetPasswordResponse;", "", "success", "", "message", "", "(ZLjava/lang/String;)V", "getMessage", "()Ljava/lang/String;", "getSuccess", "()Z", "component1", "component2", "copy", "equals", "other", "hashCode", "", "toString", "app_release"})
+    public static final class ResetPasswordResponse {
+        private final boolean success = false;
+        @org.jetbrains.annotations.NotNull()
+        private final java.lang.String message = null;
+        
+        public ResetPasswordResponse(boolean success, @org.jetbrains.annotations.NotNull()
+        java.lang.String message) {
+            super();
+        }
+        
+        public final boolean getSuccess() {
+            return false;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final java.lang.String getMessage() {
+            return null;
+        }
+        
+        public final boolean component1() {
+            return false;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final java.lang.String component2() {
+            return null;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final com.biathlonapp.data.api.BiathlonApiService.ResetPasswordResponse copy(boolean success, @org.jetbrains.annotations.NotNull()
+        java.lang.String message) {
+            return null;
+        }
+        
+        @java.lang.Override()
+        public boolean equals(@org.jetbrains.annotations.Nullable()
+        java.lang.Object other) {
+            return false;
+        }
+        
+        @java.lang.Override()
+        public int hashCode() {
+            return 0;
+        }
+        
+        @java.lang.Override()
+        @org.jetbrains.annotations.NotNull()
+        public java.lang.String toString() {
+            return null;
+        }
+    }
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000b\n\u0002\b\b\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000e\n\u0000\b\u0086\b\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u00a2\u0006\u0002\u0010\u0004J\t\u0010\u0007\u001a\u00020\u0003H\u00c6\u0003J\u0013\u0010\b\u001a\u00020\u00002\b\b\u0002\u0010\u0002\u001a\u00020\u0003H\u00c6\u0001J\u0013\u0010\t\u001a\u00020\u00032\b\u0010\n\u001a\u0004\u0018\u00010\u0001H\u00d6\u0003J\t\u0010\u000b\u001a\u00020\fH\u00d6\u0001J\t\u0010\r\u001a\u00020\u000eH\u00d6\u0001R\u0011\u0010\u0002\u001a\u00020\u0003\u00a2\u0006\b\n\u0000\u001a\u0004\b\u0005\u0010\u0006\u00a8\u0006\u000f"}, d2 = {"Lcom/biathlonapp/data/api/BiathlonApiService$VerifyTokenResponse;", "", "valid", "", "(Z)V", "getValid", "()Z", "component1", "copy", "equals", "other", "hashCode", "", "toString", "", "app_release"})
+    public static final class VerifyTokenResponse {
+        private final boolean valid = false;
+        
+        public VerifyTokenResponse(boolean valid) {
+            super();
+        }
+        
+        public final boolean getValid() {
+            return false;
+        }
+        
+        public final boolean component1() {
+            return false;
+        }
+        
+        @org.jetbrains.annotations.NotNull()
+        public final com.biathlonapp.data.api.BiathlonApiService.VerifyTokenResponse copy(boolean valid) {
+            return null;
+        }
+        
+        @java.lang.Override()
+        public boolean equals(@org.jetbrains.annotations.Nullable()
+        java.lang.Object other) {
+            return false;
+        }
+        
+        @java.lang.Override()
+        public int hashCode() {
+            return 0;
+        }
+        
+        @java.lang.Override()
+        @org.jetbrains.annotations.NotNull()
+        public java.lang.String toString() {
+            return null;
+        }
+    }
+}
