@@ -26,6 +26,8 @@ import threading
 
 
 
+
+
 SCOPES = ['https://www.googleapis.com/auth/firebase.messaging']
 PROJECT_ID = os.environ.get('FCM_PROJECT_ID', 'biathlonapp-84d7a')
 
@@ -117,6 +119,10 @@ def send_reset_email_async(to_email, reset_token):
     """Отправка email в фоновом потоке"""
     def _send():
         try:
+            print(f"📧 [START] Sending email to: {to_email}")
+            print(f"📧 EMAIL_USER: {EMAIL_USER}")
+            print(f"📧 EMAIL_PASSWORD length: {len(EMAIL_PASSWORD) if EMAIL_PASSWORD else 0}")
+            
             reset_link = f"{APP_URL}/reset-password?token={reset_token}"
             
             subject = "Сброс пароля - Биатлон Приложение"
@@ -157,18 +163,25 @@ def send_reset_email_async(to_email, reset_token):
             msg['Subject'] = subject
             msg.attach(MIMEText(html_content, 'html'))
             
+            print(f"📧 Connecting to SMTP server...")
             context = ssl.create_default_context()
             with smtplib.SMTP_SSL("smtp.yandex.ru", 465, context=context) as server:
+                print(f"📧 Logging in...")
                 server.login(EMAIL_USER, EMAIL_PASSWORD)
+                print(f"📧 Sending message...")
                 server.send_message(msg)
+                print(f"📧 Message sent!")
             
             print(f"✅ Reset email sent to {to_email}")
         except Exception as e:
             print(f"❌ Failed to send email: {e}")
+            import traceback
+            traceback.print_exc()
     
-    # Запускаем в отдельном потоке
+    print(f"📧 Starting thread for: {to_email}")
     thread = threading.Thread(target=_send)
     thread.start()
+    print(f"📧 Thread started")
 # JWT настройки
 JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-change-in-production')
 JWT_EXPIRATION_HOURS = 24 * 30  # 30 дней
