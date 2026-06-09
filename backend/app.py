@@ -1672,17 +1672,32 @@ def remove_favorite(athlete_id):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         
+        # Проверяем, существует ли запись
+        cursor.execute("""
+            SELECT id FROM user_favorites
+            WHERE user_id = %s AND athlete_id = %s
+        """, (request.user_id, athlete_id))
+        
+        existing = cursor.fetchone()
+        if not existing:
+            conn.close()
+            return jsonify({'success': True, 'message': 'Спортсмен уже удален из избранного'})
+        
         cursor.execute("""
             DELETE FROM user_favorites
             WHERE user_id = %s AND athlete_id = %s
         """, (request.user_id, athlete_id))
         conn.commit()
         
+        deleted_count = cursor.rowcount
         conn.close()
+        
+        print(f"Deleted {deleted_count} records for user {request.user_id}, athlete {athlete_id}")
         
         return jsonify({'success': True, 'message': 'Спортсмен удален из избранного'})
         
     except Exception as e:
+        print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/favorites/check/<athlete_id>', methods=['GET'])

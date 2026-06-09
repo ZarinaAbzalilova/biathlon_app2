@@ -124,8 +124,9 @@ class LoginActivity : AppCompatActivity() {
                     authRepository.saveUserEmail(authResponse.user.email)
                     authRepository.saveUserId(authResponse.user.id)
 
-                    // ✅ СИНХРОНИЗИРУЕМ ИЗБРАННОЕ С СЕРВЕРОМ
-                    syncFavorites(authResponse.token)
+                    // ✅ СИНХРОНИЗИРУЕМ ИЗБРАННОЕ С СЕРВЕРА (загружаем с сервера)
+                    val favoritesRepository = FavoritesRepository(this@LoginActivity, apiService)
+                    favoritesRepository.syncFavoritesWithServer(authResponse.token)
 
                     Toast.makeText(this@LoginActivity, "Добро пожаловать!", Toast.LENGTH_SHORT).show()
                     startMainActivity()

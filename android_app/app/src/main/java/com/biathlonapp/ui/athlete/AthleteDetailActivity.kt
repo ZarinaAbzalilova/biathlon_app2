@@ -3,6 +3,7 @@ package com.biathlonapp.ui.athlete
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -90,7 +91,9 @@ class AthleteDetailActivity : AppCompatActivity() {
     }
 
     private fun setupFavoriteButton() {
+        Log.d("Favorites", "Setting up favorite button")
         binding.buttonFavorite.setOnClickListener {
+            Log.d("Favorites", "Favorite button clicked! isFavorite = $isFavorite")
             toggleFavorite()
         }
         updateFavoriteButton()
@@ -132,9 +135,11 @@ class AthleteDetailActivity : AppCompatActivity() {
     private fun checkIfFavorite(athleteId: String) {
         lifecycleScope.launch {
             isFavorite = favoritesRepository.isFavorite(athleteId)
+            Log.d("Favorites", "checkIfFavorite: athleteId=$athleteId, isFavorite=$isFavorite")
             updateFavoriteButton()
         }
     }
+
 
     private fun toggleFavorite() {
         lifecycleScope.launch {
@@ -149,31 +154,50 @@ class AthleteDetailActivity : AppCompatActivity() {
             if (isFavorite) {
                 // Удаляем с сервера
                 try {
+                    Log.d("Favorites", "=== REMOVING FROM SERVER ===")
+                    Log.d("Favorites", "Athlete ID: $currentId")
+                    Log.d("Favorites", "Token: ${token.take(50)}...")
+
                     val response = apiService.removeFavorite("Bearer $token", currentId.toLong())
+                    Log.d("Favorites", "Response code: ${response.code()}")
+                    Log.d("Favorites", "Response body: ${response.body()}")
+
                     if (response.isSuccessful) {
-                        favoritesRepository.removeFromFavorites(currentId)
+                        val localRemoved = favoritesRepository.removeFromFavorites(currentId)
+                        Log.d("Favorites", "Local remove result: $localRemoved")
                         showMessage("Удалено из избранного")
                         isFavorite = false
                     } else {
-                        showMessage("Ошибка при удалении")
+                        Log.e("Favorites", "Remove failed with code: ${response.code()}")
+                        showMessage("Ошибка при удалении: ${response.code()}")
                     }
                 } catch (e: Exception) {
+                    Log.e("Favorites", "Error removing from server", e)
                     showMessage("Ошибка: ${e.message}")
                 }
             } else {
                 // Добавляем на сервер
                 try {
+                    Log.d("Favorites", "=== ADDING TO SERVER ===")
+                    Log.d("Favorites", "Athlete ID: $currentId")
+
                     val response = apiService.addFavorite("Bearer $token", mapOf("athlete_id" to currentId.toLong()))
+                    Log.d("Favorites", "Response code: ${response.code()}")
+                    Log.d("Favorites", "Response body: ${response.body()}")
+
                     if (response.isSuccessful) {
                         val athlete = selectedAthlete ?: createMinimalAthlete(currentId)
-                        favoritesRepository.addToFavorites(athlete)
+                        val localAdded = favoritesRepository.addToFavorites(athlete)
+                        Log.d("Favorites", "Local add result: $localAdded")
                         showMessage("Добавлено в избранное")
                         isFavorite = true
                         viewModel.loadAthleteResults(currentId)
                     } else {
-                        showMessage("Ошибка при добавлении")
+                        Log.e("Favorites", "Add failed with code: ${response.code()}")
+                        showMessage("Ошибка при добавлении: ${response.code()}")
                     }
                 } catch (e: Exception) {
+                    Log.e("Favorites", "Error adding to server", e)
                     showMessage("Ошибка: ${e.message}")
                 }
             }
@@ -195,6 +219,7 @@ class AthleteDetailActivity : AppCompatActivity() {
     }
 
     private fun updateFavoriteButton() {
+        Log.d("Favorites", "updateFavoriteButton: isFavorite=$isFavorite")
         if (isFavorite) {
             binding.buttonFavorite.text = "В избранном"
             val drawable = ContextCompat.getDrawable(this, R.drawable.ic_star_filled)

@@ -172,20 +172,22 @@ class SettingsActivity : AppCompatActivity() {
     private fun performLogout() {
         lifecycleScope.launch {
             try {
+                Log.d("Settings", "Clearing all favorites before logout")
                 favoritesRepository.clearAllFavorites()
-                authRepository.clear()
+                Log.d("Settings", "Favorites cleared")
 
-                // При выходе сбрасываем флаг активности
+                authRepository.clear()
+                Log.d("Settings", "Auth cleared")
+
                 val prefs = getSharedPreferences("onboarding_prefs", MODE_PRIVATE)
                 prefs.edit()
                     .putBoolean("app_is_active", false)
                     .apply()
 
                 Toast.makeText(this@SettingsActivity, "Вы вышли из системы", Toast.LENGTH_SHORT).show()
-
-                // Перезапускаем SettingsActivity, чтобы обновить UI
                 recreate()
             } catch (e: Exception) {
+                Log.e("Settings", "Error during logout", e)
                 Toast.makeText(this@SettingsActivity, "Ошибка при выходе: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }

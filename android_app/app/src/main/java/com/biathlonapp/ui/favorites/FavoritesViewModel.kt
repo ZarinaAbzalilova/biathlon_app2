@@ -7,14 +7,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.biathlonapp.data.api.BiathlonApiService
 import com.biathlonapp.data.local.FavoriteAthlete
+import com.biathlonapp.data.repository.AuthRepository
 import com.biathlonapp.data.repository.FavoritesRepository
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val apiService = BiathlonApiService.create()
+    private val authRepository = AuthRepository(application.applicationContext)
     private val favoritesRepository = FavoritesRepository(
         application.applicationContext,
-        BiathlonApiService.create()
+        apiService
     )
 
     private val _favorites = MutableLiveData<List<FavoriteAthlete>>()
@@ -48,11 +51,41 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun removeFromFavorites(athleteId: String) {
         viewModelScope.launch {
-            val success = favoritesRepository.removeFromFavorites(athleteId)
-            if (success) {
-                loadFavorites() // Перезагружаем список
-            } else {
-                _error.value = "Не удалось удалить из избранного"
+            _isLoading.value = true
+
+            try {
+                val token = authRepository.getToken()
+                if (token == null) {
+                    _error.value = "Авторизуйтесь, чтобы удалять из избранного"
+                    _isLoading.value = false
+                    return@launch
+                }
+
+                // 1. Отправляем запрос на сервер
+                android.util.Log.d("Favorites", "Removing from server: athleteId=$athleteId")
+                val response = apiService.removeFavorite("Bearer $token", athleteId.toLong())
+                android.util.Log.d("Favorites", "Remove response code: ${response.code()}")
+
+                if (response.isSuccessful) {
+                    // 2. Если сервер подтвердил, удаляем локально
+                    val success = favoritesRepository.removeFromFavorites(athleteId)
+                    android.util.Log.d("Favorites", "Local remove result: $success")
+
+                    if (success) {
+                        // 3. Обновляем список
+                        loadFavorites()
+                        _error.value = null
+                    } else {
+                        _error.value = "Не удалось удалить локально"
+                    }
+                } else {
+                    _error.value = "Ошибка при удалении с сервера: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("Favorites", "Error removing from favorites", e)
+                _error.value = "Ошибка: ${e.message}"
+            } finally {
+                _isLoading.value = false
             }
         }
     }

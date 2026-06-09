@@ -227,20 +227,12 @@ class OnboardingActivity : AppCompatActivity() {
     }
 
     private fun completeOnboarding() {
-        Log.d("ONBOARDING", "completeOnboarding called. isFirstLaunch: $isFirstLaunch")
+        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putBoolean(KEY_ONBOARDING_COMPLETED, true).apply()
 
-        // Всегда устанавливаем флаг завершения онбординга
-        sharedPreferences.edit().putBoolean(KEY_ONBOARDING_COMPLETED, true).apply()
+        Log.d("ONBOARDING", "completeOnboarding called. onboardingCompleted set to true")
 
-        if (!isFirstLaunch) {
-            // Быстрый старт - сразу в приложение
-            Log.d("ONBOARDING", "Quick start: going to MainActivity")
-            goToMainActivity()
-        } else {
-            // Первый запуск - показываем диалог авторизации
-            Log.d("ONBOARDING", "First launch: showing auth dialog")
-            showAuthChoiceDialog()
-        }
+        showAuthChoiceDialog()
     }
 
     private fun showAuthChoiceDialog() {
@@ -251,19 +243,17 @@ class OnboardingActivity : AppCompatActivity() {
             .setCancelable(false)
             .create()
 
-        dialogView.findViewById<MaterialButton>(R.id.buttonLogin).setOnClickListener {
+        dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.buttonLogin).setOnClickListener {
             dialog.dismiss()
-            // Устанавливаем флаг активности перед переходом на логин
-            sharedPreferences.edit()
-                .putBoolean("app_is_active", true)
-                .apply()
             startActivity(LoginActivity.newIntent(this))
             finish()
         }
 
-        dialogView.findViewById<MaterialButton>(R.id.buttonContinue).setOnClickListener {
+        dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.buttonContinue).setOnClickListener {
             dialog.dismiss()
-            goToMainActivity()
+            // Передаем флаг, что пришло из онбординга
+            startActivity(MainActivity.newIntent(this))
+            finish()
         }
 
         dialog.show()

@@ -128,6 +128,10 @@ interface BiathlonApiService {
     suspend fun checkFavorite(@Path("athleteId") athleteId: Long): Response<FavoriteCheckResponse>
     companion object {
         const val BASE_URL = "https://biathlon-app2.onrender.com"
+        //const val BASE_URL = "http://10.0.2.2:5000"
+        //const val BASE_URL = "http://192.168.1.131:5000"
+
+
         fun create(): BiathlonApiService {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)

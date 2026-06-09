@@ -57,11 +57,14 @@ class FavoritesRepository(
 
     suspend fun removeFromFavorites(athleteId: String): Boolean {
         return try {
+            Log.d("Favorites", "removeFromFavorites called for athlete: $athleteId")
+            // Не удаляем здесь с сервера, только локально!
             favoriteAthleteDao.deleteFavoriteById(athleteId)
             deleteResultsForAthlete(athleteId)
+            Log.d("Favorites", "Successfully removed locally: $athleteId")
             true
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("Favorites", "Error removing from favorites", e)
             false
         }
     }
