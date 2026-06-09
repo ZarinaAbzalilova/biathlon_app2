@@ -2,6 +2,7 @@ package com.biathlonapp.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -50,10 +51,12 @@ class LoginActivity : AppCompatActivity() {
             startActivity(RegisterActivity.newIntent(this))
         }
         binding.textForgotPassword.setOnClickListener {
+            Log.d("ForgotPassword", "Forgot password clicked")
             showForgotPasswordDialog()
         }
     }
     private fun showForgotPasswordDialog() {
+        Log.d("ForgotPassword", "Showing dialog")
         val dialogView = layoutInflater.inflate(R.layout.dialog_forgot_password, null)
         val editEmail = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.editEmail)
 
@@ -62,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
             .setView(dialogView)
             .setPositiveButton("Отправить") { _, _ ->
                 val email = editEmail.text.toString().trim()
+                Log.d("ForgotPassword", "Email entered: $email")
                 if (email.isNotEmpty()) {
                     requestPasswordReset(email)
                 } else {
@@ -72,9 +76,11 @@ class LoginActivity : AppCompatActivity() {
             .show()
     }
     private fun requestPasswordReset(email: String) {
+        Log.d("ForgotPassword", "Requesting reset for: $email")
         lifecycleScope.launch {
             try {
                 val response = apiService.forgotPassword(mapOf("email" to email))
+                Log.d("ForgotPassword", "Response code: ${response.code()}")
                 if (response.isSuccessful && response.body()?.success == true) {
                     Toast.makeText(
                         this@LoginActivity,
@@ -82,9 +88,10 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
-                    Toast.makeText(this@LoginActivity, "Ошибка отправки", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Ошибка отправки: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
+                Log.e("ForgotPassword", "Error: ${e.message}", e)
                 Toast.makeText(this@LoginActivity, "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }

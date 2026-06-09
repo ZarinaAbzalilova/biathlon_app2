@@ -22,6 +22,7 @@ import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 import ssl
+import threading
 
 
 
@@ -112,72 +113,62 @@ def send_fcm_notification_v1(fcm_token, title, body, race_id=None):
         print(f"❌ Исключение при отправке: {e}")
         return False
 
-def send_reset_email(to_email, reset_token):
-    """Отправка email для сброса пароля через Yandex"""
-    try:
-        # Используем HTTPS ссылку вместо biathlonapp://
-        reset_link = f"https://biathlon-app2.onrender.com/reset-password?token={reset_token}"
-        
-        subject = "Сброс пароля - Биатлон Приложение"
-        html_content = f"""
-        <html>
-        <head>
-            <style>
-                body {{ font-family: Arial, sans-serif; }}
-                .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-                .button {{
-                    background-color: #4CAF50;
-                    border: none;
-                    color: white;
-                    padding: 12px 24px;
-                    text-align: center;
-                    text-decoration: none;
-                    display: inline-block;
-                    font-size: 16px;
-                    margin: 20px 0;
-                    border-radius: 4px;
-                }}
-                .footer {{ margin-top: 30px; font-size: 12px; color: #666; }}
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h2>Сброс пароля</h2>
-                <p>Вы запросили сброс пароля для аккаунта <strong>{to_email}</strong>.</p>
-                <p>Нажмите на кнопку ниже, чтобы установить новый пароль:</p>
-                <a href="{reset_link}" class="button" style="background-color:#4CAF50;border:none;color:white;padding:12px 24px;text-align:center;text-decoration:none;display:inline-block;font-size:16px;margin:20px 0;border-radius:4px;">Сбросить пароль</a>
-                <p>Или скопируйте ссылку в браузер:</p>
-                <p><a href="{reset_link}">{reset_link}</a></p>
-                <p>Ссылка действительна в течение 1 часа.</p>
-                <p>Если вы не запрашивали сброс пароля, просто проигнорируйте это письмо.</p>
-                <div class="footer">
-                    <p>© 2026 Биатлон Приложение</p>
+def send_reset_email_async(to_email, reset_token):
+    """Отправка email в фоновом потоке"""
+    def _send():
+        try:
+            reset_link = f"{APP_URL}/reset-password?token={reset_token}"
+            
+            subject = "Сброс пароля - Биатлон Приложение"
+            html_content = f"""
+            <html>
+            <head>
+                <style>
+                    body {{ font-family: Arial, sans-serif; }}
+                    .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+                    .button {{
+                        background-color: #4CAF50;
+                        border: none;
+                        color: white;
+                        padding: 12px 24px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-size: 16px;
+                        margin: 20px 0;
+                        border-radius: 4px;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h2>Сброс пароля</h2>
+                    <p>Вы запросили сброс пароля для аккаунта <strong>{to_email}</strong>.</p>
+                    <a href="{reset_link}" class="button">Сбросить пароль</a>
+                    <p>Ссылка действительна в течение 1 часа.</p>
                 </div>
-            </div>
-        </body>
-        </html>
-        """
-        
-        msg = MIMEMultipart()
-        msg['From'] = EMAIL_USER
-        msg['To'] = to_email
-        msg['Subject'] = subject
-        msg.attach(MIMEText(html_content, 'html'))
-        
-        # Отправка через Yandex с SSL
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.yandex.ru", 465, context=context) as server:
-            server.login(EMAIL_USER, EMAIL_PASSWORD)
-            server.send_message(msg)
-        
-        print(f"✅ Reset email sent to {to_email}")
-        return True
-        
-    except Exception as e:
-        print(f"❌ Failed to send email: {e}")
-        import traceback
-        traceback.print_exc()
-        return False
+            </body>
+            </html>
+            """
+            
+            msg = MIMEMultipart()
+            msg['From'] = EMAIL_USER
+            msg['To'] = to_email
+            msg['Subject'] = subject
+            msg.attach(MIMEText(html_content, 'html'))
+            
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL("smtp.yandex.ru", 465, context=context) as server:
+                server.login(EMAIL_USER, EMAIL_PASSWORD)
+                server.send_message(msg)
+            
+            print(f"✅ Reset email sent to {to_email}")
+        except Exception as e:
+            print(f"❌ Failed to send email: {e}")
+    
+    # Запускаем в отдельном потоке
+    thread = threading.Thread(target=_send)
+    thread.start()
 # JWT настройки
 JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-change-in-production')
 JWT_EXPIRATION_HOURS = 24 * 30  # 30 дней
@@ -1462,33 +1453,28 @@ def forgot_password():
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         
-        # Проверяем, существует ли пользователь
         cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
         user = cursor.fetchone()
         
         if not user:
             conn.close()
-            # Не показываем, что email не найден (безопасность)
             return jsonify({
                 'success': True,
                 'message': 'Если пользователь существует, инструкция отправлена на email'
             })
         
-        # Генерируем уникальный токен
         reset_token = secrets.token_urlsafe(32)
         expires_at = datetime.now() + timedelta(hours=1)
         
-        # Сохраняем токен в БД
         cursor.execute("""
             INSERT INTO password_resets (email, token, expires_at)
             VALUES (%s, %s, %s)
         """, (email, reset_token, expires_at))
         conn.commit()
-        
-        # Отправляем email
-        email_sent = send_reset_email(email, reset_token)
-        
         conn.close()
+        
+        # Отправляем email асинхронно
+        send_reset_email_async(email, reset_token)
         
         return jsonify({
             'success': True,
