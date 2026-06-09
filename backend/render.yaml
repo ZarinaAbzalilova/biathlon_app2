@@ -49,7 +49,7 @@ services:
       - key: EMAIL_HOST
         value: smtp.yandex.ru
       - key: EMAIL_PORT
-        value: 465
+        value: 587
       - key: EMAIL_USER
         value: biathlon.noreply@yandex.ru
       - key: EMAIL_PASSWORD

@@ -120,8 +120,6 @@ def send_reset_email_async(to_email, reset_token):
     def _send():
         try:
             print(f"📧 [START] Sending email to: {to_email}")
-            print(f"📧 EMAIL_USER: {EMAIL_USER}")
-            print(f"📧 EMAIL_PASSWORD length: {len(EMAIL_PASSWORD) if EMAIL_PASSWORD else 0}")
             
             reset_link = f"{APP_URL}/reset-password?token={reset_token}"
             
@@ -163,14 +161,16 @@ def send_reset_email_async(to_email, reset_token):
             msg['Subject'] = subject
             msg.attach(MIMEText(html_content, 'html'))
             
-            print(f"📧 Connecting to SMTP server...")
-            context = ssl.create_default_context()
-            with smtplib.SMTP_SSL("smtp.yandex.ru", 465, context=context) as server:
-                print(f"📧 Logging in...")
-                server.login(EMAIL_USER, EMAIL_PASSWORD)
-                print(f"📧 Sending message...")
-                server.send_message(msg)
-                print(f"📧 Message sent!")
+            print(f"📧 Connecting to SMTP server on port 587...")
+            # Используем STARTTLS на порту 587
+            server = smtplib.SMTP(EMAIL_HOST, 587)
+            server.starttls(context=ssl.create_default_context())
+            print(f"📧 Logging in...")
+            server.login(EMAIL_USER, EMAIL_PASSWORD)
+            print(f"📧 Sending message...")
+            server.send_message(msg)
+            server.quit()
+            print(f"📧 Message sent!")
             
             print(f"✅ Reset email sent to {to_email}")
         except Exception as e:
